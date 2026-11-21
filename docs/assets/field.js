@@ -711,7 +711,8 @@
     const dt = Math.min(raw, 0.05); last = now;
     if (raw < 0.25) { perf.sum += raw; perf.n++; }
     if (perf.n >= 90) {
-      if (perf.sum / perf.n > 0.025 && dprCap > 1) { dprCap = Math.max(1, dprCap - 0.25); resize(true); }
+      // только целый шаг: Safari растягивает WebGL-холст без сглаживания, дробная плотность даёт квадратные точки
+      if (perf.sum / perf.n > 0.034 && dprCap > 1) { dprCap = 1; resize(true); }
       perf.sum = 0; perf.n = 0;
     }
     if (reduced && !dirty) return;
