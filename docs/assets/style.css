@@ -387,7 +387,7 @@ main { position: relative; z-index: 2; }
 .story .story-svg .dl-line { opacity: 1; stroke-dashoffset: calc(1 - var(--p1, 1)); stroke-width: 1; }
 .story .story-svg .dl-fill { fill-opacity: calc(.22 + var(--p2, 1) * .78); }
 .story .story-svg .dl-cut { opacity: calc(var(--p3, 1) * (1 - var(--p4, 0))); stroke-dashoffset: calc(1 - var(--p3, 1)); }
-.story .story-svg { position: relative; transform: rotateY(calc((1 - var(--p2, 1)) * -40deg)) rotateX(calc((1 - var(--p1, 1)) * 14deg)) scale(calc(.84 + var(--p2, 1) * .16)); filter: drop-shadow(0 30px 50px rgba(0, 0, 0, .55)) drop-shadow(0 0 calc(var(--p3, 1) * 46px) var(--tint-glow)); }
+.story .story-svg { position: relative; transform: rotateY(calc((1 - var(--p2, 1)) * -40deg)) rotateX(calc((1 - var(--p1, 1)) * 14deg)) scale(calc(.84 + var(--p2, 1) * .16)); will-change: transform; }
 .story-copy { display: grid; gap: 18px; align-content: center; }
 .story-lines { position: relative; list-style: none; margin: 0; padding: 0 0 0 20px; display: grid; gap: 14px; }
 .story-lines::before, .story-lines::after { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; border-radius: 2px; background: rgba(255, 255, 255, .08); }

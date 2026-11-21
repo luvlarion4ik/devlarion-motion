@@ -682,7 +682,8 @@
     }
     dirty = true;
   }
-  addEventListener("scroll", pickSection, { passive: true });
+  let pickQueued = false;
+  addEventListener("scroll", () => { if (!pickQueued) { pickQueued = true; requestAnimationFrame(() => { pickQueued = false; pickSection(); }); } }, { passive: true });
 
   // ---------- иконки услуг для литника ----------
   const iconBase = canvas.dataset.icons;
@@ -720,7 +721,7 @@
     if (!reduced) {
       state.time += dt; state.spin = (state.spin + dt * 0.12) % TAU; state.sway = Math.sin(state.time * 0.35) * 0.2;
       state.road = (state.road + dt * state.speed) % 80;
-      state.mix = Math.min(state.mix + dt / 2.1, 1);
+      state.mix = Math.min(state.mix + dt / 1.4, 1);
     }
     const ease = reduced ? 1 : 1 - Math.exp(-dt * 6);
     state.mouse[0] = lerp(state.mouse[0], state.mouseT[0], ease); state.mouse[1] = lerp(state.mouse[1], state.mouseT[1], ease);

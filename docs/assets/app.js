@@ -242,7 +242,8 @@
       if (p >= 0.68 && !shone && !reduced) { shone = true; restart(svg, "shine"); restart(story, "done"); }
       if (p < 0.5) { shone = false; story.classList.remove("done"); }
     };
-    addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    let queued = false;
+    addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; update(); }); } }, { passive: true });
     addEventListener("resize", update);
     update();
     // наведение или касание собранного знака — полное проигрывание анимации
