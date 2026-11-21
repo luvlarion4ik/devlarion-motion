@@ -6,32 +6,52 @@
 <title>Devlarion — Сайты, боты и ИИ-сервисы</title>
 <meta name="description" content="Помогаю бизнесу принимать заявки и сокращать ручную работу. Разрабатываю сайты с каталогом, ботов для записи и сервисы, которые связывают данные компании.">
 <meta name="theme-color" content="#05070f">
-<meta property="og:title" content="Devlarion — Сайты, боты и ИИ-сервисы">
-<meta property="og:description" content="Помогаю бизнесу принимать заявки и сокращать ручную работу. Разрабатываю сайты с каталогом, ботов для записи и сервисы, которые связывают данные компании.">
-<meta property="og:image" content="assets/brand/og-ru.jpg">
-<link rel="alternate" hreflang="en" href="en/">
-<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="canonical" href="https://luvlarion4ik.github.io/devlarion-motion/">
+<link rel="alternate" hreflang="ru" href="https://luvlarion4ik.github.io/devlarion-motion/"><link rel="alternate" hreflang="en" href="https://luvlarion4ik.github.io/devlarion-motion/en/"><link rel="alternate" hreflang="x-default" href="https://luvlarion4ik.github.io/devlarion-motion/">
+<meta property="og:type" content="website"><meta property="og:url" content="https://luvlarion4ik.github.io/devlarion-motion/">
+<meta property="og:title" content="Devlarion — Сайты, боты и ИИ-сервисы"><meta property="og:description" content="Помогаю бизнесу принимать заявки и сокращать ручную работу. Разрабатываю сайты с каталогом, ботов для записи и сервисы, которые связывают данные компании.">
+<meta property="og:image" content="https://luvlarion4ik.github.io/devlarion-motion/assets/brand/og-ru.jpg"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/golos-text-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
+<script defer src="assets/devlarion-logo.js"></script>
 <script defer src="assets/field.js"></script>
+<script defer src="assets/currency.js"></script>
+<script defer src="assets/quiz.js"></script>
 <script defer src="assets/app.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Devlarion","url":"https://luvlarion4ik.github.io/devlarion-motion/","founder":{"@type":"Person","name":"Илья Ларионов"},"sameAs":["https://t.me/LuvLarion4ik","https://www.threads.com/@luvlarion4ik","https://github.com/luvlarion4ik","https://luvlarion4ik.github.io/luvlarion4ik/"]}</script>
 </head>
 <body>
 <a class="skip" href="#main">К содержанию</a>
 <canvas class="field" data-field data-icons="assets/icons/" aria-hidden="true"></canvas>
 <div class="fx-glow" aria-hidden="true"></div><div class="fx-grain" aria-hidden="true"></div>
 <header class="top">
-  <a class="brand" href="#top" aria-label="Devlarion — наверх"><span class="brand-word" data-text="DEVLARION">DEVLARION</span></a>
-  <p class="hint mono">Листайте или жмите <kbd>↓</kbd> и <kbd>↑</kbd></p>
-  <nav class="keys mono" aria-label="Разделы"><a href="#services" data-key="1"><kbd>1</kbd>Услуги</a><a href="#work" data-key="2"><kbd>2</kbd>Кейсы</a><a href="#process" data-key="3"><kbd>3</kbd>Процесс</a><a href="#products" data-key="4"><kbd>4</kbd>Продукты</a><a href="#about" data-key="5"><kbd>5</kbd>Студия</a><a href="#contact" data-key="6"><kbd>6</kbd>Контакт</a><a href="https://t.me/LuvLarion4ik" data-key="t" class="key-tg"><kbd>T</kbd>Telegram</a><a href="en/" data-key="l" hreflang="en" lang="en"><kbd>L</kbd>EN</a></nav>
+  <a class="brand" href="#top" aria-label="Devlarion — наверх"><devlarion-logo variant="full" height="26" intro></devlarion-logo></a>
+  <p class="hint label" aria-hidden="true">Листайте или жмите <kbd>↓</kbd> <kbd>↑</kbd></p>
+  <nav class="keys" aria-label="Разделы"><a href="#services" data-key="1"><kbd>1</kbd>Услуги</a><a href="#work" data-key="2"><kbd>2</kbd>Кейсы</a><a href="#products" data-key="3"><kbd>3</kbd>Продукты</a><a href="#process" data-key="4"><kbd>4</kbd>Процесс</a><a href="#about" data-key="5"><kbd>5</kbd>Студия</a><a href="#quiz" data-key="6"><kbd>6</kbd>Расчёт</a><a href="#contact" data-key="7"><kbd>7</kbd>Контакт</a></nav>
+  <div class="tools">
+    <div class="currency" data-currency data-rates="assets/rates.json">
+    <details><summary aria-label="Валюта цен" title="Валюта цен"><span data-currency-label>RUB</span><span class="chev" aria-hidden="true">▾</span></summary>
+      <div class="currency-panel">
+        <p class="label">Валюта цен · курс ЦБ РФ</p>
+        <div class="currency-quick" data-currency-quick></div>
+        <input type="search" data-currency-search placeholder="Поиск: код или название" aria-label="Поиск валюты" autocomplete="off">
+        <ul data-currency-list></ul>
+        <p class="muted" data-currency-empty hidden>Ничего не найдено.</p>
+      </div></details></div>
+    <div class="lang" role="group" aria-label="Язык">
+    <a href="./" aria-current="true" hreflang="ru" lang="ru" >RU</a><a href="en/"  hreflang="en" lang="en" data-key="l">EN</a></div>
+    <a class="icon-btn" href="https://www.threads.com/@luvlarion4ik" target="_blank" rel="noopener" aria-label="Threads" title="Threads"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg></a>
+    <a class="btn primary small" href="https://t.me/LuvLarion4ik" data-key="t">Telegram</a>
+    <details class="menu"><summary aria-label="Меню"><span></span><span></span></summary>
+      <nav aria-label="Меню"><a href="#services">Услуги</a><a href="#work">Кейсы</a><a href="#products">Продукты</a><a href="#process">Процесс</a><a href="#about">Студия</a><a href="#quiz">Расчёт</a><a href="#contact">Контакт</a><a href="https://www.threads.com/@luvlarion4ik" target="_blank" rel="noopener">Threads ↗</a><a href="https://luvlarion4ik.github.io/luvlarion4ik/ru/">Классическая версия ↗</a></nav></details>
+  </div>
 </header>
 <main id="main">
 <section class="hero" id="top" data-scene="mark" data-tint="copper">
-  <h1 class="mega" data-tilt><span class="sr">Devlarion — </span><span class="mega-word" data-text="DEVLARION" aria-hidden="true">DEVLARION</span><span class="sr">Сайты, боты и ИИ-сервисы</span></h1>
+  <h1 class="mega"><span class="sr">Devlarion — Сайты, боты и ИИ-сервисы</span><span class="mega-word" data-text="DEVLARION" aria-hidden="true">DEVLARION</span></h1>
   <div class="hero-copy">
-    <p class="eyebrow mono">Студия разработки Devlarion · Илья Ларионов</p>
+    <p class="label eyebrow"><img class="emoji inline" src="assets/emoji/1f44b.webp" alt="👋" width="64" height="64" loading="lazy" decoding="async" data-emoji="👋"> Студия разработки Devlarion · Илья Ларионов</p>
     <p class="glow headline">Сайты, боты и ИИ-сервисы</p>
     <p class="lead">Помогаю бизнесу принимать заявки и сокращать ручную работу. Разрабатываю сайты с каталогом, ботов для записи и сервисы, которые связывают данные компании.</p>
     <div class="command" data-command>
@@ -39,262 +59,335 @@
       <button type="button" class="cmd-current" aria-haspopup="listbox" aria-expanded="false" data-cmd-toggle>
         <span class="cmd-icon" data-cmd-icon><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m2 11 20-8-4 18-6-6-3 3v-5l9-7-11 6z"/></svg></span><span data-cmd-label>Telegram</span><span class="chev" aria-hidden="true">▾</span>
       </button>
-      <ul role="listbox" class="cmd-list" hidden><li role="option" tabindex="-1" aria-selected="true" data-icon="telegram" data-label="Telegram" data-text="t.me/LuvLarion4ik" data-href="https://t.me/LuvLarion4ik"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m2 11 20-8-4 18-6-6-3 3v-5l9-7-11 6z"/></svg><span>Telegram</span></li><li role="option" tabindex="-1" aria-selected="false" data-icon="mail" data-label="Почта" data-text="larion4ik123@gmail.com" data-href="mailto:larion4ik123@gmail.com"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 5h20v14H2z M2 5l10 8L22 5"/></svg><span>Почта</span></li><li role="option" tabindex="-1" aria-selected="false" data-icon="github" data-label="GitHub" data-text="github.com/luvlarion4ik" data-href="https://github.com/luvlarion4ik"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span>GitHub</span></li><li role="option" tabindex="-1" aria-selected="false" data-icon="threads" data-label="Threads" data-text="threads.com/@luvlarion4ik" data-href="https://www.threads.com/@luvlarion4ik"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg><span>Threads</span></li></ul>
+      <ul role="listbox" class="cmd-list" hidden aria-label="Канал связи"><li role="option" tabindex="-1" aria-selected="true" data-label="Telegram" data-text="t.me/LuvLarion4ik" data-href="https://t.me/LuvLarion4ik"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m2 11 20-8-4 18-6-6-3 3v-5l9-7-11 6z"/></svg><span>Telegram</span></li><li role="option" tabindex="-1" aria-selected="false" data-label="Threads" data-text="threads.com/@luvlarion4ik" data-href="https://www.threads.com/@luvlarion4ik"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg><span>Threads</span></li><li role="option" tabindex="-1" aria-selected="false" data-label="Почта" data-text="larion4ik123@gmail.com" data-href="mailto:larion4ik123@gmail.com"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 5h20v14H2z M2 5l10 8L22 5"/></svg><span>Почта</span></li><li role="option" tabindex="-1" aria-selected="false" data-label="GitHub" data-text="github.com/luvlarion4ik" data-href="https://github.com/luvlarion4ik"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span>GitHub</span></li></ul>
     </div>
-    <a class="cmd-text" data-cmd-link href="https://t.me/LuvLarion4ik"><span class="prompt" aria-hidden="true">$</span> <code data-cmd-text>t.me/LuvLarion4ik</code></a>
-    <button type="button" class="cmd-copy" data-copy aria-label="Скопировать" title="Скопировать">
+    <a class="cmd-text" data-cmd-link href="https://t.me/LuvLarion4ik"><span class="prompt" aria-hidden="true">›</span><code data-cmd-text>t.me/LuvLarion4ik</code></a>
+    <button type="button" class="cmd-copy" data-copy aria-label="Скопировать адрес" title="Скопировать адрес">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/><path class="tick" d="m10.5 14 2.2 2.2 4.3-4.4"/></svg>
     </button>
   </div>
-    <div class="row cta"><a class="btn primary" href="https://t.me/LuvLarion4ik">Обсудить проект <span aria-hidden="true">↗</span></a><a class="btn" href="#work">Смотреть кейсы</a></div>
+    <div class="row cta"><a class="btn primary" href="https://t.me/LuvLarion4ik">Обсудить проект <span aria-hidden="true">↗</span></a><a class="btn" href="#work">Смотреть кейсы</a><a class="btn ghost" href="https://www.threads.com/@luvlarion4ik" target="_blank" rel="noopener"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg> Threads</a></div>
   </div>
+  <a class="scroll-cue" href="#services" aria-label="К услугам"><span></span></a>
 </section>
 
 <section class="section" id="services" data-scene="kit" data-tint="ice">
   <div class="sticker s1" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="c-s1" d="M100 100m-78 0a78 78 0 1 1 156 0a78 78 0 1 1-156 0"/></defs>
     <circle cx="100" cy="100" r="96" class="ring"/><circle cx="100" cy="100" r="60" class="ring inner"/>
-    <text><textPath href="#c-s1" startOffset="0">САЙТЫ · БОТЫ · ИИ · МИНИ-ПРИЛОЖЕНИЯ · </textPath></text></svg><b>D/L</b></div>
-  <div class="stage"><div class="sec-head" data-reveal><p class="eyebrow mono">01 · Услуги</p><h2 class="glow">Направления работы</h2>
-    <p class="drive-hint mono"><span class="pulse" aria-hidden="true"></span>Конструктор из того, что мы собираем</p></div></div>
-  <div class="panel tabbed" data-reveal>
-    <div class="tabs" role="tablist" aria-label="Направления работы"><button type="button" role="tab" id="tab-agents" aria-controls="tp-agents" aria-selected="true" tabindex="0">Мультиагентные системы</button><button type="button" role="tab" id="tab-private-ai" aria-controls="tp-private-ai" aria-selected="false" tabindex="-1">ИИ на ваших серверах</button><button type="button" role="tab" id="tab-web" aria-controls="tp-web" aria-selected="false" tabindex="-1">Корпоративные сайты</button><button type="button" role="tab" id="tab-platform" aria-controls="tp-platform" aria-selected="false" tabindex="-1">Веб-сервисы</button><button type="button" role="tab" id="tab-mini" aria-controls="tp-mini" aria-selected="false" tabindex="-1">Мини-приложения</button><button type="button" role="tab" id="tab-mobile" aria-controls="tp-mobile" aria-selected="false" tabindex="-1">Мобильные приложения</button><button type="button" role="tab" id="tab-automation" aria-controls="tp-automation" aria-selected="false" tabindex="-1">Боты и автоматизация</button><button type="button" role="tab" id="tab-design" aria-controls="tp-design" aria-selected="false" tabindex="-1">Дизайн и брендинг</button><button type="button" role="tab" id="tab-custom" aria-controls="tp-custom" aria-selected="false" tabindex="-1">Заказная разработка</button></div>
+    <text><textPath href="#c-s1">САЙТЫ · БОТЫ · ИИ · МИНИ-ПРИЛОЖЕНИЯ · </textPath></text></svg><b>D/L</b></div>
+  <div class="stage"><div class="sec-head" data-reveal><p class="label">01 · Услуги</p><h2 class="glow">Направления работы <img class="emoji " src="assets/emoji/1f6e0_fe0f.webp" alt="🛠️" width="64" height="64" loading="lazy" decoding="async" data-emoji="🛠️"></h2><p class="lead center-text">Девять направлений — от сайта для заявок до ИИ в вашем контуре.</p></div></div>
+  <div class="panel tabbed" data-reveal><div class="tabs" role="tablist" aria-label="Направления работы"><button type="button" role="tab" id="tab-agents" aria-controls="tp-agents" aria-selected="true" tabindex="0"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d="m10 10 6 6 8-8M16 16v9m0-9 9 5"/><g fill="currentColor" fill-opacity=".14"><circle cx="8" cy="8" r="3.5"/><circle cx="25" cy="7" r="3"/><circle cx="25" cy="22" r="3"/><circle cx="16" cy="26" r="2.5"/></g><circle cx="16" cy="16" r="3" fill="currentColor"/>
+</svg></span>Мультиагентные системы</button><button type="button" role="tab" id="tab-private-ai" aria-controls="tp-private-ai" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <g fill="currentColor" fill-opacity=".09"><rect x="4" y="5" width="24" height="9" rx="3"/><rect x="4" y="18" width="24" height="9" rx="3"/></g><path d="M9 9.5h6m-6 13h6"/><g fill="currentColor"><circle cx="23" cy="9.5" r="1"/><circle cx="23" cy="22.5" r="1"/></g>
+</svg></span>ИИ на ваших серверах</button><button type="button" role="tab" id="tab-web" aria-controls="tp-web" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <rect x="3" y="5" width="26" height="22" rx="3.5"/><path d="M4 12h24M8 8.5h.2m3.7 0h.2M17 17h7m-7 4h5"/><rect x="7" y="16" width="6" height="7" rx="1" fill="currentColor" fill-opacity=".16"/>
+</svg></span>Корпоративные сайты</button><button type="button" role="tab" id="tab-platform" aria-controls="tp-platform" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d="m3 10 13-7 13 7-13 7z" fill="currentColor" fill-opacity=".14"/><path d="m3 16 13 7 13-7M3 22l13 7 13-7"/>
+</svg></span>Веб-сервисы</button><button type="button" role="tab" id="tab-mini" aria-controls="tp-mini" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <rect x="4" y="4" width="24" height="24" rx="6"/><g fill="currentColor" fill-opacity=".12"><rect x="8" y="8" width="6" height="6" rx="1.4"/><rect x="18" y="8" width="6" height="6" rx="1.4"/><rect x="8" y="18" width="6" height="6" rx="1.4"/></g><path d="M18 21h6m-3-3v6"/>
+</svg></span>Мини-приложения</button><button type="button" role="tab" id="tab-mobile" aria-controls="tp-mobile" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <rect x="7" y="2.5" width="18" height="27" rx="4.5"/><path d="M13 6h6m-5 20h4m-7-9 3.5 3.5 6.5-8" />
+</svg></span>Мобильные приложения</button><button type="button" role="tab" id="tab-automation" aria-controls="tp-automation" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d="M16 7v3m-11 7H3m26 0h-2"/><circle cx="16" cy="5" r="2"/><rect x="5" y="10" width="22" height="16" rx="5" fill="currentColor" fill-opacity=".1"/><path d="M11 16v2m10-2v2m-8 4h6"/>
+</svg></span>Боты и автоматизация</button><button type="button" role="tab" id="tab-design" aria-controls="tp-design" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d="m4 28 4-13L20 5l7 7-10 12z" fill="currentColor" fill-opacity=".10"/><path d="m8 15 9 9m-3-10 6-6m-15 19 7-7"/><circle cx="14" cy="18" r="2"/>
+</svg></span>Дизайн и брендинг</button><button type="button" role="tab" id="tab-custom" aria-controls="tp-custom" aria-selected="false" tabindex="-1"><span class="tab-ico" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d="m16 3 10 6v13l-10 6-10-6V9z" fill="currentColor" fill-opacity=".09"/><path d="m6 9 10 6 10-6m-10 6v13M11 6l10 6"/>
+</svg></span>Заказная разработка</button></div>
     <div class="tabpanel" role="tabpanel" id="tp-agents" aria-labelledby="tab-agents" >
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <path d="m10 10 6 6 8-8M16 16v9m0-9 9 5"/><g fill="currentColor" fill-opacity=".14"><circle cx="8" cy="8" r="3.5"/><circle cx="25" cy="7" r="3"/><circle cx="25" cy="22" r="3"/><circle cx="16" cy="26" r="2.5"/></g><circle cx="16" cy="16" r="3" fill="currentColor"/>
 </svg></div>
-      <div class="tp-copy"><h3>Мультиагентные системы</h3><p>Начинаем с одного процесса. На пилоте проверяем, как агент работает с вашими данными, затем связываем роли и подключаем системы.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9C%D1%83%D0%BB%D1%8C%D1%82%D0%B8%D0%B0%D0%B3%D0%B5%D0%BD%D1%82%D0%BD%D1%8B%D0%B5%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">01 / 09</p><h3>Мультиагентные системы</h3><p>Начинаем с одного процесса. На пилоте проверяем, как агент работает с вашими данными, затем связываем роли и подключаем системы.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9C%D1%83%D0%BB%D1%8C%D1%82%D0%B8%D0%B0%D0%B3%D0%B5%D0%BD%D1%82%D0%BD%D1%8B%D0%B5%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-private-ai" aria-labelledby="tab-private-ai" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <g fill="currentColor" fill-opacity=".09"><rect x="4" y="5" width="24" height="9" rx="3"/><rect x="4" y="18" width="24" height="9" rx="3"/></g><path d="M9 9.5h6m-6 13h6"/><g fill="currentColor"><circle cx="23" cy="9.5" r="1"/><circle cx="23" cy="22.5" r="1"/></g>
 </svg></div>
-      <div class="tp-copy"><h3>ИИ на ваших серверах</h3><p>Подбираем модель под нагрузку, разворачиваем её в вашем контуре и настраиваем доступ команды. Оборудование рассчитываем отдельно.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%98%D0%98%20%D0%BD%D0%B0%20%D0%B2%D0%B0%D1%88%D0%B8%D1%85%20%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0%D1%85">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">02 / 09</p><h3>ИИ на ваших серверах</h3><p>Подбираем модель под нагрузку, разворачиваем её в вашем контуре и настраиваем доступ команды. Оборудование рассчитываем отдельно.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%98%D0%98%20%D0%BD%D0%B0%20%D0%B2%D0%B0%D1%88%D0%B8%D1%85%20%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0%D1%85">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-web" aria-labelledby="tab-web" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <rect x="3" y="5" width="26" height="22" rx="3.5"/><path d="M4 12h24M8 8.5h.2m3.7 0h.2M17 17h7m-7 4h5"/><rect x="7" y="16" width="6" height="7" rx="1" fill="currentColor" fill-opacity=".16"/>
 </svg></div>
-      <div class="tp-copy"><h3>Корпоративные сайты</h3><p>Сайт с понятной структурой услуг, формами заявок и системой управления контентом.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9A%D0%BE%D1%80%D0%BF%D0%BE%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D1%8B">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">03 / 09</p><h3>Корпоративные сайты</h3><p>Сайт с понятной структурой услуг, формами заявок и системой управления контентом.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9A%D0%BE%D1%80%D0%BF%D0%BE%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B5%20%D1%81%D0%B0%D0%B9%D1%82%D1%8B">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-platform" aria-labelledby="tab-platform" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <path d="m3 10 13-7 13 7-13 7z" fill="currentColor" fill-opacity=".14"/><path d="m3 16 13 7 13-7M3 22l13 7 13-7"/>
 </svg></div>
-      <div class="tp-copy"><h3>Веб-сервисы</h3><p>Личный кабинет или внутренний сервис для одного процесса с ролями, данными и историей операций.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%92%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D1%8B">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">04 / 09</p><h3>Веб-сервисы</h3><p>Личный кабинет или внутренний сервис для одного процесса с ролями, данными и историей операций.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%92%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D1%8B">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-mini" aria-labelledby="tab-mini" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <rect x="4" y="4" width="24" height="24" rx="6"/><g fill="currentColor" fill-opacity=".12"><rect x="8" y="8" width="6" height="6" rx="1.4"/><rect x="18" y="8" width="6" height="6" rx="1.4"/><rect x="8" y="18" width="6" height="6" rx="1.4"/></g><path d="M18 21h6m-3-3v6"/>
 </svg></div>
-      <div class="tp-copy"><h3>Мини-приложения</h3><p>Каталог, запись или оформление заказа в Telegram, VK, MAX либо в браузере как PWA.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9C%D0%B8%D0%BD%D0%B8-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">05 / 09</p><h3>Мини-приложения</h3><p>Каталог, запись или оформление заказа в Telegram, VK, MAX либо в браузере как PWA.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9C%D0%B8%D0%BD%D0%B8-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-mobile" aria-labelledby="tab-mobile" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <rect x="7" y="2.5" width="18" height="27" rx="4.5"/><path d="M13 6h6m-5 20h4m-7-9 3.5 3.5 6.5-8" />
 </svg></div>
-      <div class="tp-copy"><h3>Мобильные приложения</h3><p>Приложение для сотрудников или клиентов. Платформу и функции первого релиза выбираем вместе.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">06 / 09</p><h3>Мобильные приложения</h3><p>Приложение для сотрудников или клиентов. Платформу и функции первого релиза выбираем вместе.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%9C%D0%BE%D0%B1%D0%B8%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-automation" aria-labelledby="tab-automation" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <path d="M16 7v3m-11 7H3m26 0h-2"/><circle cx="16" cy="5" r="2"/><rect x="5" y="10" width="22" height="16" rx="5" fill="currentColor" fill-opacity=".1"/><path d="M11 16v2m10-2v2m-8 4h6"/>
 </svg></div>
-      <div class="tp-copy"><h3>Боты и автоматизация</h3><p>Бот собирает данные, передаёт их в рабочую систему и сообщает сотруднику, когда требуется решение.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%91%D0%BE%D1%82%D1%8B%20%D0%B8%20%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">07 / 09</p><h3>Боты и автоматизация</h3><p>Бот собирает данные, передаёт их в рабочую систему и сообщает сотруднику, когда требуется решение.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%91%D0%BE%D1%82%D1%8B%20%D0%B8%20%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-design" aria-labelledby="tab-design" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <path d="m4 28 4-13L20 5l7 7-10 12z" fill="currentColor" fill-opacity=".10"/><path d="m8 15 9 9m-3-10 6-6m-15 19 7-7"/><circle cx="14" cy="18" r="2"/>
 </svg></div>
-      <div class="tp-copy"><h3>Дизайн и брендинг</h3><p>Проектируем интерфейс ключевого сценария или собираем базовую айдентику для запуска продукта.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%94%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%20%D0%B8%20%D0%B1%D1%80%D0%B5%D0%BD%D0%B4%D0%B8%D0%BD%D0%B3">Обсудить направление <span aria-hidden="true">↗</span></a></div>
+      <div class="tp-copy"><p class="label">08 / 09</p><h3>Дизайн и брендинг</h3><p>Проектируем интерфейс ключевого сценария или собираем базовую айдентику для запуска продукта.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%94%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%20%D0%B8%20%D0%B1%D1%80%D0%B5%D0%BD%D0%B4%D0%B8%D0%BD%D0%B3">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
     </div><div class="tabpanel" role="tabpanel" id="tp-custom" aria-labelledby="tab-custom" hidden>
       <div class="tp-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <path d="m16 3 10 6v13l-10 6-10-6V9z" fill="currentColor" fill-opacity=".09"/><path d="m6 9 10 6 10-6m-10 6v13M11 6l10 6"/>
 </svg></div>
-      <div class="tp-copy"><h3>Заказная разработка</h3><p>Обсудим требования отрасли, интеграции и ограничения под NDA. Подготовим варианты решения и смету.</p>
-        <a class="btn ghost" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%97%D0%B0%D0%BA%D0%B0%D0%B7%D0%BD%D0%B0%D1%8F%20%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0">Обсудить направление <span aria-hidden="true">↗</span></a></div>
-    </div>
-  </div>
+      <div class="tp-copy"><p class="label">09 / 09</p><h3>Заказная разработка</h3><p>Обсудим требования отрасли, интеграции и ограничения под NDA. Подготовим варианты решения и смету.</p>
+        <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%97%D0%B0%D0%BA%D0%B0%D0%B7%D0%BD%D0%B0%D1%8F%20%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0">Обсудить <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#quiz">Рассчитать проект</a></div></div>
+    </div></div>
   <div class="packs-head" data-reveal><h2 class="glow">Стоимость и сроки</h2><p>Стартовые пакеты для небольшого бизнеса. Для компаний любого масштаба подберём условия и обсудим скидку — итоговую стоимость пришлём после созвона.</p></div>
   <div class="packs"><article class="pack" data-reveal>
     <span class="pack-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <rect x="3" y="5" width="26" height="22" rx="3.5"/><path d="M4 12h24M8 8.5h.2m3.7 0h.2M17 17h7m-7 4h5"/><rect x="7" y="16" width="6" height="7" rx="1" fill="currentColor" fill-opacity=".16"/>
 </svg></span>
-    <h4>Сайт для заявок</h4><p>Одна адаптивная страница до пяти блоков, форма и передача заявки на почту или в один чат.</p><strong class="price">от 25 000 ₽</strong>
+    <h3>Сайт для заявок</h3><p>Одна адаптивная страница до пяти блоков, форма и передача заявки на почту или в один чат.</p>
+    <strong class="price" data-rub="25000" data-prefix="от">от 25 000 ₽</strong>
+    <a class="link" href="#quiz" data-estimate-services="landing" data-estimate-tier="small">Рассчитать с опциями →</a>
   </article><article class="pack" data-reveal>
     <span class="pack-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <path d="M16 7v3m-11 7H3m26 0h-2"/><circle cx="16" cy="5" r="2"/><rect x="5" y="10" width="22" height="16" rx="5" fill="currentColor" fill-opacity=".1"/><path d="M11 16v2m10-2v2m-8 4h6"/>
 </svg></span>
-    <h4>Telegram-бот или MAX-бот</h4><p>Меню, один сценарий записи или заявки и уведомление в чат менеджера.</p><strong class="price">от 20 000 ₽</strong>
+    <h3>Telegram-бот или MAX-бот</h3><p>Меню, один сценарий записи или заявки и уведомление в чат менеджера.</p>
+    <strong class="price" data-rub="20000" data-prefix="от">от 20 000 ₽</strong>
+    <a class="link" href="#quiz" data-estimate-services="automation" data-estimate-tier="small">Рассчитать с опциями →</a>
   </article><article class="pack" data-reveal>
     <span class="pack-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
   <rect x="4" y="4" width="24" height="24" rx="6"/><g fill="currentColor" fill-opacity=".12"><rect x="8" y="8" width="6" height="6" rx="1.4"/><rect x="18" y="8" width="6" height="6" rx="1.4"/><rect x="8" y="18" width="6" height="6" rx="1.4"/></g><path d="M18 21h6m-3-3v6"/>
 </svg></span>
-    <h4>Мини-приложение с каталогом</h4><p>Каталог до десяти позиций в Telegram. Покупатель выбирает товар и оставляет заявку продавцу.</p><strong class="price">от 55 000 ₽</strong>
+    <h3>Мини-приложение с каталогом</h3><p>Каталог до десяти позиций в Telegram. Покупатель выбирает товар и оставляет заявку продавцу.</p>
+    <strong class="price" data-rub="55000" data-prefix="от">от 55 000 ₽</strong>
+    <a class="link" href="#quiz" data-estimate-services="mini" data-estimate-tier="small">Рассчитать с опциями →</a>
   </article></div>
-  <p class="center" data-reveal><a class="btn primary" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/#quiz">Рассчитать проект <span aria-hidden="true">↗</span></a></p>
+  <p class="rate-note muted" data-rate-note data-reveal></p>
 </section>
 
-<section class="section" id="work" data-scene="car" data-tint="wine">
-  <div class="sticker s2" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="c-s2" d="M100 100m-78 0a78 78 0 1 1 156 0a78 78 0 1 1-156 0"/></defs>
-    <circle cx="100" cy="100" r="96" class="ring"/><circle cx="100" cy="100" r="60" class="ring inner"/>
-    <text><textPath href="#c-s2" startOffset="0">ЗАЯВКИ · CRM · КАБИНЕТЫ · ЗАПУСК · </textPath></text></svg><b>02</b></div>
-  <div class="stage"><div class="sec-head" data-reveal><p class="eyebrow mono">02 · Кейсы</p><h2 class="glow">Избранные кейсы</h2>
-    <p class="drive-hint mono"><span class="pulse" aria-hidden="true"></span>Машина едет за курсором. Кликните по фону — она распылит искры.</p></div></div>
-  <div class="cases"><article class="case panel" id="orient-logic" data-reveal>
-    <a class="case-media" href="https://orientlogic.ru/" target="_blank" rel="noopener" aria-label="Orient Logic — открыть сайт">
-      <div class="browser"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">orientlogic.ru</span>
-        <img src="assets/work/orient.webp" width="1440" height="900" alt="Главная страница логистической компании Orient Logic с переходом к расчёту доставки" loading="lazy" decoding="async"></div>
-      <img class="phone" src="assets/work/orient-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async">
+<section class="section" id="work" data-tint="wine">
+  <div class="stage tall" data-scene="car"><div class="sec-head" data-reveal><p class="label">02 · Кейсы</p><h2 class="glow">Избранные кейсы <img class="emoji " src="assets/emoji/1f3c6.webp" alt="🏆" width="64" height="64" loading="lazy" decoding="async" data-emoji="🏆"></h2><p class="drive-hint label"><img class="emoji inline" src="assets/emoji/1f3ce_fe0f.webp" alt="🏎️" width="64" height="64" loading="lazy" decoding="async" data-emoji="🏎️">Седан на подиуме поворачивается за курсором. Клик по фону — сноп искр.</p></div></div>
+  <div class="cases" data-scene="screens"><article class="case" id="orient-logic">
+    <header class="case-head" data-reveal>
+      <span class="case-num" aria-hidden="true">01</span>
+      <div><p class="label">Международная логистика</p><h3>Orient Logic</h3></div>
+      <span class="status live"><i aria-hidden="true"></i>Работает</span>
+    </header>
+    <a class="case-stage" href="https://orientlogic.ru/" target="_blank" rel="noopener" data-reveal aria-label="Orient Logic — открыть сайт в новой вкладке">
+      <div class="browser"><div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">orientlogic.ru</span></div>
+        <div class="screen"><img src="assets/work/orient.webp" width="1440" height="900" alt="Главная страница логистической компании Orient Logic с переходом к расчёту доставки" loading="lazy" decoding="async"></div></div>
+      <div class="phone"><div class="screen"><img src="assets/work/orient-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async"></div></div>
+      <span class="stage-cta">Открыть сайт ↗</span>
     </a>
-    <div class="case-body">
-      <p class="mono">01 · Международная логистика</p>
-      <h3>Orient Logic</h3>
-      <dl><dt>Задача</dt><dd>Объединить расчёт доставки из Китая в Россию, обработку обращений и работу с заказами.</dd><dt>Решение</dt><dd>Сделали сайт с расчётом доставки, ИИ-ассистента, систему заявок, CRM и личные кабинеты. Форму расчёта адаптировали для телефона и связали с Telegram.</dd><dt>Результат</dt><dd>Клиент уточняет условия и отправляет заявку с сайта, менеджер обрабатывает её в CRM, а заказ доступен клиенту в личном кабинете.</dd></dl>
-      <ol class="flow" aria-label="Как устроено"><li>Сайт и ИИ-ассистент</li><li>Заявка</li><li>CRM</li><li>Личный кабинет</li></ol>
-      
+    <div class="case-story" data-reveal>
+      <section><h4><span>01</span>Задача</h4><p>Объединить расчёт доставки из Китая в Россию, обработку обращений и работу с заказами.</p></section>
+      <section><h4><span>02</span>Решение</h4><p>Сделали сайт с расчётом доставки, ИИ-ассистента, систему заявок, CRM и личные кабинеты. Форму расчёта адаптировали для телефона и связали с Telegram.</p></section>
+      <section class="accent"><h4><span>03</span>Результат</h4><p>Клиент уточняет условия и отправляет заявку с сайта, менеджер обрабатывает её в CRM, а заказ доступен клиенту в личном кабинете.</p></section>
+    </div>
+    <ol class="flow" data-reveal aria-label="Как устроен процесс"><li><b>1</b><span>Сайт и ИИ-ассистент</span></li><li><b>2</b><span>Заявка</span></li><li><b>3</b><span>CRM</span></li><li><b>4</b><span>Личный кабинет</span></li></ol>
+    <footer class="case-foot" data-reveal>
       <p class="chips"><span>Next.js</span><span>TypeScript</span><span>Telegram</span><span>Tailwind CSS</span></p>
-      <div class="row"><a class="btn" href="https://orientlogic.ru/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a>
-      <a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/orient-logic/">Подробнее о кейсе</a></div>
-    </div>
-  </article><article class="case panel" id="kitchens" data-reveal>
-    <a class="case-media" href="https://luvlarion4ik.github.io/kuhni/" target="_blank" rel="noopener" aria-label="Kitchen Showroom — открыть сайт">
-      <div class="browser"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">luvlarion4ik.github.io/kuhni</span>
-        <img src="assets/work/kitchens.webp" width="1440" height="900" alt="Первый экран Kitchen Showroom с названием мебельного салона «Интерьер»" loading="lazy" decoding="async"></div>
-      <img class="phone" src="assets/work/kitchens-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async">
-    </a>
-    <div class="case-body">
-      <p class="mono">02 · Мебельный салон «Интерьер» · сайт и MAX-бот</p>
-      <h3>Kitchen Showroom</h3>
-      <dl><dt>Задача</dt><dd>Помочь покупателю увидеть выбранную кухню в своём помещении, оценить бюджет и передать салону готовую заявку.</dd><dt>Решение</dt><dd>Связали каталог с MAX-ботом, который принимает фото помещения, помогает выбрать кухню и готовит визуализацию и предварительный расчёт. Салон управляет сценарием в панели.</dd><dt>Результат</dt><dd>Салон получает выбранную кухню, фото, визуализацию и расчёт в одной заявке. Менеджер уточняет комплектацию и итоговую стоимость.</dd></dl>
-      <ol class="flow" aria-label="Как устроено"><li>Фото помещения</li><li>Выбор кухни</li><li>Визуализация</li><li>Предварительный расчёт</li><li>Заявка в салоне</li></ol>
       
-      <p class="chips"><span>MAX</span><span>FastAPI</span><span>SQLite</span><span>JavaScript</span><span>Vite</span><span>Python</span></p>
-      <div class="row"><a class="btn" href="https://luvlarion4ik.github.io/kuhni/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a>
-      <a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/kitchens/">Подробнее о кейсе</a></div>
-    </div>
-  </article><article class="case panel" id="modular-houses" data-reveal>
-    <a class="case-media" href="https://luvlarion4ik.github.io/modular_houses/" target="_blank" rel="noopener" aria-label="Modular House — открыть сайт">
-      <div class="browser"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">luvlarion4ik.github.io/modular_houses</span>
-        <img src="assets/work/modular-houses.webp" width="1440" height="900" alt="Карточка модульного дома Vista 28 / E5 с фотографией, площадью и размерами" loading="lazy" decoding="async"></div>
-      <img class="phone" src="assets/work/modular-houses-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async">
+      <div class="row"><a class="btn" href="https://orientlogic.ru/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a><a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/orient-logic/">Полный разбор кейса</a></div>
+    </footer>
+  </article><article class="case" id="kitchens">
+    <header class="case-head" data-reveal>
+      <span class="case-num" aria-hidden="true">02</span>
+      <div><p class="label">Мебельный салон «Интерьер» · сайт и MAX-бот</p><h3>Kitchen Showroom</h3></div>
+      <span class="status live"><i aria-hidden="true"></i>Работает</span>
+    </header>
+    <a class="case-stage" href="https://luvlarion4ik.github.io/kuhni/" target="_blank" rel="noopener" data-reveal aria-label="Kitchen Showroom — открыть сайт в новой вкладке">
+      <div class="browser"><div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">luvlarion4ik.github.io/kuhni</span></div>
+        <div class="screen"><img src="assets/work/kitchens.webp" width="1440" height="900" alt="Первый экран Kitchen Showroom с названием мебельного салона «Интерьер»" loading="lazy" decoding="async"></div></div>
+      <div class="phone"><div class="screen"><img src="assets/work/kitchens-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async"></div></div>
+      <span class="stage-cta">Открыть сайт ↗</span>
     </a>
-    <div class="case-body">
-      <p class="mono">03 · Модульные дома <span class="badge">Демо-данные</span></p>
-      <h3>Modular House</h3>
-      <dl><dt>Задача</dt><dd>Сделать каталог для компании, которая продаёт и перевозит модульные дома.</dd><dt>Решение</dt><dd>Собрали каталог моделей с планировками, площадью, отделкой и составом комплектации. Подключили сценарий расчёта и приёма заявок через Telegram.</dd><dt>Результат</dt><dd>Посетитель сравнивает модели и может запросить расчёт или оставить заявку в Telegram.</dd></dl>
+    <div class="case-story" data-reveal>
+      <section><h4><span>01</span>Задача</h4><p>Помочь покупателю увидеть выбранную кухню в своём помещении, оценить бюджет и передать салону готовую заявку.</p></section>
+      <section><h4><span>02</span>Решение</h4><p>Связали каталог с MAX-ботом, который принимает фото помещения, помогает выбрать кухню и готовит визуализацию и предварительный расчёт. Салон управляет сценарием в панели.</p></section>
+      <section class="accent"><h4><span>03</span>Результат</h4><p>Салон получает выбранную кухню, фото, визуализацию и расчёт в одной заявке. Менеджер уточняет комплектацию и итоговую стоимость.</p></section>
+    </div>
+    <ol class="flow" data-reveal aria-label="Как устроен процесс"><li><b>1</b><span>Фото помещения</span></li><li><b>2</b><span>Выбор кухни</span></li><li><b>3</b><span>Визуализация</span></li><li><b>4</b><span>Предварительный расчёт</span></li><li><b>5</b><span>Заявка в салоне</span></li></ol>
+    <footer class="case-foot" data-reveal>
+      <p class="chips"><span>MAX</span><span>FastAPI</span><span>SQLite</span><span>JavaScript</span><span>Vite</span><span>Python</span><span>MAX Bot API</span></p>
       
-      <p class="note">У клиента работает тот же сайт с его названием, логотипом и каталогом. На демонстрационной версии представлены условные данные.</p>
+      <div class="row"><a class="btn" href="https://luvlarion4ik.github.io/kuhni/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a><a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/kitchens/">Полный разбор кейса</a></div>
+    </footer>
+  </article><article class="case" id="modular-houses">
+    <header class="case-head" data-reveal>
+      <span class="case-num" aria-hidden="true">03</span>
+      <div><p class="label">Модульные дома</p><h3>Modular House</h3></div>
+      <span class="status demo"><i aria-hidden="true"></i>Демо-версия</span>
+    </header>
+    <a class="case-stage" href="https://luvlarion4ik.github.io/modular_houses/" target="_blank" rel="noopener" data-reveal aria-label="Modular House — открыть сайт в новой вкладке">
+      <div class="browser"><div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">luvlarion4ik.github.io/modular_houses</span></div>
+        <div class="screen"><img src="assets/work/modular-houses.webp" width="1440" height="900" alt="Карточка модульного дома Vista 28 / E5 с фотографией, площадью и размерами" loading="lazy" decoding="async"></div></div>
+      <div class="phone"><div class="screen"><img src="assets/work/modular-houses-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async"></div></div>
+      <span class="stage-cta">Открыть сайт ↗</span>
+    </a>
+    <div class="case-story" data-reveal>
+      <section><h4><span>01</span>Задача</h4><p>Сделать каталог для компании, которая продаёт и перевозит модульные дома.</p></section>
+      <section><h4><span>02</span>Решение</h4><p>Собрали каталог моделей с планировками, площадью, отделкой и составом комплектации. Подключили сценарий расчёта и приёма заявок через Telegram.</p></section>
+      <section class="accent"><h4><span>03</span>Результат</h4><p>Посетитель сравнивает модели и может запросить расчёт или оставить заявку в Telegram.</p></section>
+    </div>
+    
+    <footer class="case-foot" data-reveal>
       <p class="chips"><span>Каталог</span><span>Telegram</span><span>HTML</span><span>CSS</span><span>JavaScript</span><span>GitHub Pages</span></p>
-      <div class="row"><a class="btn" href="https://luvlarion4ik.github.io/modular_houses/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a>
-      <a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/modular-houses/">Подробнее о кейсе</a></div>
-    </div>
-  </article><article class="case panel" id="3d-dom" data-reveal>
-    <a class="case-media" href="https://luvlarion4ik.github.io/3dDom/" target="_blank" rel="noopener" aria-label="Дома из 3D-принтера — открыть сайт">
-      <div class="browser"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">luvlarion4ik.github.io/3dDom</span>
-        <img src="assets/work/3d-dom.webp" width="1440" height="900" alt="Демонстрационный сайт о строительстве домов методом 3D-печати" loading="lazy" decoding="async"></div>
-      <img class="phone" src="assets/work/3d-dom-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async">
+      <p class="note">У клиента работает тот же сайт с его названием, логотипом и каталогом. На демонстрационной версии представлены условные данные.</p>
+      <div class="row"><a class="btn" href="https://luvlarion4ik.github.io/modular_houses/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a><a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/modular-houses/">Полный разбор кейса</a></div>
+    </footer>
+  </article><article class="case" id="3d-dom">
+    <header class="case-head" data-reveal>
+      <span class="case-num" aria-hidden="true">04</span>
+      <div><p class="label">Строительные технологии</p><h3>Дома из 3D-принтера</h3></div>
+      <span class="status demo"><i aria-hidden="true"></i>Демо-версия</span>
+    </header>
+    <a class="case-stage" href="https://luvlarion4ik.github.io/3dDom/" target="_blank" rel="noopener" data-reveal aria-label="Дома из 3D-принтера — открыть сайт в новой вкладке">
+      <div class="browser"><div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">luvlarion4ik.github.io/3dDom</span></div>
+        <div class="screen"><img src="assets/work/3d-dom.webp" width="1440" height="900" alt="Демонстрационный сайт о строительстве домов методом 3D-печати" loading="lazy" decoding="async"></div></div>
+      <div class="phone"><div class="screen"><img src="assets/work/3d-dom-mobile.webp" width="390" height="844" alt="" loading="lazy" decoding="async"></div></div>
+      <span class="stage-cta">Открыть сайт ↗</span>
     </a>
-    <div class="case-body">
-      <p class="mono">04 · Строительные технологии <span class="badge">Демо-данные</span></p>
-      <h3>Дома из 3D-принтера</h3>
-      <dl><dt>Задача</dt><dd>Объяснить покупателю, как печатают дом и в каком виде его можно получить.</dd><dt>Решение</dt><dd>Разложили процесс по этапам и показали четыре варианта готовности — от коробки до полной отделки.</dd><dt>Результат</dt><dd>Можно посмотреть состав работ по каждому варианту и выбрать, на каком этапе принимать дом.</dd></dl>
-      
-      <p class="note">У клиента работает тот же сайт под своим названием и логотипом. Название, цены и объекты в демонстрационной версии условные.</p>
-      <p class="chips"><span>3D-печать</span><span>Каталог комплектаций</span><span>HTML</span><span>CSS</span><span>JavaScript</span><span>EmailJS</span></p>
-      <div class="row"><a class="btn" href="https://luvlarion4ik.github.io/3dDom/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a>
-      <a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/3d-dom/">Подробнее о кейсе</a></div>
+    <div class="case-story" data-reveal>
+      <section><h4><span>01</span>Задача</h4><p>Объяснить покупателю, как печатают дом и в каком виде его можно получить.</p></section>
+      <section><h4><span>02</span>Решение</h4><p>Разложили процесс по этапам и показали четыре варианта готовности — от коробки до полной отделки.</p></section>
+      <section class="accent"><h4><span>03</span>Результат</h4><p>Можно посмотреть состав работ по каждому варианту и выбрать, на каком этапе принимать дом.</p></section>
     </div>
+    
+    <footer class="case-foot" data-reveal>
+      <p class="chips"><span>3D-печать</span><span>Каталог комплектаций</span><span>HTML</span><span>CSS</span><span>JavaScript</span><span>EmailJS</span><span>GitHub Pages</span></p>
+      <p class="note">У клиента работает тот же сайт под своим названием и логотипом. Название, цены и объекты в демонстрационной версии условные.</p>
+      <div class="row"><a class="btn" href="https://luvlarion4ik.github.io/3dDom/" target="_blank" rel="noopener">Открыть сайт <span aria-hidden="true">↗</span></a><a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/work/3d-dom/">Полный разбор кейса</a></div>
+    </footer>
   </article></div>
-</section>
-
-<section class="section" id="process" data-scene="sphere" data-tint="sage">
-  <div class="stage"><div class="sec-head" data-reveal><p class="eyebrow mono">03 · Процесс</p><h2 class="glow">От задачи до запуска</h2></div></div>
-  <div class="panel wide" data-reveal>
-    <p class="lead">Я ваш контакт от первого сообщения до сдачи. На созвоне разбираю, как устроена работа сейчас, предлагаю решение и показываю результат по этапам. Условия NDA согласуем до передачи закрытых материалов.</p>
-    <ol class="steps"><li data-reveal><span class="num">01</span><h3>Разбор задачи</h3><p>Вы описываете процесс и ожидаемый результат. Мы готовим вопросы и варианты реализации к первому созвону.</p></li><li data-reveal><span class="num">02</span><h3>Проектирование</h3><p>На первом созвоне обсуждаем варианты. На втором уточняем детали и согласуем итоговый объём.</p></li><li data-reveal><span class="num">03</span><h3>Договор</h3><p>Фиксируем результат, сроки, этапы и порядок приёмки. Порядок оплаты согласуем в договоре.</p></li><li data-reveal><span class="num">04</span><h3>Разработка и сдача</h3><p>Показываем результат по этапам или целиком, как договорились. Учитываем обратную связь, подписываем закрывающие документы и получаем остаток оплаты.</p></li><li data-reveal><span class="num">05</span><h3>Сопровождение</h3><p>Два месяца после сдачи исправляем обнаруженные недочёты без доплаты. Дополнительные задачи оцениваем отдельно.</p></li></ol>
-  </div>
 </section>
 
 <section class="section" id="products" data-scene="galaxy" data-tint="copper">
   <div class="sticker s3" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="c-s3" d="M100 100m-78 0a78 78 0 1 1 156 0a78 78 0 1 1-156 0"/></defs>
     <circle cx="100" cy="100" r="96" class="ring"/><circle cx="100" cy="100" r="60" class="ring inner"/>
-    <text><textPath href="#c-s3" startOffset="0">ПРОДУКТЫ DEVLARION · В РАЗРАБОТКЕ · </textPath></text></svg><b>LAB</b></div>
-  <div class="stage"><div class="sec-head" data-reveal><p class="eyebrow mono">04 · Продукты</p><h2 class="glow">Продукты Devlarion</h2></div></div>
-  <article class="panel aura" data-reveal>
-    <div class="aura-copy"><p class="mono status">Закрытая бета</p><h3>AuraWatch</h3><p>Ассистент для iPhone и Apple Watch в закрытом бета-тестировании. В режиме «Тихий суфлёр» подсказка появляется на затемнённом экране часов.</p>
-      <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D1%87%D0%B0%D1%81%D1%82%D0%B2%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D0%B2%20%D0%B7%D0%B0%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B9%20%D0%B1%D0%B5%D1%82%D0%B5%20AuraWatch.">Хочу в закрытую бету <span aria-hidden="true">↗</span></a>
-      <a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/aurawatch/">Подробнее</a></div></div>
-    <div class="watch" role="img" aria-label="Демонстрация экрана AuraWatch"><div class="watch-face"><small>AuraWatch</small><b data-type="Какие следующие шаги?|Уточните сроки и бюджет.|Предложите созвон в четверг.">Какие следующие шаги?</b><i></i></div></div>
+    <text><textPath href="#c-s3">ПРОДУКТЫ DEVLARION · В РАЗРАБОТКЕ · </textPath></text></svg><b>LAB</b></div>
+  <div class="stage"><div class="sec-head" data-reveal><p class="label">03 · Продукты</p><h2 class="glow">Продукты Devlarion <img class="emoji " src="assets/emoji/1f4a1.webp" alt="💡" width="64" height="64" loading="lazy" decoding="async" data-emoji="💡"></h2><p class="lead center-text">Над чем студия работает помимо клиентских проектов.</p></div></div>
+  <article class="aura" data-reveal>
+    <div class="aura-media"><img src="assets/brand/watch.webp" width="1050" height="700" alt="Apple Watch на руке" loading="lazy" decoding="async">
+      <div class="aura-screen" role="img" aria-label="Подсказка AuraWatch на экране часов"><small>AuraWatch</small><b data-type="Какие следующие шаги?|Уточните сроки и бюджет.|Предложите созвон в четверг.">Какие следующие шаги?</b></div></div>
+    <div class="aura-copy"><p class="label status-line"><i aria-hidden="true"></i>Закрытая бета · iPhone + Apple Watch</p><h3>AuraWatch</h3><p>Ассистент для iPhone и Apple Watch в закрытом бета-тестировании. В режиме «Тихий суфлёр» подсказка появляется на затемнённом экране часов.</p>
+      <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D1%87%D0%B0%D1%81%D1%82%D0%B2%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D0%B2%20%D0%B7%D0%B0%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B9%20%D0%B1%D0%B5%D1%82%D0%B5%20AuraWatch.">Хочу в закрытую бету <span aria-hidden="true">↗</span></a><a class="btn ghost" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/aurawatch/">Подробнее</a></div></div>
   </article>
-  <div class="products"><article class="product panel" data-reveal>
-    <span class="product-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-  <path d="m3 10 13-7 13 7-13 7z" fill="currentColor" fill-opacity=".14"/><path d="m3 16 13 7 13-7M3 22l13 7 13-7"/>
-</svg></span>
-    <p class="mono status">B2B / B2G · NDA</p><h3>Технологии города</h3><p>Интегрируем коммерческий сервис в государственный, чтобы пользователю было проще получить услугу. Подробности проекта защищены соглашением о конфиденциальности.</p>
+  <div class="products"><article class="product" data-reveal>
+    <div class="product-media"><img src="assets/products/city.webp" width="768" height="512" alt="" loading="lazy" decoding="async"><span class="status-chip">B2B / B2G · NDA</span></div>
+    <div class="product-body"><h3>Технологии города</h3><p>Интегрируем коммерческий сервис в государственный, чтобы пользователю было проще получить услугу. Подробности проекта защищены соглашением о конфиденциальности.</p>
     
+    </div>
+  </article><article class="product" data-reveal>
+    <div class="product-media keys-art"><div class="keyrow" aria-hidden="true"><kbd style="--k:0">⌘</kbd><kbd style="--k:1">⌥</kbd><kbd style="--k:2">⇧</kbd><kbd class="hot" style="--k:3">K</kbd></div><div class="keyrow" aria-hidden="true"><kbd style="--k:4">Esc</kbd><kbd style="--k:5">↵</kbd></div><span class="status-chip">Бета · подготовка к лицензированию</span></div>
+    <div class="product-body"><h3>Larion Keyway</h3><p>Приложение для macOS с управлением с клавиатуры, созданное на основе открытого Copilot от Magerko. Готовим коммерческий выпуск по лицензии.</p>
     
-  </article><article class="product panel" data-reveal>
-    <span class="product-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-  <path d="m16 3 10 6v13l-10 6-10-6V9z" fill="currentColor" fill-opacity=".09"/><path d="m6 9 10 6 10-6m-10 6v13M11 6l10 6"/>
-</svg></span>
-    <p class="mono status">Бета · подготовка к лицензированию</p><h3>Larion Keyway</h3><p>Приложение для macOS с управлением с клавиатуры, созданное на основе открытого Copilot от Magerko. Готовим коммерческий выпуск по лицензии.</p>
-    
-    <p class="row"><a class="link" href="https://t.me/LuvLarion4ik" target="_blank" rel="noopener">Обсудить бету или лицензию ↗</a><a class="link" href="https://github.com/Magerko/copilot" target="_blank" rel="noopener">Исходный проект · MIT ↗</a></p>
-  </article><article class="product panel" data-reveal>
-    <span class="product-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-  <path d="m4 28 4-13L20 5l7 7-10 12z" fill="currentColor" fill-opacity=".10"/><path d="m8 15 9 9m-3-10 6-6m-15 19 7-7"/><circle cx="14" cy="18" r="2"/>
-</svg></span>
-    <p class="mono status">MVP в разработке</p><h3>Cognivue</h3><p>Инструмент для команд, которые хотят оценить реакцию аудитории на интерфейс или рекламный материал до запуска.</p>
+    <p class="row"><a class="link" href="https://t.me/LuvLarion4ik" target="_blank" rel="noopener">Обсудить бету или лицензию ↗</a><a class="link" href="https://github.com/Magerko/copilot" target="_blank" rel="noopener">Исходный проект · MIT ↗</a></p></div>
+  </article><article class="product" data-reveal>
+    <div class="product-media"><img src="assets/products/cognivue.webp" width="768" height="512" alt="" loading="lazy" decoding="async"><span class="status-chip">MVP в разработке</span></div>
+    <div class="product-body"><h3>Cognivue</h3><p>Инструмент для команд, которые хотят оценить реакцию аудитории на интерфейс или рекламный материал до запуска.</p>
     <details><summary>Пример оценки макета</summary><p>Команда загружает макет и задаёт вопрос к нему. В отчёте можно посмотреть, какие элементы привлекли внимание и что стоит проверить перед запуском.</p></details>
-    
-  </article><article class="product panel" data-reveal>
-    <span class="product-icon" aria-hidden="true"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-  <path d="m10 10 6 6 8-8M16 16v9m0-9 9 5"/><g fill="currentColor" fill-opacity=".14"><circle cx="8" cy="8" r="3.5"/><circle cx="25" cy="7" r="3"/><circle cx="25" cy="22" r="3"/><circle cx="16" cy="26" r="2.5"/></g><circle cx="16" cy="16" r="3" fill="currentColor"/>
-</svg></span>
-    <p class="mono status">Демо · в разработке</p><h3>Аксента</h3><p>ИИ-репетитор, который определяет уровень ученика и помогает разбирать задания по конспектам и фотографиям тетрадей.</p>
-    <details><summary>Мини-школа для педагога</summary><p>В демо педагог подключает учеников и назначает задания. Родители видят прогресс своего ребёнка. Для демонстрации используется учебная группа с условными данными.</p><ul class="roles"><li><b>Педагог</b> — Назначает задания и отслеживает выполнение</li><li><b>Ученик</b> — Выполняет задания и видит свой прогресс</li><li><b>Родитель</b> — Просматривает отчёт по своему ребёнку</li></ul></details>
-    <p class="row"><a class="link" href="https://t.me/LuvLarion4ik?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D0%B4%D0%B5%D0%BC%D0%BE%20%C2%AB%D0%90%D0%BA%D1%81%D0%B5%D0%BD%D1%82%D0%B0%C2%BB." target="_blank" rel="noopener">Запросить доступ к демо ↗</a></p>
+    </div>
+  </article><article class="product" data-reveal>
+    <div class="product-media"><img src="assets/products/axenta.webp" width="768" height="512" alt="" loading="lazy" decoding="async"><span class="status-chip">Демо · в разработке</span></div>
+    <div class="product-body"><h3>Аксента</h3><p>ИИ-репетитор, который определяет уровень ученика и помогает разбирать задания по конспектам и фотографиям тетрадей.</p>
+    <details><summary>Мини-школа для педагога</summary><p>В демо педагог подключает учеников и назначает задания. Родители видят прогресс своего ребёнка. Для демонстрации используется учебная группа с условными данными.</p><ul class="roles"><li><b>Педагог</b><span>Назначает задания и отслеживает выполнение</span></li><li><b>Ученик</b><span>Выполняет задания и видит свой прогресс</span></li><li><b>Родитель</b><span>Просматривает отчёт по своему ребёнку</span></li></ul></details>
+    <p class="row"><a class="link" href="https://t.me/LuvLarion4ik?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D0%B8%D1%82%D1%8C%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%20%D0%BA%20%D0%B4%D0%B5%D0%BC%D0%BE%20%C2%AB%D0%90%D0%BA%D1%81%D0%B5%D0%BD%D1%82%D0%B0%C2%BB." target="_blank" rel="noopener">Запросить доступ к демо ↗</a></p></div>
   </article></div>
+</section>
+
+<section class="section" id="process" data-scene="sphere" data-tint="sage">
+  <div class="stage"><div class="sec-head" data-reveal><p class="label">04 · Процесс</p><h2 class="glow">От задачи до запуска <img class="emoji " src="assets/emoji/1f3af.webp" alt="🎯" width="64" height="64" loading="lazy" decoding="async" data-emoji="🎯"></h2></div></div>
+  <div class="panel wide" data-reveal><p class="lead">Я ваш контакт от первого сообщения до сдачи. На созвоне разбираю, как устроена работа сейчас, предлагаю решение и показываю результат по этапам. Условия NDA согласуем до передачи закрытых материалов.</p><ol class="steps"><li data-reveal><span class="num">01</span><h3>Разбор задачи</h3><p>Вы описываете процесс и ожидаемый результат. Мы готовим вопросы и варианты реализации к первому созвону.</p></li><li data-reveal><span class="num">02</span><h3>Проектирование</h3><p>На первом созвоне обсуждаем варианты. На втором уточняем детали и согласуем итоговый объём.</p></li><li data-reveal><span class="num">03</span><h3>Договор</h3><p>Фиксируем результат, сроки, этапы и порядок приёмки. Порядок оплаты согласуем в договоре.</p></li><li data-reveal><span class="num">04</span><h3>Разработка и сдача</h3><p>Показываем результат по этапам или целиком, как договорились. Учитываем обратную связь, подписываем закрывающие документы и получаем остаток оплаты.</p></li><li data-reveal><span class="num">05</span><h3>Сопровождение</h3><p>Два месяца после сдачи исправляем обнаруженные недочёты без доплаты. Дополнительные задачи оцениваем отдельно.</p></li></ol></div>
 </section>
 
 <section class="section" id="about" data-scene="wave" data-tint="ice">
   <div class="stage short"></div>
-  <div class="split">
-    <div class="panel" data-reveal>
-      <p class="eyebrow mono">05 · Студия</p>
-      <h2 class="glow">О студии</h2>
-      <p class="lead">Devlarion разрабатывает сайты, ботов, мобильные приложения и ИИ-сервисы для бизнеса. Ведём проект от аналитики и дизайна до запуска и поддержки. Работаем по договору с ИП. Состав, смету и этапы согласуем до начала работ.</p>
-      <div class="founder"><span class="avatar" aria-hidden="true"><img src="assets/brand/mark.svg" alt="" width="50" height="52"></span>
-        <div><b>Илья Ларионов</b><small>Основатель · архитектор и разработчик</small></div></div>
-      <p class="chips"><span>Next.js</span><span>TypeScript</span><span>FastAPI</span><span>SwiftUI</span><span>Telegram</span><span>MAX</span></p>
+  <div class="about panel" data-reveal>
+    <div class="logo-show" aria-hidden="true">
+      <svg class="orbits" viewBox="0 0 400 400"><circle cx="200" cy="200" r="120"/><circle cx="200" cy="200" r="160" class="dash"/><circle cx="200" cy="200" r="196"/>
+        <g class="o1"><circle cx="320" cy="200" r="5" class="sat"/></g><g class="o2"><circle cx="200" cy="40" r="4" class="sat"/></g><g class="o3"><circle cx="4" cy="200" r="3" class="sat"/></g></svg>
+      <devlarion-logo variant="mark" height="150" view data-loop></devlarion-logo>
     </div>
-    <div class="panel" data-reveal>
-      <h2 class="glow">Частые вопросы</h2>
-      <div class="faq"><details class="qa"><summary>Как узнать стоимость небольшого проекта?<span aria-hidden="true">+</span></summary><p>В разделе услуг указаны стартовые цены и состав каждого пакета. Если нужны интеграции или несколько сценариев, на созвоне уточним объём и возможную скидку. После встречи пришлём итоговую стоимость.</p></details><details class="qa"><summary>Можно ли организовать встречу?<span aria-hidden="true">+</span></summary><p>Начнём с видеозвонка. Если нужна личная встреча, напишите город и что хотите обсудить — согласуем формат заранее.</p></details><details class="qa"><summary>Можно работать в нашем контуре?<span aria-hidden="true">+</span></summary><p>Да. Для развёртывания моделей заранее разбираем доступные мощности, требования к данным и ограничения доступа.</p></details><details class="qa"><summary>Как оформляется NDA?<span aria-hidden="true">+</span></summary><p>Обсудим режим конфиденциальности до передачи закрытых материалов и закрепим условия в документах.</p></details><details class="qa"><summary>Сколько правок входит и кому передаётся код?<span aria-hidden="true">+</span></summary><p>Объём правок, передачу исходников и права на результат согласуем в договоре до начала разработки.</p></details><details class="qa"><summary>Что после двух месяцев поддержки?<span aria-hidden="true">+</span></summary><p>Дальнейшие доработки оцениваем отдельно. Для регулярных задач можно согласовать подписку на сопровождение.</p></details></div>
+    <div class="about-copy">
+      <p class="label">05 · Студия</p>
+      <h2 class="glow">О студии <img class="emoji " src="assets/emoji/1f91d.webp" alt="🤝" width="64" height="64" loading="lazy" decoding="async" data-emoji="🤝"></h2>
+      <p class="lead">Devlarion разрабатывает сайты, ботов, мобильные приложения и ИИ-сервисы для бизнеса. Ведём проект от аналитики и дизайна до запуска и поддержки. Работаем по договору с ИП. Состав, смету и этапы согласуем до начала работ.</p>
+      <div class="founder"><devlarion-logo variant="word" height="22" view></devlarion-logo><div><b>Илья Ларионов</b><small>Основатель · архитектор и разработчик</small></div></div>
+      <p class="chips"><span>Next.js</span><span>TypeScript</span><span>FastAPI</span><span>SwiftUI</span><span>Telegram</span><span>MAX</span></p>
+      <div class="row"><a class="btn" href="https://www.threads.com/@luvlarion4ik" target="_blank" rel="noopener"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg> Читать в Threads</a><a class="btn ghost" href="https://github.com/luvlarion4ik" target="_blank" rel="noopener"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> GitHub</a></div>
     </div>
   </div>
+  <div class="panel faq-panel" data-reveal><h2 class="glow">Частые вопросы</h2><div class="faq"><details class="qa"><summary>Как узнать стоимость небольшого проекта?<span aria-hidden="true">+</span></summary><p>В разделе услуг указаны стартовые цены и состав каждого пакета. Если нужны интеграции или несколько сценариев, на созвоне уточним объём и возможную скидку. После встречи пришлём итоговую стоимость.</p></details><details class="qa"><summary>Можно ли организовать встречу?<span aria-hidden="true">+</span></summary><p>Начнём с видеозвонка. Если нужна личная встреча, напишите город и что хотите обсудить — согласуем формат заранее.</p></details><details class="qa"><summary>Можно работать в нашем контуре?<span aria-hidden="true">+</span></summary><p>Да. Для развёртывания моделей заранее разбираем доступные мощности, требования к данным и ограничения доступа.</p></details><details class="qa"><summary>Как оформляется NDA?<span aria-hidden="true">+</span></summary><p>Обсудим режим конфиденциальности до передачи закрытых материалов и закрепим условия в документах.</p></details><details class="qa"><summary>Сколько правок входит и кому передаётся код?<span aria-hidden="true">+</span></summary><p>Объём правок, передачу исходников и права на результат согласуем в договоре до начала разработки.</p></details><details class="qa"><summary>Что после двух месяцев поддержки?<span aria-hidden="true">+</span></summary><p>Дальнейшие доработки оцениваем отдельно. Для регулярных задач можно согласовать подписку на сопровождение.</p></details></div></div>
+</section>
+
+<section class="section" id="quiz" data-scene="wave" data-tint="sage">
+  <div class="stage short"><div class="sec-head" data-reveal><p class="label">06 · Расчёт</p><h2 class="glow">Рассчитать проект <img class="emoji " src="assets/emoji/2728.webp" alt="✨" width="64" height="64" loading="lazy" decoding="async" data-emoji="✨"></h2><p class="lead center-text">Три шага — и вилка стоимости в выбранной валюте по курсу ЦБ. Расчёт можно сразу отправить в Telegram.</p></div></div>
+  <div class="panel quiz" data-reveal><form class="estimate-form ym-hide-content" data-estimate data-lang="ru" data-telegram="https://t.me/LuvLarion4ik"  hidden>
+    <div data-questions>
+      <p class="quiz-count" id="quiz-progress"></p>
+      <progress data-progress aria-labelledby="quiz-progress" max="3" value="1"></progress>
+      <fieldset data-step><legend tabindex="-1" aria-describedby="quiz-progress">Масштаб проекта</legend><div class="quiz-options"><label class="quiz-option"><input required type="radio" name="tier" value="small" checked><span><strong>Малый</strong><small>Один сценарий или стартовый пакет</small></span></label><label class="quiz-option"><input required type="radio" name="tier" value="medium" ><span><strong>Средний</strong><small>Несколько сценариев и интеграции</small></span></label><label class="quiz-option"><input required type="radio" name="tier" value="large" ><span><strong>Крупный</strong><small>Несколько команд, повышенная нагрузка или особые требования к доступу</small></span></label></div></fieldset>
+      <fieldset data-step hidden disabled><legend tabindex="-1" aria-describedby="quiz-progress">Что нужно сделать?</legend>
+        <div class="quiz-options"><label class="quiz-option"><input type="checkbox" name="service" value="landing" data-price-small="25000" data-price-medium="60000,120000" data-price-large="120000,250000" data-scope-small="Одна адаптивная страница до пяти блоков, одна форма и один канал для заявок."  ><span>Лендинг или сайт-визитка</span></label><label class="quiz-option"><input type="checkbox" name="service" value="web" data-price-small="55000" data-price-medium="100000,250000" data-price-large="250000,700000" data-scope-small="Страницы компании, формы и управление содержимым."  ><span>Сайт компании с админкой</span></label><label class="quiz-option"><input type="checkbox" name="service" value="shop" data-price-small="90000" data-price-medium="150000,330000" data-price-large="350000,1300000"   ><span>Интернет-магазин</span></label><label class="quiz-option"><input type="checkbox" name="service" value="automation" data-price-small="20000" data-price-medium="110000,300000" data-price-large="330000,850000" data-scope-small="Одна платформа, меню, один сценарий и уведомление менеджеру."  ><span>Telegram- или MAX-бот</span></label><label class="quiz-option"><input type="checkbox" name="service" value="assistant" data-price-small="55000" data-price-medium="120000,450000" data-price-large="450000,1800000" data-scope-small="Одна база знаний и один канал."  ><span>ИИ-ассистент</span></label><label class="quiz-option"><input type="checkbox" name="service" value="mini" data-price-small="55000" data-price-medium="130000,400000" data-price-large="450000,1200000" data-scope-small="Каталог до десяти позиций со сбором заявки."  ><span>Мини-приложение</span></label><label class="quiz-option"><input type="checkbox" name="service" value="platform" data-price-small="100000" data-price-medium="250000,800000" data-price-large="900000,3500000"   ><span>Веб-приложение, личный кабинет или CRM</span></label><label class="quiz-option"><input type="checkbox" name="service" value="mobile"  data-price-medium="450000,1400000" data-price-large="1500000,5500000"   ><span>Мобильное приложение</span></label><label class="quiz-option"><input type="checkbox" name="service" value="agents"  data-price-medium="220000,750000" data-price-large="800000,3000000"   ><span>Мультиагентная система</span></label><label class="quiz-option"><input type="checkbox" name="service" value="private-ai"  data-price-medium="250000,650000" data-price-large="650000,1800000"   ><span>Развёртывание ИИ</span></label><label class="quiz-option"><input type="checkbox" name="service" value="fine-tuning" data-price-small="45000" data-price-medium="180000,450000" data-price-large="850000,1500000" data-scope-small="Аудит данных и оценка пилота." data-scope-medium="Пилот одной готовой модели на подготовленных примерах с проверкой качества." data-scope-large="Дообучение с интеграцией в рабочую систему."><span>Дообучение модели</span></label><label class="quiz-option"><input type="checkbox" name="service" value="design" data-price-small="25000" data-price-medium="60000,150000" data-price-large="150000,400000" data-scope-small="Дизайн одной ключевой страницы."  ><span>Дизайн и редизайн</span></label><label class="quiz-option"><input type="checkbox" name="service" value="security" data-price-small="25000" data-price-medium="60000,200000" data-price-large="200000,600000" data-scope-small="Проверка небольшого сайта и отчёт."  ><span>Аудит и меры защиты</span></label><label class="quiz-option"><input type="checkbox" name="service" value="support" data-price-small="8000" data-price-medium="15000,50000" data-price-large="50000,150000"   ><span>Поддержка / месяц</span></label><label class="quiz-option"><input type="checkbox" name="service" value="custom"      ><span>Другая задача</span></label></div>
+        <p role="status" data-selection-needed hidden>Выберите хотя бы одну услугу.</p>
+      </fieldset>
+      <fieldset data-step hidden disabled><legend tabindex="-1" aria-describedby="quiz-progress">Дополнительные параметры</legend>
+        <div class="quiz-options"><label class="quiz-option"><input type="checkbox" name="option" value="crm" data-price-small="35000" data-price-medium="35000,75000" data-price-large="35000,75000" data-eligible="landing web shop automation assistant mini mobile agents"><span>Интеграция с готовой CRM</span></label><label class="quiz-option"><input type="checkbox" name="option" value="payment"  data-eligible="landing web shop automation mini platform mobile"><span>Подключение оплаты</span></label><label class="quiz-option"><input type="checkbox" name="option" value="api"  data-eligible="landing web shop automation assistant mini platform mobile agents private-ai"><span>1С или нестандартный API</span></label><label class="quiz-option"><input type="checkbox" name="option" value="priority"  ><span>Срочный запуск</span></label><label class="quiz-option"><input type="checkbox" name="option" value="languages"  data-eligible="landing web shop automation assistant mini platform mobile agents private-ai"><span>Дополнительные языки</span></label><label class="quiz-option"><input type="checkbox" name="option" value="data"  data-eligible="assistant agents private-ai fine-tuning"><span>Подготовка данных</span></label><label class="quiz-option"><input type="checkbox" name="option" value="design"  data-eligible="landing web shop automation mini platform mobile"><span>Расширенный дизайн</span></label><label class="quiz-option"><input type="checkbox" name="option" value="requirements"  ><span>Особые требования к документации или доступу</span></label></div>
+        <div class="quiz-inputs">
+          <label>Желаемый срок<select name="timeline">
+            <option value="">Гибкий</option><option value="month">В течение месяца</option><option value="quarter">В течение квартала</option>
+          </select></label>
+          <label>Реферальный код<input type="text" name="referral" maxlength="40" autocomplete="off" spellcheck="false"></label>
+        </div>
+      </fieldset>
+      <div class="quiz-actions"><button class="btn" type="button" data-back hidden>Назад</button><button class="btn primary" type="submit" data-next>Дальше</button></div>
+    </div>
+    <div class="estimate-result" data-result hidden>
+      <h3 tabindex="-1" data-summary></h3>
+      <p class="quiz-guidance" data-currency-note hidden></p>
+      <dl class="quiz-breakdown" data-breakdown></dl>
+      <p class="quiz-guidance" data-guidance></p>
+      <div class="quiz-actions"><a class="btn primary" href="https://t.me/LuvLarion4ik" data-brief>Отправить расчёт в Telegram</a>
+        <a class="btn" href="#" data-portal hidden>Продолжить в кабинете</a>
+        <button class="btn" type="button" data-copy>Скопировать расчёт</button>
+        <button class="btn" type="button" data-share>Поделиться</button>
+        <button class="quiz-edit" type="button" data-edit>Изменить ответы</button>
+      </div>
+      <p role="status" data-copy-status></p>
+    </div>
+  </form><noscript><a href="https://t.me/LuvLarion4ik">Запросить оценку в Telegram</a></noscript><p class="rate-note muted" data-rate-note></p></div>
 </section>
 
 <section class="section finale" id="contact" data-scene="road" data-tint="red">
+  <div class="stage short"><div class="sec-head" data-reveal><p class="label">07 · Контакт</p><h2 class="glow">Какую задачу решаем? <img class="emoji " src="assets/emoji/1f4ac.webp" alt="💬" width="64" height="64" loading="lazy" decoding="async" data-emoji="💬"></h2></div></div>
   <div class="split" data-reveal>
-    <div class="panel">
-      <h2 class="glow">Рассчитать проект</h2>
-      <p>Выберите тип проекта, масштаб и опции — калькулятор покажет вилку стоимости в рублях, долларах, евро, BYN или KZT.</p>
-      <a class="btn" href="https://luvlarion4ik.github.io/luvlarion4ik/ru/#quiz">Открыть калькулятор <span aria-hidden="true">↗</span></a>
-    </div>
-    <div class="panel">
-      <h2 class="glow">Какую задачу решаем?</h2>
-      <p>Напишите, какой процесс хотите изменить, кто им пользуется и как сейчас выглядит результат. Сообщение получит Илья.</p>
-      <div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik">Обсудить проект <span aria-hidden="true">↗</span></a><a class="btn ghost" href="mailto:larion4ik123@gmail.com">Написать на почту</a></div>
-    </div>
+    <div class="panel"><p>Напишите, какой процесс хотите изменить, кто им пользуется и как сейчас выглядит результат. Сообщение получит Илья.</p><div class="row"><a class="btn primary" href="https://t.me/LuvLarion4ik">Обсудить проект <span aria-hidden="true">↗</span></a><a class="btn ghost" href="mailto:larion4ik123@gmail.com">larion4ik123@gmail.com</a></div></div>
+    <div class="panel"><p class="label">Ещё каналы</p>
+      <ul class="channels"><li><a href="https://t.me/LuvLarion4ik" target="_blank" rel="noopener"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m2 11 20-8-4 18-6-6-3 3v-5l9-7-11 6z"/></svg><span>Telegram</span><i aria-hidden="true">↗</i></a></li><li><a href="https://www.threads.com/@luvlarion4ik" target="_blank" rel="noopener"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg><span>Threads</span><i aria-hidden="true">↗</i></a></li><li><a href="https://github.com/luvlarion4ik" target="_blank" rel="noopener"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span>GitHub</span><i aria-hidden="true">↗</i></a></li><li><a href="mailto:larion4ik123@gmail.com" target="_blank" rel="noopener"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 5h20v14H2z M2 5l10 8L22 5"/></svg><span>Почта</span><i aria-hidden="true">↗</i></a></li></ul></div>
   </div>
   <div class="road-space" aria-hidden="true"></div>
   <footer class="foot">
-    <div class="foot-brand"><span class="brand-word" data-text="DEVLARION">DEVLARION</span>
-      <div class="social"><a href="https://t.me/LuvLarion4ik" aria-label="Telegram" title="Telegram"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m2 11 20-8-4 18-6-6-3 3v-5l9-7-11 6z"/></svg></a><a href="https://www.threads.com/@luvlarion4ik" aria-label="Threads" title="Threads"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg></a><a href="https://github.com/luvlarion4ik" aria-label="GitHub" title="GitHub"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a><a href="mailto:larion4ik123@gmail.com" aria-label="Почта" title="Почта"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 5h20v14H2z M2 5l10 8L22 5"/></svg></a></div></div>
-    <p class="mono fine">© 2026 Devlarion · <a href="https://luvlarion4ik.github.io/luvlarion4ik/ru/">Классическая версия сайта</a> · <a href="https://luvlarion4ik.github.io/luvlarion4ik/ru/privacy/">Конфиденциальность</a> · <a href="https://luvlarion4ik.github.io/luvlarion4ik/ru/licenses/">Лицензии</a></p>
+    <div class="foot-brand"><devlarion-logo variant="full" height="30" view></devlarion-logo>
+      <div class="social"><a href="https://t.me/LuvLarion4ik" aria-label="Telegram" title="Telegram" target="_blank" rel="noopener"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="m2 11 20-8-4 18-6-6-3 3v-5l9-7-11 6z"/></svg></a><a href="https://www.threads.com/@luvlarion4ik" aria-label="Threads" title="Threads" target="_blank" rel="noopener"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg></a><a href="https://github.com/luvlarion4ik" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener"><svg class="ai-icon" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a><a href="mailto:larion4ik123@gmail.com" aria-label="Почта" title="Почта" target="_blank" rel="noopener"><svg class="ai-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 5h20v14H2z M2 5l10 8L22 5"/></svg></a></div></div>
+    <div class="foot-links">
+      <p class="fine">© 2026 Devlarion · Илья Ларионов</p>
+      <p class="fine"><a href="https://luvlarion4ik.github.io/luvlarion4ik/ru/">Классическая версия сайта</a> · <a href="https://luvlarion4ik.github.io/luvlarion4ik/ru/privacy/">Конфиденциальность</a> · <a href="assets/licenses/noto-emoji.txt">Лицензии</a> · <button type="button" class="linkish" data-share-page>Поделиться</button> · <a href="en/" hreflang="en">English</a></p>
+    </div>
   </footer>
 </section>
 </main>
+<div class="toast" role="status" aria-live="polite" data-toast></div>
 </body>
 </html>

@@ -1,8 +1,8 @@
 /* Devlarion Field — фоновое облако частиц на чистом WebGL.
    Каждая секция страницы с атрибутом data-scene задаёт сцену: знак D, «литник» с иконками услуг,
-   машина из точек, сфера процесса, галактика продуктов, волна и дорога в финале.
-   При смене секции точки перелетают из одной фигуры в другую. Машина едет за курсором
-   (луч из камеры пересекается с плоскостью земли) и распыляет искры; клик даёт залп. */
+   седан на подиуме, экраны проектов, сфера процесса, галактика продуктов, волна и дорога в финале.
+   При смене секции точки перелетают из одной фигуры в другую. На подиуме седан поворачивается за курсором,
+   на дороге перестраивается влево-вправо и пускает искры; клик по фону даёт залп. */
 (() => {
   const canvas = document.querySelector("[data-field]");
   if (!canvas) return;
@@ -128,62 +128,124 @@
     return b.done();
   }
 
-  // ---------- машина из точек (вперёд = −z) ----------
+  // ---------- седан представительского класса из точек (вперёд = −z, длина ≈ 5.3) ----------
+  const lerp1 = (pts, z) => {
+    if (z <= pts[0][0]) return pts[0][1];
+    for (let i = 1; i < pts.length; i++) if (z <= pts[i][0]) {
+      const [z0, y0] = pts[i - 1], [z1, y1] = pts[i], k = (z - z0) / (z1 - z0);
+      return y0 + (y1 - y0) * (k * k * (3 - 2 * k));
+    }
+    return pts[pts.length - 1][1];
+  };
+  const TOP = [[-2.66, 0.6], [-2.58, 0.72], [-2.25, 0.79], [-1.2, 0.86], [-0.95, 0.9], [-0.2, 1.38], [0.35, 1.44], [0.95, 1.39], [1.75, 1.0], [2.42, 0.97], [2.6, 0.9], [2.68, 0.66]];
+  const BOTTOM = [[-2.68, 0.44], [-2.3, 0.3], [2.3, 0.3], [2.68, 0.46]];
+  const BELT = 0.95, WHEELS = [-1.62, 1.56], WR = 0.37;
+  const halfW = z => 0.96 * (1 - 0.2 * Math.max(0, Math.min(1, (Math.abs(z) - 1.9) / 0.78)) ** 2);
+  const sideW = (z, y) => {
+    const top = lerp1(TOP, z), w = halfW(z);
+    if (y <= BELT) return w * (1 - 0.06 * Math.max(0, (0.5 - y) / 0.25));
+    return w * (1 - 0.26 * Math.min(1, (y - BELT) / Math.max(top - BELT, 0.05)));
+  };
+  const inArch = (z, y) => WHEELS.some(wz => Math.hypot(z - wz, y - WR) < WR + 0.09);
   function putCar(b, n, flag) {
     const end = b.count() + n;
-    const bodyEnd = b.count() + n * 0.74;
-    while (b.count() < bodyEnd) {
-      const cap = Math.random() < 0.08;
-      const u = cap ? pick([-1, 1]) : rnd(-1, 1);
-      const taper = 1 - Math.pow(Math.abs(u), 6) * 0.32;
-      const w = 0.93 * taper;
-      const yb = 0.3 + Math.pow(Math.abs(u), 4) * 0.08;
-      const yt = 0.76 + 0.05 * (1 - u * u) - (u < 0 ? Math.pow(-u, 3) * 0.14 : 0);
-      let bump = 0;
-      if (u > -0.52 && u < 0.42) bump = 0.56 * Math.pow(Math.sin(Math.PI * (u + 0.52) / 0.94), 0.55);
-      const top = yt + bump;
+    const surfEnd = b.count() + n * 0.5, lineEnd = b.count() + n * 0.8;
+    const paint = () => mixc(C.blue, C.ice, 0.3 + Math.random() * 0.5);
+    // поверхность кузова
+    while (b.count() < surfEnd) {
+      const z = rnd(-2.66, 2.66), top = lerp1(TOP, z), bot = lerp1(BOTTOM, z);
       const th = rnd(0, TAU), c = Math.cos(th), s = Math.sin(th);
-      const ex = Math.sign(c) * Math.pow(Math.abs(c), 0.42), ey = Math.sign(s) * Math.pow(Math.abs(s), 0.42);
-      const radial = cap ? Math.sqrt(Math.random()) : 1;
-      const mid = (yb + top) / 2, half = (top - yb) / 2;
-      const y = mid + half * ey * radial;
-      const narrow = 1 - 0.3 * Math.min(Math.max((y - yt) / 0.55, 0), 1);
-      const x = ex * w * narrow * radial;
-      const z = u * 2.25;
-      let col = mixc(C.blue, C.ice, Math.random() * 0.5);
-      const glass = y > yt + 0.07 && bump > 0.2 && y < top - 0.06;
-      if (glass) { if (Math.random() < 0.55) continue; col = C.glass; }
-      if (Math.abs(y - yt) < 0.025 && !cap) col = C.copper;
-      if (u > 0.93 && y > yt - 0.2 && y < yt - 0.02 && Math.abs(x) > 0.35) col = C.red;
-      if (u < -0.93 && y > yt - 0.22 && y < yt - 0.04 && Math.abs(x) > 0.3) col = C.white;
-      b.put(x, y, z, col, flag);
+      const ey = Math.sign(s) * Math.pow(Math.abs(s), 0.35);
+      const y = (bot + top) / 2 + (top - bot) / 2 * ey;
+      const ex = Math.sign(c) * Math.pow(Math.abs(c), 0.35);
+      const x = ex * sideW(z, y);
+      if (Math.abs(ex) > 0.7 && inArch(z, y)) continue;
+      const glass = y > BELT + 0.05 && y < top - 0.05 && z > -0.9 && z < 1.7;
+      if (glass) { if (Math.random() < 0.6) continue; b.put(x, y, z, C.glass, flag); continue; }
+      b.put(x, y, z, paint(), flag);
     }
+    // характерные линии: пояс, окна, крыша, пороги, арки, оптика
+    const lines = [];
+    const line = (w, fn) => lines.push([w, fn]);
+    line(3, () => { const z = rnd(-2.5, 2.5), sd = pick([-1, 1]); return [sd * halfW(z) * 0.995, BELT, z, C.copper]; });
+    line(3, () => { // рамка бокового окна
+      const sd = pick([-1, 1]), k = Math.random();
+      let z, y;
+      if (k < 0.5) { z = rnd(-0.82, 1.62); y = lerp1(TOP, z) - 0.07; }
+      else if (k < 0.8) { z = rnd(-0.82, 1.62); y = BELT + 0.04; }
+      else { z = pick([-0.82, 0.35, 1.62]) + gauss() * 0.01; y = rnd(BELT + 0.04, lerp1(TOP, z) - 0.07); }
+      return [sd * sideW(z, y), y, z, C.ice];
+    });
+    line(2, () => { const z = rnd(-0.2, 1.0), sd = pick([-1, 1]); const y = lerp1(TOP, z); return [sd * sideW(z, y - 0.01) * 0.98, y, z, C.ice]; });
+    line(1.5, () => { const z = rnd(-1.2, 1.15), sd = pick([-1, 1]); return [sd * halfW(z) * 0.96, 0.36, z, C.blue]; });
+    line(2.5, () => { // арки колёс
+      const wz = pick(WHEELS), a = rnd(-0.1, Math.PI + 0.1), sd = pick([-1, 1]);
+      const z = wz + Math.cos(a) * (WR + 0.1), y = WR + Math.sin(a) * (WR + 0.1);
+      return [sd * sideW(z, y), y, z, C.ice];
+    });
+    line(1.6, () => { const sd = pick([-1, 1]), x = sd * rnd(0.45, 0.9); return [x, 0.71 + gauss() * 0.012, -2.56 - (0.9 - Math.abs(x)) * 0.05, [1.6, 1.6, 1.7]]; }); // фары
+    line(1.4, () => { const x = rnd(-0.34, 0.34), k = Math.random() < 0.5; return [k ? Math.round(x * 14) / 14 : x, k ? rnd(0.44, 0.66) : pick([0.44, 0.66]), -2.66, C.ice]; }); // решётка
+    line(2, () => [rnd(-0.92, 0.92), 0.86 + gauss() * 0.012, 2.63, [1.9, 0.3, 0.35]]); // сплошная полоса фонарей
+    line(0.8, () => [rnd(-0.6, 0.6), pick([0.5, 0.55]), 2.68, C.ice]);
+    const total = lines.reduce((sum, [w]) => sum + w, 0);
+    while (b.count() < lineEnd) {
+      let r = Math.random() * total, fn = lines[0][1];
+      for (const [w, f] of lines) { r -= w; if (r <= 0) { fn = f; break; } }
+      const [x, y, z, col] = fn();
+      b.put(x + gauss() * 0.008, y + gauss() * 0.008, z, col, flag);
+    }
+    // колёса: шина, диск с десятью спицами, тормоз
     while (b.count() < end) {
-      const sx = pick([-1, 1]), sz = pick([-1, 1]);
-      const cx = sx * 0.9, cz = sz * 1.42, cy = 0.37, R = 0.37;
-      const a = rnd(0, TAU);
-      let x, y, z, col;
-      if (Math.random() < 0.55) {
-        x = cx + rnd(-0.15, 0.15); y = cy + Math.cos(a) * R; z = cz + Math.sin(a) * R; col = C.dim;
+      const sd = pick([-1, 1]), wz = pick(WHEELS), a = rnd(0, TAU);
+      const cx = sd * 0.86, k = Math.random();
+      if (k < 0.4) b.put(cx + rnd(-0.13, 0.13), WR + Math.cos(a) * WR, wz + Math.sin(a) * WR, C.dim, flag);
+      else if (k < 0.75) {
+        const spoke = Math.round(a / (TAU / 10)) * (TAU / 10), rr = rnd(0.06, WR * 0.78);
+        b.put(cx + sd * 0.12, WR + Math.cos(spoke) * rr, wz + Math.sin(spoke) * rr, C.ice, flag);
       } else {
-        const spoke = Math.random() < 0.5;
-        const rr = spoke ? rnd(0.04, R * 0.8) : R * rnd(0.55, 0.85);
-        const aa = spoke ? Math.round(a / (TAU / 5)) * (TAU / 5) : a;
-        x = cx + sx * 0.15; y = cy + Math.cos(aa) * rr; z = cz + Math.sin(aa) * rr; col = spoke ? C.copper : C.ice;
+        const rr = WR * pick([0.8, 0.82, 0.3]);
+        b.put(cx + sd * 0.12, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, k < 0.9 ? C.copper : C.ice, flag);
       }
-      b.put(x, y, z, col, flag);
     }
   }
 
+  // ---------- шоурум: седан на поворотном подиуме ----------
   function sceneCar() {
     const b = builder(N);
-    putCar(b, N * 0.55, 1);
-    while (b.count() < N * 0.97) {
-      const r = Math.sqrt(Math.random()) * 12, a = rnd(0, TAU);
-      let x = Math.cos(a) * r, z = Math.sin(a) * r;
-      if (Math.random() < 0.6) { x = Math.round(x * 2) / 2; z = Math.round(z * 2) / 2; }
-      b.put(x, 0, z, mixc(C.dim, C.blue, (1 - r / 12) * 0.6), 0);
+    putCar(b, N * 0.62, 1);
+    while (b.count() < N * 0.72) { // кольцо подиума
+      const a = rnd(0, TAU), r = pick([3.4, 3.55]) + gauss() * 0.02;
+      b.put(Math.cos(a) * r, 0.02, Math.sin(a) * r, Math.random() < 0.3 ? C.copper : C.blue, 0);
     }
+    while (b.count() < N * 0.98) { // пол-сетка
+      const r = 3.8 + Math.sqrt(Math.random()) * 10, a = rnd(0, TAU);
+      let x = Math.cos(a) * r, z = Math.sin(a) * r;
+      if (Math.random() < 0.7) { x = Math.round(x * 2) / 2; z = Math.round(z * 2) / 2; }
+      b.put(x, 0, z, mixc(C.dim, C.blue, Math.max(0, 1 - r / 14) * 0.5), 0);
+    }
+    return b.done();
+  }
+
+  // ---------- экраны проектов: окна браузера в глубине ----------
+  function sceneScreens() {
+    const b = builder(N);
+    const wins = [];
+    for (let i = 0; i < 11; i++) wins.push({ x: rnd(-11, 11), y: rnd(-4.5, 5.5), z: rnd(-16, -3), w: rnd(2.6, 4.2), r: rnd(-0.5, 0.5), mob: Math.random() < 0.3 });
+    while (b.count() < N * 0.92) {
+      const win = pick(wins);
+      const w = win.mob ? win.w * 0.38 : win.w, h = win.mob ? win.w * 0.8 : win.w * 0.62;
+      const k = Math.random();
+      let u, v, col = C.ice;
+      if (k < 0.45) { // рамка
+        const p = rnd(0, 2 * (w + h));
+        if (p < w) { u = p; v = 0; } else if (p < w + h) { u = w; v = p - w; } else if (p < 2 * w + h) { u = p - w - h; v = h; } else { u = 0; v = p - 2 * w - h; }
+      } else if (k < 0.55) { u = rnd(0, w); v = h * 0.12; col = C.blue; }
+      else if (k < 0.8) { u = rnd(w * 0.08, w * (0.4 + Math.random() * 0.5)); v = h * pick([0.3, 0.42, 0.54]); col = C.blue; }
+      else { u = rnd(w * 0.08, w * 0.45); v = rnd(h * 0.62, h * 0.88); col = Math.random() < 0.5 ? C.copper : C.blue; }
+      const lx = u - w / 2, ly = h / 2 - v, c = Math.cos(win.r), s = Math.sin(win.r);
+      b.put(win.x + lx * c, win.y + ly, win.z - lx * s, col, 5);
+    }
+    while (b.count() < N) b.put(rnd(-24, 24), rnd(-10, 14), rnd(-34, -8), C.dim, 5);
     return b.done();
   }
 
@@ -249,11 +311,12 @@
     return b.done();
   }
 
-  const builders = { mark: sceneMark, kit: sceneKit, car: sceneCar, sphere: sceneSphere, galaxy: sceneGalaxy, wave: sceneWave, road: sceneRoad };
+  const builders = { mark: sceneMark, kit: sceneKit, car: sceneCar, screens: sceneScreens, sphere: sceneSphere, galaxy: sceneGalaxy, wave: sceneWave, road: sceneRoad };
   const cameras = {
     mark: { eye: [0, 0.6, 15], at: [0, 0.2, 0], fov: 50 },
     kit: { eye: [0, 5.5, 11.5], at: [0, -1.2, 0], fov: 50 },
-    car: { eye: [-5.6, 2.6, -6.2], at: [0.4, -0.9, 0.6], fov: 48 },
+    car: { eye: [-6.4, 2.5, -5.4], at: [0, 0.1, 0.3], fov: 44 },
+    screens: { eye: [0, 0.5, 9], at: [0, 0.4, -8], fov: 55 },
     sphere: { eye: [0, 1.4, 14], at: [0, 0, 0], fov: 50 },
     galaxy: { eye: [0, 7.5, 12], at: [0, -0.5, 0], fov: 52 },
     wave: { eye: [0, 3.6, 9], at: [0, 0, -6], fov: 55 },
@@ -339,7 +402,7 @@
   const state = {
     current: null, mix: 1, time: 0, road: 0, spin: 0, sway: 0,
     mouse: [0, 0], mouseT: [0, 0], push: 0, pushT: 0,
-    car: [0, 0, 0], carV: [0, 0], carT: [0, 0], carActive: 0,
+    car: [0, 0, 0], carV: [0, 0], carT: [0, 0], carActive: 0, turn: 0.6,
     cam: { eye: [0, 0.6, 15], at: [0, 0.2, 0], fov: 50 }, scroll: 0,
   };
   let dirty = true;
@@ -383,7 +446,7 @@
     upload(B.from, from.pos); upload(B.cf, from.col); upload(B.to, to.pos); upload(B.ct, to.col); upload(B.meta, meta);
     if (name !== state.current) {
       if (name === "road") { state.car[0] = 0; state.car[1] = 2.2; state.car[2] = 0; }
-      if (name === "car") { state.car[1] = 0; }
+      if (name === "car") { state.car[0] = 0; state.car[1] = 0; state.turn = state.car[2]; }
     }
     state.current = name; state.mix = reduced ? 1 : 0;
     dirty = true;
@@ -463,15 +526,6 @@
     }
   }
 
-  // Луч от курсора до плоскости земли — туда едет машина.
-  function groundPoint(eye, fov, basis) {
-    const t = Math.tan(fov * Math.PI / 360), aspect = W / H, mx = state.mouse[0] * t * aspect, my = state.mouse[1] * t;
-    const d = norm([0, 1, 2].map(j => -basis.z[j] + mx * basis.x[j] + my * basis.y[j]));
-    if (d[1] > -0.02) return null;
-    const k = -eye[1] / d[1];
-    return [eye[0] + d[0] * k, eye[2] + d[2] * k];
-  }
-
   // ---------- сцена по секции у центра экрана ----------
   const sections = [...document.querySelectorAll("[data-scene]")];
   let activeSection = null;
@@ -534,24 +588,25 @@
     const carScene = state.current === "car" || state.current === "road";
     state.carActive = lerp(state.carActive, carScene && state.mix > 0.6 ? 1 : 0, ease);
     if (carScene) {
-      const prevX = state.car[0], prevZ = state.car[1];
+      const prevX = state.car[0];
       if (state.current === "road") {
-        state.carT[0] = Math.max(-4.6, Math.min(4.6, state.mouse[0] * 6.5)); state.carT[1] = 2.2;
+        // дорога: машина перестраивается за курсором влево-вправо и слегка подруливает
+        state.carT[0] = Math.max(-4.4, Math.min(4.4, state.mouse[0] * 6));
+        const ck = reduced ? 1 : 1 - Math.exp(-dt * 2.2);
+        state.car[0] = lerp(state.car[0], state.carT[0], ck); state.car[1] = 2.2;
+        const vx = (state.car[0] - prevX) / Math.max(dt, 1e-3);
+        state.carV[0] = vx; state.carV[1] = 0;
+        state.car[2] = lerp(state.car[2], Math.max(-0.4, Math.min(0.4, -vx * 0.12)), 1 - Math.exp(-dt * 6));
+        if (!reduced && state.carActive > 0.5) emit(Math.floor((45 + Math.abs(vx) * 60) * dt + Math.random()));
       } else {
-        const g = groundPoint(eye, state.cam.fov, basis);
-        if (g) { const r = Math.hypot(g[0], g[1]), lim = 4.2, s = r > lim ? lim / r : 1; state.carT[0] = g[0] * s; state.carT[1] = g[1] * s; }
+        // шоурум: машина стоит на подиуме, медленно вращается, курсор доворачивает её
+        state.turn = (state.turn + dt * 0.18) % TAU;
+        const yawT = state.turn + state.mouse[0] * 1.1;
+        const dy = ((yawT - state.car[2] + Math.PI) % TAU + TAU) % TAU - Math.PI;
+        state.car[2] += dy * (reduced ? 1 : 1 - Math.exp(-dt * 3));
+        state.car[0] = lerp(state.car[0], 0, 1 - Math.exp(-dt * 3)); state.car[1] = 0;
+        state.carV[0] = 0; state.carV[1] = 0;
       }
-      const ck = reduced ? 1 : 1 - Math.exp(-dt * 2.4);
-      state.car[0] = lerp(state.car[0], state.carT[0], ck); state.car[1] = lerp(state.car[1], state.carT[1], ck);
-      const vx = (state.car[0] - prevX) / Math.max(dt, 1e-3), vz = (state.car[1] - prevZ) / Math.max(dt, 1e-3);
-      state.carV[0] = vx; state.carV[1] = vz;
-      const speed = Math.hypot(vx, vz);
-      let yawT = state.car[2];
-      if (state.current === "road") yawT = Math.max(-0.55, Math.min(0.55, -vx * 0.16));
-      else if (speed > 0.35) yawT = Math.atan2(-vx, -vz);
-      const dy = ((yawT - state.car[2] + Math.PI) % TAU + TAU) % TAU - Math.PI;
-      state.car[2] += dy * (1 - Math.exp(-dt * 5));
-      if (!reduced && state.carActive > 0.5) emit(Math.floor(((state.current === "road" ? 90 : 25) + speed * 120) * dt + Math.random()));
     }
     if (!reduced) stepSpray(dt);
 

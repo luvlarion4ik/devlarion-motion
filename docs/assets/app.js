@@ -43,9 +43,9 @@
     const code = e.code;
     if (key === "arrowdown" || code === "KeyJ") { e.preventDefault(); jump(1); return; }
     if (key === "arrowup" || code === "KeyK") { e.preventDefault(); jump(-1); return; }
-    const byKey = k => document.querySelector(`.keys a[data-key="${k}"]`);
+    const byKey = k => document.querySelector(`[data-key="${k}"]`);
     let link = null;
-    if (/^Digit[1-9]$/.test(code)) link = byKey(code.slice(5));
+    if (/^(Digit|Numpad)[1-9]$/.test(code)) link = byKey(code.slice(-1));
     else if (code === "KeyT") link = byKey("t");
     else if (code === "KeyL") link = byKey("l");
     if (link) { e.preventDefault(); link.click(); }
@@ -94,7 +94,7 @@
     const sib = [...el.parentElement.children].filter(c => c.hasAttribute("data-reveal"));
     el.style.setProperty("--i", Math.min(sib.indexOf(el), 4));
   }
-  const drawTargets = $$(".tp-icon, .pack-icon, .product-icon");
+  const drawTargets = $$(".tp-icon, .pack-icon");
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(entries => {
       for (const en of entries) if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
@@ -112,14 +112,14 @@
 
   // ---------- блики и наклоны за курсором ----------
   if (fine && !reduced) {
-    for (const card of $$(".panel, .pack")) card.addEventListener("pointermove", e => {
+    for (const card of $$(".panel, .pack, .product")) card.addEventListener("pointermove", e => {
       const b = card.getBoundingClientRect();
       card.style.setProperty("--gx", e.clientX - b.left + "px"); card.style.setProperty("--gy", e.clientY - b.top + "px");
     });
-    for (const m of $$(".case-media")) {
+    for (const m of $$(".case-stage")) {
       m.addEventListener("pointermove", e => {
         const b = m.getBoundingClientRect(), x = (e.clientX - b.left) / b.width - 0.5, y = (e.clientY - b.top) / b.height - 0.5;
-        m.style.setProperty("--ty", (x * 8).toFixed(2) + "deg"); m.style.setProperty("--tx", (-y * 6).toFixed(2) + "deg");
+        m.style.setProperty("--ty", (x * 5).toFixed(2) + "deg"); m.style.setProperty("--tx", (-y * 4).toFixed(2) + "deg");
       });
       m.addEventListener("pointerleave", () => { m.style.setProperty("--ty", "0deg"); m.style.setProperty("--tx", "0deg"); });
     }
@@ -175,5 +175,50 @@
       setTimeout(type, 2600);
     };
     setTimeout(type, 2600);
+  }
+
+  // ---------- всплывающее сообщение и «Поделиться» ----------
+  const toastEl = document.querySelector("[data-toast]");
+  let toastTimer;
+  const toast = text => {
+    if (!toastEl) return;
+    toastEl.textContent = text; toastEl.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2400);
+  };
+  const ru = root.lang === "ru";
+  const share = async (url, title) => {
+    if (navigator.share) { try { await navigator.share({ url, title }); return; } catch (err) { if (err.name === "AbortError") return; } }
+    try { await navigator.clipboard.writeText(url); toast(ru ? "Ссылка скопирована" : "Link copied"); }
+    catch { toast(url); }
+  };
+  document.addEventListener("click", e => {
+    if (e.target.closest("[data-share-page]")) share(location.href.split("#")[0], document.title);
+    const quizShare = e.target.closest("[data-estimate] [data-share]");
+    if (quizShare) share(quizShare.dataset.shareUrl || location.href, document.title);
+    const menuLink = e.target.closest(".menu nav a");
+    if (menuLink) menuLink.closest(".menu").open = false;
+  });
+
+  // ---------- эмодзи: если анимация не загрузилась, показываем обычный символ ----------
+  for (const img of $$("img.emoji")) {
+    const fallback = () => {
+      const span = document.createElement("span");
+      span.className = img.className; span.textContent = img.dataset.emoji || img.alt;
+      span.setAttribute("role", "img"); span.setAttribute("aria-label", img.alt);
+      img.replaceWith(span);
+    };
+    if (img.complete && img.src && !img.naturalWidth) fallback(); else img.addEventListener("error", fallback, { once: true });
+  }
+
+  // ---------- логотип в разделе «Студия» периодически проигрывает анимацию, пока виден ----------
+  const loopLogo = document.querySelector("devlarion-logo[data-loop]");
+  if (loopLogo && !reduced && "IntersectionObserver" in window) {
+    let loop = null;
+    const play = () => loopLogo.play?.();
+    new IntersectionObserver(([en]) => {
+      clearInterval(loop);
+      if (en.isIntersecting) { customElements.whenDefined("devlarion-logo").then(() => setTimeout(play, 500)); loop = setInterval(play, 5200); }
+    }, { threshold: 0.5 }).observe(loopLogo);
+    loopLogo.closest(".logo-show")?.addEventListener("pointerenter", play);
   }
 })();

@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node src/build.mjs",
-    "serve": "node src/serve.mjs"
+    "serve": "node src/serve.mjs",
+    "rates": "node scripts/update-rates.mjs"
   }
 }
