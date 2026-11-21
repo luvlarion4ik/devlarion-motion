@@ -220,6 +220,14 @@ main { position: relative; z-index: 2; }
 .draw .ai-icon :nth-child(2) { animation-delay: .08s; } .draw .ai-icon :nth-child(3) { animation-delay: .16s; } .draw .ai-icon :nth-child(4) { animation-delay: .24s; }
 @keyframes draw { from { stroke-dashoffset: 1; fill-opacity: 0; } 60% { fill-opacity: 0; } }
 .pack:hover .ai-icon, .tabpanel:hover .tp-icon .ai-icon { animation: wiggle .6s var(--ease); }
+/* анимированные иконки на кнопках Threads и GitHub: контур прорисовывается, затем заливка; при наведении — оборот / прыжок */
+.btn-ico { display: inline-grid; place-items: center; width: 18px; height: 18px; flex: none; }
+.btn .btn-ico svg { width: 18px; height: 18px; overflow: visible; transform-box: fill-box; transform-origin: 50% 50%; }
+.btn-ico .ai-icon path { stroke: currentColor; stroke-width: .7; stroke-linejoin: round; }
+.btn-anim:hover .btn-ico[data-ico="threads"] svg, .btn-anim:focus-visible .btn-ico[data-ico="threads"] svg { animation: ico-spin .9s var(--ease); }
+.btn-anim:hover .btn-ico[data-ico="github"] svg, .btn-anim:focus-visible .btn-ico[data-ico="github"] svg { animation: ico-hop .7s var(--ease); }
+@keyframes ico-spin { to { transform: rotate(360deg); } }
+@keyframes ico-hop { 30% { transform: translateY(-3px) rotate(-12deg) scale(1.1); } 65% { transform: translateY(1px) rotate(6deg); } }
 @keyframes wiggle { 35% { transform: rotate(-8deg) scale(1.08); } 70% { transform: rotate(4deg); } }
 .window { margin: 0; border-radius: 18px; background: rgba(4, 6, 12, .7); border: 1px solid rgba(255, 255, 255, .08); overflow: hidden; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04); }
 .window figcaption { display: flex; gap: 14px; align-items: center; padding: 14px 18px; font: 400 12px/1 var(--code); color: var(--muted); border-bottom: 1px solid rgba(255, 255, 255, .06); }

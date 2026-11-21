@@ -94,7 +94,7 @@
     const sib = [...el.parentElement.children].filter(c => c.hasAttribute("data-reveal"));
     el.style.setProperty("--i", Math.min(sib.indexOf(el), 4));
   }
-  const drawTargets = $$(".tp-icon, .pack-icon");
+  const drawTargets = $$(".tp-icon, .pack-icon, .btn-ico");
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(entries => {
       for (const en of entries) if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
@@ -108,7 +108,7 @@
     }, { threshold: 0.6 });
     drawTargets.forEach(el => io2.observe(el));
   } else reveal.forEach(el => el.classList.add("in"));
-  for (const el of drawTargets) el.closest(".pack, .product, .panel")?.addEventListener("pointerenter", () => { el.classList.remove("draw"); void el.offsetWidth; el.classList.add("draw"); });
+  for (const el of drawTargets) el.closest(".pack, .product, .panel, .btn-anim")?.addEventListener("pointerenter", () => { el.classList.remove("draw"); void el.offsetWidth; el.classList.add("draw"); });
 
   // ---------- блики и наклоны за курсором ----------
   if (fine && !reduced) {

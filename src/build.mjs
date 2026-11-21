@@ -269,7 +269,7 @@ function page(lang, A) {
         <div class="story-end">
           <div class="founder">${mark("small")}<div><b>${esc(id.founder[lang])}</b><small>${l("Основатель · архитектор и разработчик", "Founder · architect and developer")}</small></div></div>
           <p class="chips">${stack.map(x => `<span>${x}</span>`).join("")}</p>
-          <div class="row"><a class="btn" href="${id.threads}" target="_blank" rel="noopener">${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost" href="${id.github}" target="_blank" rel="noopener">GitHub</a></div>
+          <div class="row"><a class="btn btn-anim" href="${id.threads}" target="_blank" rel="noopener"><span class="btn-ico" data-ico="threads">${icons.threads}</span>${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost btn-anim" href="${id.github}" target="_blank" rel="noopener"><span class="btn-ico" data-ico="github">${icons.github}</span>GitHub</a></div>
         </div>
       </div>
     </div>
