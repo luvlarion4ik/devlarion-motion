@@ -226,14 +226,17 @@
     const update = () => {
       const r = story.getBoundingClientRect();
       const p = reduced ? 1 : clamp(-r.top / Math.max(r.height - innerHeight, 1));
-      svg.style.setProperty("--p1", clamp(p / 0.3).toFixed(3));
-      svg.style.setProperty("--p2", clamp((p - 0.3) / 0.25).toFixed(3));
-      svg.style.setProperty("--p3", clamp((p - 0.55) / 0.2).toFixed(3));
-      svg.style.setProperty("--p4", clamp((p - 0.78) / 0.1).toFixed(3));
+      // переменные ставим на всю секцию: от них зависят знак, подсветка, шкала прогресса у строк
+      story.style.setProperty("--p", clamp(p / 0.82).toFixed(3));
+      story.style.setProperty("--p1", clamp(p / 0.3).toFixed(3));
+      story.style.setProperty("--p2", clamp((p - 0.3) / 0.25).toFixed(3));
+      story.style.setProperty("--p3", clamp((p - 0.55) / 0.2).toFixed(3));
+      story.style.setProperty("--p4", clamp((p - 0.78) / 0.1).toFixed(3));
       lines.forEach((li, k) => li.classList.toggle("on", p >= [0.02, 0.3, 0.55, 0.75][k]));
       end.classList.toggle("on", p >= 0.82);
-      if (p >= 0.82 && !shone && !reduced) { shone = true; restart(svg, "shine"); }
-      if (p < 0.6) shone = false;
+      // знак собран: блик по поверхности и световая волна вокруг
+      if (p >= 0.82 && !shone && !reduced) { shone = true; restart(svg, "shine"); restart(story, "done"); }
+      if (p < 0.6) { shone = false; story.classList.remove("done"); }
     };
     addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
     addEventListener("resize", update);

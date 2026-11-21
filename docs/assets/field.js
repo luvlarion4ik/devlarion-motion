@@ -137,74 +137,116 @@
     }
     return pts[pts.length - 1][1];
   };
-  const TOP = [[-2.66, 0.6], [-2.58, 0.72], [-2.25, 0.79], [-1.2, 0.86], [-0.95, 0.9], [-0.2, 1.38], [0.35, 1.44], [0.95, 1.39], [1.75, 1.0], [2.42, 0.97], [2.6, 0.9], [2.68, 0.66]];
-  const BOTTOM = [[-2.68, 0.44], [-2.3, 0.3], [2.3, 0.3], [2.68, 0.46]];
-  const BELT = 0.95, WHEELS = [-1.62, 1.56], WR = 0.37;
-  const halfW = z => 0.96 * (1 - 0.2 * Math.max(0, Math.min(1, (Math.abs(z) - 1.9) / 0.78)) ** 2);
+  // Mercedes-Benz E-класса W124: строгий трёхобъёмный кузов, длинный плоский капот, плоская крыша,
+  // высокая короткая крышка багажника, вертикальная решётка между прямоугольными фарами,
+  // широкие молдинги понизу, рифлёные задние фонари и диски с 15 отверстиями.
+  // Пропорции по реальной машине (4,74 × 1,74 × 1,44 м, база 2,8 м), масштаб ≈ 1,12.
+  const TOP = [[-2.7, 0.5], [-2.67, 0.79], [-2.5, 0.82], [-1.8, 0.86], [-1.05, 0.9], [-0.3, 1.38], [0.0, 1.44], [0.9, 1.44], [1.6, 1.03], [1.75, 0.99], [2.55, 0.99], [2.7, 0.93]];
+  const BOTTOM = [[-2.72, 0.4], [-2.4, 0.3], [2.4, 0.3], [2.72, 0.4]];
+  const BELT = 0.93, WHEELS = [-1.6, 1.53], WR = 0.36, CLAD = 0.56;
+  const halfW = z => 0.95 * (1 - 0.07 * Math.max(0, Math.min(1, (Math.abs(z) - 2.2) / 0.5)) ** 2);
   const sideW = (z, y) => {
     const top = lerp1(TOP, z), w = halfW(z);
-    if (y <= BELT) return w * (1 - 0.06 * Math.max(0, (0.5 - y) / 0.25));
-    return w * (1 - 0.26 * Math.min(1, (y - BELT) / Math.max(top - BELT, 0.05)));
+    if (y <= BELT) return w;
+    return w * (1 - 0.2 * Math.min(1, (y - BELT) / Math.max(top - BELT, 0.05)));
   };
-  const inArch = (z, y) => WHEELS.some(wz => Math.hypot(z - wz, y - WR) < WR + 0.09);
+  const inArch = (z, y) => WHEELS.some(wz => Math.hypot(z - wz, y - WR) < WR + 0.08);
+  const CHROME = [1.45, 1.5, 1.65], RED = [2.0, 0.2, 0.25], RED2 = [0.9, 0.08, 0.12], AMBER = [1.9, 1.05, 0.3];
   function putCar(b, n, flag) {
-    const end = b.count() + n;
-    const surfEnd = b.count() + n * 0.5, lineEnd = b.count() + n * 0.8;
+    const end = b.count();
+    const surfEnd = end + n * 0.46, lineEnd = end + n * 0.82, last = end + n;
     const paint = () => mixc(C.blue, C.ice, 0.3 + Math.random() * 0.5);
-    // поверхность кузова
+    const clad = () => mixc(C.dim, C.blue, 0.35 + Math.random() * 0.3);
+    // поверхность кузова: почти прямоугольное сечение
     while (b.count() < surfEnd) {
-      const z = rnd(-2.66, 2.66), top = lerp1(TOP, z), bot = lerp1(BOTTOM, z);
+      const z = rnd(-2.7, 2.7), top = lerp1(TOP, z), bot = lerp1(BOTTOM, z);
       const th = rnd(0, TAU), c = Math.cos(th), s = Math.sin(th);
-      const ey = Math.sign(s) * Math.pow(Math.abs(s), 0.35);
+      const ey = Math.sign(s) * Math.pow(Math.abs(s), 0.24);
       const y = (bot + top) / 2 + (top - bot) / 2 * ey;
-      const ex = Math.sign(c) * Math.pow(Math.abs(c), 0.35);
+      const ex = Math.sign(c) * Math.pow(Math.abs(c), 0.22);
       const x = ex * sideW(z, y);
-      if (Math.abs(ex) > 0.7 && inArch(z, y)) continue;
-      const glass = y > BELT + 0.05 && y < top - 0.05 && z > -0.9 && z < 1.7;
-      if (glass) { if (Math.random() < 0.6) continue; b.put(x, y, z, C.glass, flag); continue; }
-      b.put(x, y, z, paint(), flag);
+      if (Math.abs(ex) > 0.75 && inArch(z, y)) continue;
+      const glass = y > BELT + 0.04 && y < top - 0.04 && z > -1.02 && z < 1.62;
+      if (glass) { if (Math.random() < 0.62) continue; b.put(x, y, z, C.glass, flag); continue; }
+      b.put(x, y, z, y < CLAD && Math.abs(ex) > 0.8 ? clad() : paint(), flag);
     }
-    // характерные линии: пояс, окна, крыша, пороги, арки, оптика
     const lines = [];
     const line = (w, fn) => lines.push([w, fn]);
-    line(3, () => { const z = rnd(-2.5, 2.5), sd = pick([-1, 1]); return [sd * halfW(z) * 0.995, BELT, z, C.copper]; });
-    line(3, () => { // рамка бокового окна
-      const sd = pick([-1, 1]), k = Math.random();
+    const side = () => pick([-1, 1]);
+    // хромированная линия окон и пояс
+    line(2.4, () => { const z = rnd(-2.5, 2.55); return [side() * halfW(z) * 1.0, BELT, z, CHROME]; });
+    // верхняя кромка молдинга
+    line(2.2, () => { const z = rnd(-2.6, 2.6); if (inArch(z, CLAD)) return null; return [side() * halfW(z) * 1.01, CLAD, z, C.ice]; });
+    // рамки боковых окон, стойки B и C
+    line(3, () => {
+      const sd = side(), k = Math.random();
       let z, y;
-      if (k < 0.5) { z = rnd(-0.82, 1.62); y = lerp1(TOP, z) - 0.07; }
-      else if (k < 0.8) { z = rnd(-0.82, 1.62); y = BELT + 0.04; }
-      else { z = pick([-0.82, 0.35, 1.62]) + gauss() * 0.01; y = rnd(BELT + 0.04, lerp1(TOP, z) - 0.07); }
-      return [sd * sideW(z, y), y, z, C.ice];
+      if (k < 0.45) { z = rnd(-0.95, 1.55); y = lerp1(TOP, z) - 0.06; }
+      else if (k < 0.75) { z = rnd(-0.95, 1.55); y = BELT + 0.03; }
+      else { z = pick([-0.95, 0.32, 0.36, 1.55]) + gauss() * 0.012; y = rnd(BELT + 0.03, lerp1(TOP, z) - 0.06); }
+      return [sd * sideW(z, y), y, z, CHROME];
     });
-    line(2, () => { const z = rnd(-0.2, 1.0), sd = pick([-1, 1]); const y = lerp1(TOP, z); return [sd * sideW(z, y - 0.01) * 0.98, y, z, C.ice]; });
-    line(1.5, () => { const z = rnd(-1.2, 1.15), sd = pick([-1, 1]); return [sd * halfW(z) * 0.96, 0.36, z, C.blue]; });
-    line(2.5, () => { // арки колёс
-      const wz = pick(WHEELS), a = rnd(-0.1, Math.PI + 0.1), sd = pick([-1, 1]);
-      const z = wz + Math.cos(a) * (WR + 0.1), y = WR + Math.sin(a) * (WR + 0.1);
-      return [sd * sideW(z, y), y, z, C.ice];
+    // кромки крыши и плоского капота
+    line(1.6, () => { const z = rnd(-0.25, 0.95); const y = lerp1(TOP, z); return [side() * sideW(z, y - 0.01) * 0.97, y, z, C.ice]; });
+    line(1.4, () => { const z = rnd(-2.6, -1.1); return [side() * halfW(z) * 0.96, lerp1(TOP, z), z, C.ice]; });
+    // арки колёс
+    line(2, () => {
+      const wz = pick(WHEELS), a = rnd(0, Math.PI), sd = side();
+      const z = wz + Math.cos(a) * (WR + 0.09), y = WR + Math.sin(a) * (WR + 0.09);
+      return [sd * halfW(z) * 1.01, y, z, C.ice];
     });
-    line(1.6, () => { const sd = pick([-1, 1]), x = sd * rnd(0.45, 0.9); return [x, 0.71 + gauss() * 0.012, -2.56 - (0.9 - Math.abs(x)) * 0.05, [1.6, 1.6, 1.7]]; }); // фары
-    line(1.4, () => { const x = rnd(-0.34, 0.34), k = Math.random() < 0.5; return [k ? Math.round(x * 14) / 14 : x, k ? rnd(0.44, 0.66) : pick([0.44, 0.66]), -2.66, C.ice]; }); // решётка
-    line(2, () => [rnd(-0.92, 0.92), 0.86 + gauss() * 0.012, 2.63, [1.9, 0.3, 0.35]]); // сплошная полоса фонарей
-    line(0.8, () => [rnd(-0.6, 0.6), pick([0.5, 0.55]), 2.68, C.ice]);
+    // решётка радиатора: хромированная рамка, вертикальные ламели, горизонтальная перекладина
+    line(2.2, () => {
+      const k = Math.random(), z = -2.73;
+      if (k < 0.4) {
+        const x0 = -0.26, x1 = 0.26, y0 = 0.52, y1 = 0.86, w = x1 - x0, h = y1 - y0, q = rnd(0, 2 * (w + h));
+        const pt = q < w ? [x0 + q, y0] : q < w + h ? [x1, y0 + q - w] : q < 2 * w + h ? [x1 - (q - w - h), y1] : [x0, y1 - (q - 2 * w - h)];
+        return [pt[0], pt[1], z, CHROME];
+      }
+      if (k < 0.85) return [Math.round(rnd(-0.22, 0.22) / 0.055) * 0.055, rnd(0.54, 0.84), z + 0.01, mixc(C.ice, CHROME, 0.5)];
+      return [rnd(-0.25, 0.25), 0.69, z, CHROME];
+    });
+    // прямоугольные фары с решёткой отражателей и янтарные поворотники
+    line(2.4, () => {
+      const sd = side(), k = Math.random();
+      if (k < 0.82) {
+        const x = rnd(0.32, 0.8), y = rnd(0.58, 0.77);
+        const edge = x < 0.34 || x > 0.78 || y < 0.6 || y > 0.75;
+        return [sd * x, y, -2.68, edge ? CHROME : [1.9, 1.9, 2.0]];
+      }
+      return [sd * rnd(0.82, 0.92), rnd(0.58, 0.77), -2.66, AMBER];
+    });
+    // бамперы: широкая тёмная полоса с хромированной вставкой
+    line(1.6, () => { const zf = pick([-2.72, 2.72]), k = Math.random(); return [rnd(-0.93, 0.93), k < 0.35 ? 0.5 : rnd(0.38, 0.5), zf, k < 0.35 ? CHROME : C.dim]; });
+    // рифлёные задние фонари и ниша номера
+    line(2.6, () => {
+      const sd = side(), x = rnd(0.38, 0.93), y = 0.66 + Math.floor(rnd(0, 6)) * 0.04 + gauss() * 0.004;
+      const rib = Math.round((y - 0.66) / 0.04) % 2 === 0;
+      return [sd * x, y, 2.71, rib ? RED : RED2];
+    });
+    line(0.6, () => { const p = Math.random(); return p < 0.5 ? [rnd(-0.3, 0.3), pick([0.56, 0.76]), 2.7, C.ice] : [pick([-0.3, 0.3]), rnd(0.56, 0.76), 2.7, C.ice]; });
     const total = lines.reduce((sum, [w]) => sum + w, 0);
     while (b.count() < lineEnd) {
       let r = Math.random() * total, fn = lines[0][1];
       for (const [w, f] of lines) { r -= w; if (r <= 0) { fn = f; break; } }
-      const [x, y, z, col] = fn();
-      b.put(x + gauss() * 0.008, y + gauss() * 0.008, z, col, flag);
+      const pt = fn();
+      if (!pt) continue;
+      b.put(pt[0] + gauss() * 0.006, pt[1] + gauss() * 0.006, pt[2], pt[3], flag);
     }
-    // колёса: шина, диск с десятью спицами, тормоз
-    while (b.count() < end) {
-      const sd = pick([-1, 1]), wz = pick(WHEELS), a = rnd(0, TAU);
-      const cx = sd * 0.86, k = Math.random();
-      if (k < 0.4) b.put(cx + rnd(-0.13, 0.13), WR + Math.cos(a) * WR, wz + Math.sin(a) * WR, C.dim, flag);
-      else if (k < 0.75) {
-        const spoke = Math.round(a / (TAU / 10)) * (TAU / 10), rr = rnd(0.06, WR * 0.78);
-        b.put(cx + sd * 0.12, WR + Math.cos(spoke) * rr, wz + Math.sin(spoke) * rr, C.ice, flag);
+    // колёса: шина, плоский диск с 15 отверстиями («гуллидекель»), ступица
+    while (b.count() < last) {
+      const sd = side(), wz = pick(WHEELS), a = rnd(0, TAU), k = Math.random();
+      const cx = sd * 0.84, face = cx + sd * 0.12;
+      if (k < 0.34) b.put(cx + rnd(-0.12, 0.12), WR + Math.cos(a) * WR, wz + Math.sin(a) * WR, C.dim, flag);
+      else if (k < 0.62) {
+        const hole = Math.floor(rnd(0, 15)), ha = hole / 15 * TAU, hr = WR * 0.6, rr = 0.045;
+        b.put(face, WR + Math.cos(ha) * hr + Math.cos(a) * rr, wz + Math.sin(ha) * hr + Math.sin(a) * rr, CHROME, flag);
+      } else if (k < 0.86) {
+        const rr = WR * pick([0.8, 0.82, 0.4]);
+        b.put(face, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, C.ice, flag);
       } else {
-        const rr = WR * pick([0.8, 0.82, 0.3]);
-        b.put(cx + sd * 0.12, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, k < 0.9 ? C.copper : C.ice, flag);
+        const rr = WR * Math.sqrt(Math.random()) * 0.78;
+        b.put(face, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, mixc(C.dim, C.ice, 0.4), flag);
       }
     }
   }
@@ -320,7 +362,7 @@
   const cameras = {
     mark: { eye: [0, 0.6, 15], at: [0, 0.2, 0], fov: 50 },
     kit: { eye: [0, 5.5, 11.5], at: [0, -1.2, 0], fov: 50 },
-    car: { eye: [-6.4, 2.5, -5.4], at: [0, 0.1, 0.3], fov: 44 },
+    car: { eye: [-6.4, 2.5, -5.4], at: [0, -0.55, 0.3], fov: 44 },
     screens: { eye: [0, 0.5, 9], at: [0, 0.4, -8], fov: 55 },
     sphere: { eye: [0, 1.4, 14], at: [0, 0, 0], fov: 50 },
     galaxy: { eye: [0, 7.5, 12], at: [0, -0.5, 0], fov: 52 },
