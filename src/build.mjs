@@ -33,7 +33,7 @@ const mark = (cls = "") => {
     <path class="dl-line" pathLength="1" d="${MARK_D}"/><path class="dl-cut" pathLength="1" d="${MARK_L}"/>
     <g clip-path="url(#${k}c)"><rect class="dl-sheen" x="-6" y="0" width="18" height="70" fill="url(#${k}g)"/></g></svg>`;
 };
-const brandmark = (cls = "") => `<span class="brandmark ${cls}">${mark()}<span class="brandword">Devlarion</span></span>`;
+const brandmark = (cls = "") => `<span class="brandmark ${cls}">${mark()}<span class="brandword" aria-label="Devlarion">${[..."Devlarion"].map((ch, i) => `<span style="--i:${i}" aria-hidden="true">${ch}</span>`).join("")}</span></span>`;
 const productImage = { city: "city", cognivue: "cognivue", axenta: "axenta" };
 
 function page(lang, A) {

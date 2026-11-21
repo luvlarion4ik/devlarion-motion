@@ -58,7 +58,11 @@ code { font-family: var(--code); }
 .brand { display: inline-flex; color: var(--tint); text-decoration: none; transition: color .6s; flex: none; }
 .brandmark { display: inline-flex; align-items: center; gap: 10px; }
 .brandmark .dl-mark { width: 30px; height: 31px; }
-.brandword { font: 700 21px/1 var(--sans); letter-spacing: -.03em; color: var(--tint); transition: color .6s; }
+.brandword { display: inline-flex; font: 700 21px/1 var(--sans); letter-spacing: -.03em; color: var(--tint); transition: color .6s; }
+.brandword span { display: inline-block; }
+/* надпись проявляется по буквам вслед за знаком: каждая буква выезжает из-под маски и вспыхивает светом */
+.brandmark.play .brandword span { animation: letter .8s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(.32s + var(--i) * 42ms); }
+@keyframes letter { 0% { opacity: 0; transform: translateY(70%); clip-path: inset(0 0 100% 0); } 55% { color: #fff; text-shadow: 0 0 14px var(--tint-glow); } 100% { opacity: 1; transform: none; clip-path: inset(-20% 0 -20% 0); } }
 .hint { margin: 0; font: 500 11px/1 var(--code); letter-spacing: .08em; color: var(--muted); white-space: nowrap; transition: opacity .3s; }
 .hint kbd { display: inline-grid; place-items: center; min-width: 18px; height: 18px; border: 1px solid var(--line); border-radius: 4px; }
 .scrolled .hint { opacity: 0; pointer-events: none; }
@@ -369,14 +373,14 @@ main { position: relative; z-index: 2; }
 @keyframes ripple { from { opacity: .7; transform: scale(.7); } to { opacity: 0; transform: scale(1.5); } }
 .story-mark .dl-mark { width: 70%; }
 .story .story-svg .dl-line { opacity: 1; stroke-dashoffset: calc(1 - var(--p1, 1)); stroke-width: 1; }
-.story .story-svg .dl-fill { fill-opacity: var(--p2, 1); }
+.story .story-svg .dl-fill { fill-opacity: calc(.22 + var(--p2, 1) * .78); }
 .story .story-svg .dl-cut { opacity: calc(var(--p3, 1) * (1 - var(--p4, 0))); stroke-dashoffset: calc(1 - var(--p3, 1)); }
 .story .story-svg { position: relative; transform: rotateY(calc((1 - var(--p2, 1)) * -40deg)) rotateX(calc((1 - var(--p1, 1)) * 14deg)) scale(calc(.84 + var(--p2, 1) * .16)); filter: drop-shadow(0 30px 50px rgba(0, 0, 0, .55)) drop-shadow(0 0 calc(var(--p3, 1) * 46px) var(--tint-glow)); }
 .story-copy { display: grid; gap: 18px; align-content: center; }
 .story-lines { position: relative; list-style: none; margin: 0; padding: 0 0 0 20px; display: grid; gap: 14px; }
 .story-lines::before, .story-lines::after { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; border-radius: 2px; background: rgba(255, 255, 255, .08); }
 .story-lines::after { bottom: auto; height: calc((100% - 12px) * var(--p, 1)); background: linear-gradient(var(--tint), color-mix(in srgb, var(--tint) 40%, transparent)); box-shadow: 0 0 12px var(--tint-glow); transition: background .6s; }
-.story-lines li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; font-size: clamp(17px, 1.6vw, 21px); line-height: 1.4; color: var(--ink); opacity: .14; transform: translateX(-6px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
+.story-lines li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; font-size: clamp(17px, 1.6vw, 21px); line-height: 1.4; color: var(--ink); opacity: .34; transform: translateX(-6px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
 .story-lines li.on { opacity: 1; transform: none; }
 .story-lines .num { padding-top: .35em; }
 .story-end { display: grid; gap: 16px; justify-items: start; opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease), transform .6s var(--ease); }

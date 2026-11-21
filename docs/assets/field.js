@@ -167,7 +167,7 @@
       const x = ex * sideW(z, y);
       if (Math.abs(ex) > 0.75 && inArch(z, y)) continue;
       const glass = y > BELT + 0.04 && y < top - 0.04 && z > -1.02 && z < 1.62;
-      if (glass) { if (Math.random() < 0.62) continue; b.put(x, y, z, C.glass, flag); continue; }
+      if (glass) { if (Math.random() < 0.35) continue; b.put(x, y, z, mixc(C.glass, C.ice, 0.25), flag); continue; }
       b.put(x, y, z, y < CLAD && Math.abs(ex) > 0.8 ? clad() : paint(), flag);
     }
     const lines = [];
@@ -254,8 +254,8 @@
   // ---------- шоурум: седан на поворотном подиуме ----------
   function sceneCar() {
     const b = builder(N);
-    putCar(b, N * 0.62, 1);
-    while (b.count() < N * 0.72) { // кольцо подиума
+    putCar(b, N * 0.7, 1);
+    while (b.count() < N * 0.78) { // кольцо подиума
       const a = rnd(0, TAU), r = pick([3.4, 3.55]) + gauss() * 0.02;
       b.put(Math.cos(a) * r, 0.02, Math.sin(a) * r, Math.random() < 0.3 ? C.copper : C.blue, 0);
     }
@@ -335,7 +335,7 @@
 
   function sceneRoad() {
     const b = builder(N);
-    putCar(b, N * 0.26, 1);
+    putCar(b, N * 0.32, 1);
     const carEnd = b.count();
     const Z0 = -70, L = 80;
     while (b.count() < N * 0.97) {
@@ -376,7 +376,7 @@
   const VS = `
   attribute vec3 aFrom, aTo, aCF, aCT; attribute vec3 aMeta;
   uniform mat4 uProj, uView; uniform float uMix, uTime, uSize, uAspect, uPush, uRoad, uSpin, uSway;
-  uniform vec3 uCar; uniform vec2 uMouse;
+  uniform vec3 uCar, uEye; uniform vec2 uMouse; uniform float uCarPush;
   varying vec3 vCol; varying float vAlpha;
   vec3 rotY(vec3 p, float a){ float c=cos(a), s=sin(a); return vec3(p.x*c+p.z*s, p.y, -p.x*s+p.z*c); }
   vec3 place(vec3 p, float f){
@@ -391,22 +391,35 @@
     float seed = aMeta.x;
     float k = clamp(uMix*1.7 - seed*0.7, 0.0, 1.0); k = k*k*(3.0-2.0*k);
     vec3 p = mix(place(aFrom, aMeta.y), place(aTo, aMeta.z), k);
+    // Машина: «сплошной» кузов. Нормаль — по эллипсоиду вокруг центра кузова; точки,
+    // смотрящие от камеры, почти гаснут, поэтому задняя стенка не просвечивает сквозь переднюю.
+    float carTo = (aMeta.z > 0.5 && aMeta.z < 1.5) ? 1.0 : 0.0;
+    float carFrom = (aMeta.y > 0.5 && aMeta.y < 1.5) ? 1.0 : 0.0;
+    float carW = mix(carFrom, carTo, k);
+    float vis = 1.0;
+    if (carW > 0.0) {
+      vec3 src = carTo > 0.5 ? aTo : aFrom;
+      vec3 n = rotY(normalize(vec3(src.x / 0.95, (src.y - 0.8) / 0.62, src.z / 2.75)), uCar.z);
+      float facing = dot(n, normalize(uEye - p));
+      vis = mix(1.0, 0.06 + 0.94 * smoothstep(-0.2, 0.2, facing), carW);
+    }
     float arc = sin(k*3.14159);
     p += vec3(sin(seed*91.0), cos(seed*57.0)*0.6+0.5, sin(seed*33.0)) * arc * 1.8;
-    p += vec3(sin(uTime*1.3+seed*80.0), cos(uTime*1.1+seed*60.0), sin(uTime*0.9+seed*40.0)) * 0.022;
+    p += vec3(sin(uTime*1.3+seed*80.0), cos(uTime*1.1+seed*60.0), sin(uTime*0.9+seed*40.0)) * 0.022 * (1.0 - carW);
     vec4 v = uView * vec4(p, 1.0);
     vec4 c = uProj * v;
     vec2 ndc = c.xy / c.w;
     vec2 d = ndc - uMouse; d.x *= uAspect;
     float r2 = dot(d, d);
-    float push = uPush * exp(-r2 / 0.02);
+    float push = uPush * exp(-r2 / 0.02) * (1.0 - carW * uCarPush);
     if (r2 > 0.000001) ndc += normalize(d) * push * vec2(1.0/uAspect, 1.0);
     c.xy = ndc * c.w;
     gl_Position = c;
-    float tw = 0.7 + 0.3*sin(uTime*2.1 + seed*120.0);
+    float tw = mix(0.78 + 0.22*sin(uTime*2.1 + seed*120.0), 1.0, carW);
     gl_PointSize = max(uSize * 0.34 * tw * (0.55 + seed*0.9) / pow(max(-v.z, 0.5), 0.6), 1.4);
     vCol = mix(aCF, aCT, k) * (1.0 + push*9.0);
-    vAlpha = clamp(1.0 - (-v.z - 14.0)/80.0, 0.15, 1.0);
+    vAlpha = clamp(1.0 - (-v.z - 14.0)/80.0, 0.15, 1.0) * vis;
+    vCol *= mix(1.0, 1.25, carW);
   }`;
   const FS = `
   precision mediump float; varying vec3 vCol; varying float vAlpha;
@@ -417,7 +430,7 @@
   void main(){ vec4 v = uView * vec4(aPos, 1.0); gl_Position = uProj * v; gl_PointSize = max(uSize * (0.4 + aCol.a) / max(-v.z, 0.5), 1.0); vCol = aCol; }`;
   const FS2 = `
   precision mediump float; varying vec4 vCol;
-  void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.0, length(q)) * vCol.a; gl_FragColor = vec4(vCol.rgb * a, a); }`;
+  void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.32, length(q)) * vCol.a; gl_FragColor = vec4(vCol.rgb * a, a); }`;
 
   function program(vs, fs) {
     const make = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
@@ -527,7 +540,7 @@
   // ---------- ввод ----------
   addEventListener("pointermove", e => {
     state.mouseT[0] = (e.clientX / W) * 2 - 1; state.mouseT[1] = 1 - (e.clientY / H) * 2;
-    state.pushT = 0.06; dirty = true;
+    state.pushT = 0.035; dirty = true;
   }, { passive: true });
   document.documentElement.addEventListener("pointerleave", () => { state.pushT = 0; });
   addEventListener("pointerdown", e => {
@@ -644,7 +657,7 @@
         const vx = (state.car[0] - prevX) / Math.max(dt, 1e-3);
         state.carV[0] = vx; state.carV[1] = 0;
         state.car[2] = lerp(state.car[2], Math.max(-0.4, Math.min(0.4, -vx * 0.12)), 1 - Math.exp(-dt * 6));
-        if (!reduced && state.carActive > 0.5) emit(Math.floor((45 + Math.abs(vx) * 60) * dt + Math.random()));
+        if (!reduced && state.carActive > 0.5) emit(Math.floor((22 + Math.abs(vx) * 30) * dt + Math.random()));
       } else {
         // шоурум: машина стоит на подиуме, медленно вращается, курсор доворачивает её
         state.turn = (state.turn + dt * 0.18) % TAU;
@@ -667,7 +680,7 @@
     gl.uniform1f(P.u.uMix, state.mix); gl.uniform1f(P.u.uTime, state.time); gl.uniform1f(P.u.uSize, size);
     gl.uniform1f(P.u.uAspect, W / H); gl.uniform1f(P.u.uPush, reduced ? 0 : state.push);
     gl.uniform1f(P.u.uRoad, state.road); gl.uniform1f(P.u.uSpin, state.spin); gl.uniform1f(P.u.uSway, state.sway);
-    gl.uniform3f(P.u.uCar, state.car[0], state.car[1], state.car[2]); gl.uniform2f(P.u.uMouse, state.mouse[0], state.mouse[1]);
+    gl.uniform3f(P.u.uCar, state.car[0], state.car[1], state.car[2]); gl.uniform3f(P.u.uEye, eye[0], eye[1], eye[2]); gl.uniform1f(P.u.uCarPush, 1.0); gl.uniform2f(P.u.uMouse, state.mouse[0], state.mouse[1]);
     attr(P.a.aFrom, B.from, 3); attr(P.a.aTo, B.to, 3); attr(P.a.aCF, B.cf, 3); attr(P.a.aCT, B.ct, 3); attr(P.a.aMeta, B.meta, 3);
     gl.drawArrays(gl.POINTS, 0, N);
     for (const k of ["aFrom", "aTo", "aCF", "aCT", "aMeta"]) gl.disableVertexAttribArray(P.a[k]);
@@ -676,7 +689,7 @@
       gl.blendFunc(gl.ONE, gl.ONE);
       gl.useProgram(P2.p);
       gl.uniformMatrix4fv(P2.u.uProj, false, proj); gl.uniformMatrix4fv(P2.u.uView, false, basis.m);
-      gl.uniform1f(P2.u.uSize, size * 1.6);
+      gl.uniform1f(P2.u.uSize, size * 0.6);
       upload(B2.pos, sprayPos); attr(P2.a.aPos, B2.pos, 3);
       upload(B2.col, sprayCol); attr(P2.a.aCol, B2.col, 4);
       gl.drawArrays(gl.POINTS, 0, SPRAY);

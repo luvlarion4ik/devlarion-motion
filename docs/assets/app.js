@@ -204,13 +204,17 @@
   const restart = (el, cls) => { el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); };
   if (!reduced) {
     const headerMark = document.querySelector(".brand .dl-mark");
-    if (headerMark) setTimeout(() => restart(headerMark, "play"), 300);
+    const headerWord = document.querySelector(".brand .brandmark");
+    if (headerMark) setTimeout(() => { restart(headerMark, "play"); restart(headerWord, "play"); }, 300);
     // наведение (или касание) на логотип в шапке и подвале — полное проигрывание знака
     for (const host of $$(".brand, .foot-brand, .founder")) {
       const m = host.querySelector(".dl-mark");
       if (!m) continue;
-      host.addEventListener("pointerenter", () => restart(m, "play"));
-      host.addEventListener("focusin", () => restart(m, "play"));
+      // играет и знак, и вся надпись Devlarion по буквам
+      const word = host.querySelector(".brandmark");
+      const play = () => { restart(m, "play"); if (word) restart(word, "play"); };
+      host.addEventListener("pointerenter", play);
+      host.addEventListener("focusin", play);
     }
   }
 
