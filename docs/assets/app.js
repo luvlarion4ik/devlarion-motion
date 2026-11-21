@@ -94,7 +94,7 @@
     const sib = [...el.parentElement.children].filter(c => c.hasAttribute("data-reveal"));
     el.style.setProperty("--i", Math.min(sib.indexOf(el), 4));
   }
-  const drawTargets = $$(".tp-icon, .pack-icon");
+  const drawTargets = $$(".tp-icon, .pack-icon, .btn-ico");
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(entries => {
       for (const en of entries) if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
@@ -108,7 +108,7 @@
     }, { threshold: 0.6 });
     drawTargets.forEach(el => io2.observe(el));
   } else reveal.forEach(el => el.classList.add("in"));
-  for (const el of drawTargets) el.closest(".pack, .product, .panel")?.addEventListener("pointerenter", () => { el.classList.remove("draw"); void el.offsetWidth; el.classList.add("draw"); });
+  for (const el of drawTargets) el.closest(".pack, .product, .panel, .btn-anim")?.addEventListener("pointerenter", () => { el.classList.remove("draw"); void el.offsetWidth; el.classList.add("draw"); });
 
   // ---------- блики и наклоны за курсором ----------
   if (fine && !reduced) {
@@ -219,7 +219,7 @@
   }
 
   // ---------- «О студии»: знак собирается по мере прокрутки, текст раскрывается по строчкам ----------
-  // 0–30% — прорисовывается контур, 30–55% — заливка, 55–75% — вырез L, дальше — финальный блик и карточка основателя.
+  // 0–22% — прорисовывается контур, 22–40% — заливка, 40–56% — вырез L, к 70% — финальный блик и карточка основателя.
   const story = document.querySelector("[data-story]");
   if (story) {
     const svg = story.querySelector(".story-svg");
@@ -231,18 +231,19 @@
       const r = story.getBoundingClientRect();
       const p = reduced ? 1 : clamp(-r.top / Math.max(r.height - innerHeight, 1));
       // переменные ставим на всю секцию: от них зависят знак, подсветка, шкала прогресса у строк
-      story.style.setProperty("--p", clamp(p / 0.82).toFixed(3));
-      story.style.setProperty("--p1", clamp(p / 0.3).toFixed(3));
-      story.style.setProperty("--p2", clamp((p - 0.3) / 0.25).toFixed(3));
-      story.style.setProperty("--p3", clamp((p - 0.55) / 0.2).toFixed(3));
-      story.style.setProperty("--p4", clamp((p - 0.78) / 0.1).toFixed(3));
-      lines.forEach((li, k) => li.classList.toggle("on", p >= [0.02, 0.3, 0.55, 0.75][k]));
-      end.classList.toggle("on", p >= 0.82);
+      story.style.setProperty("--p", clamp(p / 0.7).toFixed(3));
+      story.style.setProperty("--p1", clamp(p / 0.22).toFixed(3));
+      story.style.setProperty("--p2", clamp((p - 0.22) / 0.18).toFixed(3));
+      story.style.setProperty("--p3", clamp((p - 0.4) / 0.16).toFixed(3));
+      story.style.setProperty("--p4", clamp((p - 0.58) / 0.1).toFixed(3));
+      lines.forEach((li, k) => li.classList.toggle("on", p >= [0.02, 0.2, 0.38, 0.54][k]));
+      end.classList.toggle("on", p >= 0.66);
       // знак собран: блик по поверхности и световая волна вокруг
-      if (p >= 0.82 && !shone && !reduced) { shone = true; restart(svg, "shine"); restart(story, "done"); }
-      if (p < 0.6) { shone = false; story.classList.remove("done"); }
+      if (p >= 0.68 && !shone && !reduced) { shone = true; restart(svg, "shine"); restart(story, "done"); }
+      if (p < 0.5) { shone = false; story.classList.remove("done"); }
     };
-    addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    let queued = false;
+    addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; update(); }); } }, { passive: true });
     addEventListener("resize", update);
     update();
     // наведение или касание собранного знака — полное проигрывание анимации

@@ -8,7 +8,8 @@ import { starterPackages, serviceCards, renderQuiz, estimator } from "../content
 const root = new URL("../", import.meta.url);
 const SITE = process.env.DEVLARION_MOTION_URL || "https://luvlarion4ik.github.io/devlarion-motion/";
 const BASE = new URL(SITE).pathname; // /devlarion-motion/
-const classic = id.portfolio;
+const classic = process.env.DEVLARION_SITE_URL || id.portfolio;
+const studio = process.env.DEVLARION_STUDIO_URL;
 const icons = {};
 for (const f of await readdir(new URL("docs/assets/icons/", root))) {
   icons[f.slice(0, -4)] = (await readFile(new URL("docs/assets/icons/" + f, root), "utf8")).trim().replace(/^<svg /, '<svg class="ai-icon" ');
@@ -268,7 +269,7 @@ function page(lang, A) {
         <div class="story-end">
           <div class="founder">${mark("small")}<div><b>${esc(id.founder[lang])}</b><small>${l("Основатель · архитектор и разработчик", "Founder · architect and developer")}</small></div></div>
           <p class="chips">${stack.map(x => `<span>${x}</span>`).join("")}</p>
-          <div class="row"><a class="btn" href="${id.threads}" target="_blank" rel="noopener">${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost" href="${id.github}" target="_blank" rel="noopener">GitHub</a></div>
+          <div class="row"><a class="btn btn-anim" href="${id.threads}" target="_blank" rel="noopener"><span class="btn-ico" data-ico="threads">${icons.threads}</span>${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost btn-anim" href="${id.github}" target="_blank" rel="noopener"><span class="btn-ico" data-ico="github">${icons.github}</span>GitHub</a></div>
         </div>
       </div>
     </div>
@@ -294,7 +295,7 @@ function page(lang, A) {
       <div class="social">${socials.map(([label, href, icon]) => `<a href="${esc(href)}" aria-label="${esc(label)}" title="${esc(label)}" target="_blank" rel="noopener">${icons[icon]}</a>`).join("")}</div></div>
     <div class="foot-links">
       <p class="fine">© 2026 Devlarion · ${esc(id.founder[lang])}</p>
-      <p class="fine"><a href="${old}">${l("Классическая версия сайта", "Classic site")}</a> · <a href="${old}privacy/">${l("Конфиденциальность", "Privacy")}</a> · <a href="${A}licenses/animateicons.txt">${l("Лицензии", "Licences")}</a> · <button type="button" class="linkish" data-share-page>${l("Поделиться", "Share")}</button> · <a href="${other}" hreflang="${ru ? "en" : "ru"}">${ru ? "English" : "Русский"}</a></p>
+      <p class="fine"><a href="${old}">${l("Классическая версия сайта", "Classic site")}</a> · ${studio ? `<a href="${studio}">${l("Конструктор «Сборка»", "Sborka site builder")}</a> · ` : ""}<a href="${old}privacy/">${l("Конфиденциальность", "Privacy")}</a> · <a href="${A}licenses/animateicons.txt">${l("Лицензии", "Licences")}</a> · <button type="button" class="linkish" data-share-page>${l("Поделиться", "Share")}</button> · <a href="${other}" hreflang="${ru ? "en" : "ru"}">${ru ? "English" : "Русский"}</a></p>
     </div>
   </footer>
 </section>
