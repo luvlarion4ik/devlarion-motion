@@ -152,51 +152,73 @@
   };
   const inArch = (z, y) => WHEELS.some(wz => Math.hypot(z - wz, y - WR) < WR + 0.08);
   const CHROME = [1.45, 1.5, 1.65], RED = [2.0, 0.2, 0.25], RED2 = [0.9, 0.08, 0.12], AMBER = [1.9, 1.05, 0.3];
+  // Оранжерея W124: основание лобового стекла, верх рамки, конец крыши и основание заднего стекла.
+  const ZC = -1.05, ZH = -0.3, ZR = 0.9, ZB = 1.6, ROOF = 1.44, ROOFW = 0.76;
+  const lerpN = (a, b, t) => a + (b - a) * t;
+  // точка на стойке/стекле: u — вдоль (0 низ → 1 верх), x — доля полуширины (−1…1)
+  const aPillar = (u, xs) => [xs * lerpN(halfW(ZC), ROOFW, u), lerpN(0.93, 1.41, u), lerpN(ZC + 0.04, ZH, u)];
+  const cPillar = (u, xs) => [xs * lerpN(halfW(ZB), ROOFW, u), lerpN(1.0, 1.42, u), lerpN(ZB - 0.02, ZR, u)];
+  const WF = -1.6, WRZ = 1.53;
   function putCar(b, n, flag) {
-    const end = b.count();
-    const surfEnd = end + n * 0.46, lineEnd = end + n * 0.82, last = end + n;
+    const start = b.count();
+    const surfEnd = start + n * 0.4, glassEnd = start + n * 0.5, lineEnd = start + n * 0.84, last = start + n;
     const paint = () => mixc(C.blue, C.ice, 0.3 + Math.random() * 0.5);
     const clad = () => mixc(C.dim, C.blue, 0.35 + Math.random() * 0.3);
-    // поверхность кузова: почти прямоугольное сечение
+    const GLASS = mixc(C.glass, C.ice, 0.18);
+    // кузов ниже линии окон + крыша, капот, багажник (оранжерею строим отдельно)
     while (b.count() < surfEnd) {
       const z = rnd(-2.7, 2.7), top = lerp1(TOP, z), bot = lerp1(BOTTOM, z);
       const th = rnd(0, TAU), c = Math.cos(th), s = Math.sin(th);
       const ey = Math.sign(s) * Math.pow(Math.abs(s), 0.24);
-      const y = (bot + top) / 2 + (top - bot) / 2 * ey;
+      let y = (bot + top) / 2 + (top - bot) / 2 * ey;
       const ex = Math.sign(c) * Math.pow(Math.abs(c), 0.22);
+      const inGreen = z > ZC && z < ZB && y > BELT + 0.02;
+      if (inGreen) {
+        if (z < ZH || z > ZR) continue;            // лобовое и заднее стекло — отдельно
+        y = ROOF - 0.005;                          // плоская крыша
+        b.put(ex * ROOFW * 0.98, y, z, paint(), flag); continue;
+      }
       const x = ex * sideW(z, y);
       if (Math.abs(ex) > 0.75 && inArch(z, y)) continue;
-      const glass = y > BELT + 0.04 && y < top - 0.04 && z > -1.02 && z < 1.62;
-      if (glass) { if (Math.random() < 0.35) continue; b.put(x, y, z, mixc(C.glass, C.ice, 0.25), flag); continue; }
       b.put(x, y, z, y < CLAD && Math.abs(ex) > 0.8 ? clad() : paint(), flag);
+    }
+    // стёкла: лобовое, заднее и боковые (две двери с B-стойкой)
+    while (b.count() < glassEnd) {
+      const k = Math.random(), u = Math.random(), xs = rnd(-0.94, 0.94);
+      if (k < 0.3) { const q = aPillar(u, xs); b.put(q[0], q[1], q[2], GLASS, flag); }
+      else if (k < 0.52) { const q = cPillar(u, xs); b.put(q[0], q[1], q[2], GLASS, flag); }
+      else {
+        const sd = pick([-1, 1]), z = rnd(ZC + 0.12, ZB - 0.1);
+        if (Math.abs(z - 0.34) < 0.05) continue;     // B-стойка
+        const topY = z < ZH ? lerpN(0.93, 1.41, (z - ZC) / (ZH - ZC)) : z > ZR ? lerpN(1.42, 1.0, (z - ZR) / (ZB - ZR)) : ROOF;
+        const y = rnd(BELT + 0.04, topY - 0.06);
+        if (y < BELT + 0.04) continue;
+        b.put(sd * lerpN(halfW(z), ROOFW, (y - BELT) / (ROOF - BELT)) * 1.005, y, z, GLASS, flag);
+      }
     }
     const lines = [];
     const line = (w, fn) => lines.push([w, fn]);
     const side = () => pick([-1, 1]);
-    // хромированная линия окон и пояс
-    line(2.4, () => { const z = rnd(-2.5, 2.55); return [side() * halfW(z) * 1.0, BELT, z, CHROME]; });
-    // верхняя кромка молдинга
-    line(2.2, () => { const z = rnd(-2.6, 2.6); if (inArch(z, CLAD)) return null; return [side() * halfW(z) * 1.01, CLAD, z, C.ice]; });
-    // рамки боковых окон, стойки B и C
-    line(3, () => {
+    line(2.2, () => { const z = rnd(-2.5, 2.55); return [side() * halfW(z), BELT, z, CHROME]; });                       // хромированная линия окон
+    line(2.0, () => { const z = rnd(-2.6, 2.6); if (inArch(z, CLAD)) return null; return [side() * halfW(z) * 1.01, CLAD, z, C.ice]; }); // кромка молдинга
+    line(2.6, () => { const q = aPillar(Math.random(), side()); return [q[0], q[1], q[2], CHROME]; });                   // A-стойки
+    line(2.6, () => { const q = cPillar(Math.random(), side() * 1.0); return [q[0], q[1], q[2], CHROME]; });             // C-стойки
+    line(1.6, () => { const z = rnd(ZH, ZR); return [side() * ROOFW, ROOF, z, CHROME]; });                               // рейлинги крыши
+    line(1.6, () => { const u = pick([0, 1]); const q = aPillar(u, rnd(-1, 1)); return [q[0], q[1], q[2], CHROME]; });   // рамка лобового
+    line(1.2, () => { const u = pick([0, 1]); const q = cPillar(u, rnd(-1, 1)); return [q[0], q[1], q[2], CHROME]; });   // рамка заднего
+    line(1.4, () => {                                                                                                     // B-стойка и рамки окон
+      const sd = side(), z = 0.34 + gauss() * 0.012, y = rnd(BELT, ROOF);
+      return [sd * lerpN(halfW(z), ROOFW, (y - BELT) / (ROOF - BELT)) * 1.01, y, z, CHROME];
+    });
+    line(1.2, () => { const z = rnd(-2.6, ZC); return [side() * halfW(z) * 0.96, lerp1(TOP, z), z, C.ice]; });           // кромки капота
+    line(0.9, () => { const z = rnd(ZB, 2.65); return [side() * halfW(z) * 0.96, lerp1(TOP, z), z, C.ice]; });            // кромки багажника
+    line(1.8, () => { const wz = pick(WHEELS), a = rnd(0, Math.PI), sd = side(); const z = wz + Math.cos(a) * (WR + 0.09), y = WR + Math.sin(a) * (WR + 0.09); return [sd * halfW(z) * 1.01, y, z, C.ice]; }); // арки
+    line(1.1, () => {                                                                                                     // боковые зеркала
       const sd = side(), k = Math.random();
-      let z, y;
-      if (k < 0.45) { z = rnd(-0.95, 1.55); y = lerp1(TOP, z) - 0.06; }
-      else if (k < 0.75) { z = rnd(-0.95, 1.55); y = BELT + 0.03; }
-      else { z = pick([-0.95, 0.32, 0.36, 1.55]) + gauss() * 0.012; y = rnd(BELT + 0.03, lerp1(TOP, z) - 0.06); }
-      return [sd * sideW(z, y), y, z, CHROME];
+      if (k < 0.75) return [sd * rnd(1.0, 1.13), rnd(0.98, 1.08), rnd(-0.86, -0.76), k < 0.2 ? CHROME : paint()];
+      return [sd * rnd(0.94, 1.0), rnd(0.97, 1.0), rnd(-0.84, -0.78), C.ice];
     });
-    // кромки крыши и плоского капота
-    line(1.6, () => { const z = rnd(-0.25, 0.95); const y = lerp1(TOP, z); return [side() * sideW(z, y - 0.01) * 0.97, y, z, C.ice]; });
-    line(1.4, () => { const z = rnd(-2.6, -1.1); return [side() * halfW(z) * 0.96, lerp1(TOP, z), z, C.ice]; });
-    // арки колёс
-    line(2, () => {
-      const wz = pick(WHEELS), a = rnd(0, Math.PI), sd = side();
-      const z = wz + Math.cos(a) * (WR + 0.09), y = WR + Math.sin(a) * (WR + 0.09);
-      return [sd * halfW(z) * 1.01, y, z, C.ice];
-    });
-    // решётка радиатора: хромированная рамка, вертикальные ламели, горизонтальная перекладина
-    line(2.2, () => {
+    line(2.2, () => {                                                                                                     // решётка радиатора
       const k = Math.random(), z = -2.73;
       if (k < 0.4) {
         const x0 = -0.26, x1 = 0.26, y0 = 0.52, y1 = 0.86, w = x1 - x0, h = y1 - y0, q = rnd(0, 2 * (w + h));
@@ -206,48 +228,33 @@
       if (k < 0.85) return [Math.round(rnd(-0.22, 0.22) / 0.055) * 0.055, rnd(0.54, 0.84), z + 0.01, mixc(C.ice, CHROME, 0.5)];
       return [rnd(-0.25, 0.25), 0.69, z, CHROME];
     });
-    // прямоугольные фары с решёткой отражателей и янтарные поворотники
-    line(2.4, () => {
+    line(2.4, () => {                                                                                                     // фары и поворотники
       const sd = side(), k = Math.random();
-      if (k < 0.82) {
-        const x = rnd(0.32, 0.8), y = rnd(0.58, 0.77);
-        const edge = x < 0.34 || x > 0.78 || y < 0.6 || y > 0.75;
-        return [sd * x, y, -2.68, edge ? CHROME : [1.9, 1.9, 2.0]];
-      }
+      if (k < 0.82) { const x = rnd(0.32, 0.8), y = rnd(0.58, 0.77); const edge = x < 0.34 || x > 0.78 || y < 0.6 || y > 0.75; return [sd * x, y, -2.68, edge ? CHROME : [1.9, 1.9, 2.0]]; }
       return [sd * rnd(0.82, 0.92), rnd(0.58, 0.77), -2.66, AMBER];
     });
-    // бамперы: широкая тёмная полоса с хромированной вставкой
-    line(1.6, () => { const zf = pick([-2.72, 2.72]), k = Math.random(); return [rnd(-0.93, 0.93), k < 0.35 ? 0.5 : rnd(0.38, 0.5), zf, k < 0.35 ? CHROME : C.dim]; });
-    // рифлёные задние фонари и ниша номера
-    line(2.6, () => {
-      const sd = side(), x = rnd(0.38, 0.93), y = 0.66 + Math.floor(rnd(0, 6)) * 0.04 + gauss() * 0.004;
-      const rib = Math.round((y - 0.66) / 0.04) % 2 === 0;
-      return [sd * x, y, 2.71, rib ? RED : RED2];
-    });
-    line(0.6, () => { const p = Math.random(); return p < 0.5 ? [rnd(-0.3, 0.3), pick([0.56, 0.76]), 2.7, C.ice] : [pick([-0.3, 0.3]), rnd(0.56, 0.76), 2.7, C.ice]; });
+    line(1.6, () => { const zf = pick([-2.72, 2.72]), k = Math.random(); return [rnd(-0.93, 0.93), k < 0.35 ? 0.5 : rnd(0.38, 0.5), zf, k < 0.35 ? CHROME : C.dim]; }); // бамперы
+    line(2.6, () => { const sd = side(), x = rnd(0.38, 0.93), y = 0.66 + Math.floor(rnd(0, 6)) * 0.04 + gauss() * 0.004; return [sd * x, y, 2.71, Math.round((y - 0.66) / 0.04) % 2 === 0 ? RED : RED2]; }); // рифлёные фонари
+    line(0.6, () => { const q = Math.random(); return q < 0.5 ? [rnd(-0.3, 0.3), pick([0.56, 0.76]), 2.7, C.ice] : [pick([-0.3, 0.3]), rnd(0.56, 0.76), 2.7, C.ice]; }); // номер
+    line(0.3, () => [0.5 + gauss() * 0.02, 0.32, rnd(2.6, 2.78), CHROME]);                                              // выхлопная труба
     const total = lines.reduce((sum, [w]) => sum + w, 0);
     while (b.count() < lineEnd) {
       let r = Math.random() * total, fn = lines[0][1];
       for (const [w, f] of lines) { r -= w; if (r <= 0) { fn = f; break; } }
       const pt = fn();
       if (!pt) continue;
-      b.put(pt[0] + gauss() * 0.006, pt[1] + gauss() * 0.006, pt[2], pt[3], flag);
+      b.put(pt[0] + gauss() * 0.005, pt[1] + gauss() * 0.005, pt[2], pt[3], flag);
     }
-    // колёса: шина, плоский диск с 15 отверстиями («гуллидекель»), ступица
+    // колёса: флаг 6 — передние (крутятся и поворачиваются), 7 — задние (крутятся)
     while (b.count() < last) {
-      const sd = side(), wz = pick(WHEELS), a = rnd(0, TAU), k = Math.random();
+      const sd = side(), front = Math.random() < 0.5, wz = front ? WF : WRZ, wf = front ? 6 : 7, a = rnd(0, TAU), k = Math.random();
       const cx = sd * 0.84, face = cx + sd * 0.12;
-      if (k < 0.34) b.put(cx + rnd(-0.12, 0.12), WR + Math.cos(a) * WR, wz + Math.sin(a) * WR, C.dim, flag);
-      else if (k < 0.62) {
+      if (k < 0.3) b.put(cx + rnd(-0.12, 0.12), WR + Math.cos(a) * WR, wz + Math.sin(a) * WR, C.dim, wf);
+      else if (k < 0.6) {
         const hole = Math.floor(rnd(0, 15)), ha = hole / 15 * TAU, hr = WR * 0.6, rr = 0.045;
-        b.put(face, WR + Math.cos(ha) * hr + Math.cos(a) * rr, wz + Math.sin(ha) * hr + Math.sin(a) * rr, CHROME, flag);
-      } else if (k < 0.86) {
-        const rr = WR * pick([0.8, 0.82, 0.4]);
-        b.put(face, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, C.ice, flag);
-      } else {
-        const rr = WR * Math.sqrt(Math.random()) * 0.78;
-        b.put(face, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, mixc(C.dim, C.ice, 0.4), flag);
-      }
+        b.put(face, WR + Math.cos(ha) * hr + Math.cos(a) * rr, wz + Math.sin(ha) * hr + Math.sin(a) * rr, CHROME, wf);
+      } else if (k < 0.84) { const rr = WR * pick([0.8, 0.82, 0.4]); b.put(face, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, C.ice, wf); }
+      else { const rr = WR * Math.sqrt(Math.random()) * 0.78; b.put(face, WR + Math.cos(a) * rr, wz + Math.sin(a) * rr, mixc(C.dim, C.ice, 0.4), wf); }
     }
   }
 
@@ -338,23 +345,32 @@
     putCar(b, N * 0.32, 1);
     const carEnd = b.count();
     const Z0 = -70, L = 80;
+    const WARM = [2.2, 1.55, 0.8];
     while (b.count() < N * 0.97) {
-      const z = Z0 + Math.random() * L;
-      const k = Math.random();
-      if (k < 0.22) b.put(rnd(-6, 6), 0, z, mixc(C.dim, C.ice, Math.random() * 0.35), 2); // асфальт
-      else if (k < 0.42) { // бордюр: плотные красно-белые сегменты с подсветкой
-        const red = Math.floor((z - Z0) / 0.9) % 2 === 0;
-        b.put(pick([-6.3, 6.3]) + rnd(-0.45, 0.45), 0.03 + Math.random() * 0.08, z, red ? [2.8, 0.4, 0.45] : [2.5, 2.5, 2.6], 2);
-      } else { // зелёные холмы по краям дороги
-        const side = pick([-1, 1]), dx = Math.pow(Math.random(), 1.7) * 26;
-        const x = side * (7 + dx), hill = Math.pow(dx / 26, 1.6) * 5 + Math.sin(z * 0.08 + side) * 0.4 * (dx / 26);
+      const z = Z0 + Math.random() * L, k = Math.random();
+      if (k < 0.16) b.put(rnd(-6, 6), 0, z, mixc(C.dim, C.ice, Math.random() * 0.35), 2);                                     // асфальт
+      else if (k < 0.3) { const red = Math.floor((z - Z0) / 0.9) % 2 === 0; b.put(pick([-6.3, 6.3]) + rnd(-0.45, 0.45), 0.03 + Math.random() * 0.08, z, red ? [2.8, 0.4, 0.45] : [2.5, 2.5, 2.6], 2); } // бордюр
+      else if (k < 0.35) { if (((z - Z0) % 7) < 3) b.put(pick([-2.1, 2.1]) + gauss() * 0.05, 0.015, z, [1.7, 1.7, 1.8], 2); }  // пунктир полос
+      else if (k < 0.42) {                                                                                                     // фонари каждые 16 единиц
+        const zl = Z0 + Math.floor(Math.random() * (L / 16)) * 16 + 4, sd = pick([-1, 1]), q = Math.random();
+        if (q < 0.45) b.put(sd * 8.3 + gauss() * 0.03, rnd(0, 5.3), zl, mixc(C.dim, C.ice, 0.35), 2);                       // столб
+        else if (q < 0.6) b.put(sd * rnd(6.9, 8.3), 5.3 + gauss() * 0.02, zl, mixc(C.dim, C.ice, 0.45), 2);                 // кронштейн
+        else if (q < 0.78) b.put(sd * 6.9 + gauss() * 0.12, 5.2 + gauss() * 0.06, zl + gauss() * 0.12, WARM, 2);             // лампа
+        else { const r = Math.sqrt(Math.random()) * 2.6, an = rnd(0, TAU); b.put(sd * 5.4 + Math.cos(an) * r * 0.8, 0.02, zl + Math.sin(an) * r, mixc(WARM, C.dim, 0.55 + r / 6), 2); } // пятно света
+      }
+      else if (k < 0.46) {                                                                                                     // огни города на горизонте
+        const x = rnd(-60, 60), bh = (Math.sin(x * 0.7) * 0.5 + 0.5) * 3 + Math.random() * 1.5;
+        b.put(x, Math.random() * bh, rnd(-75, -72), Math.random() < 0.3 ? mixc(WARM, C.dim, 0.3) : mixc(C.blue, C.dim, 0.4), 0);
+      }
+      else {                                                                                                                   // зелёные холмы
+        const sd = pick([-1, 1]), dx = Math.pow(Math.random(), 1.7) * 26;
+        const x = sd * (7 + dx), hill = Math.pow(dx / 26, 1.6) * 5 + Math.sin(z * 0.08 + sd) * 0.4 * (dx / 26);
         const glow = Math.random() < 0.06 ? [1.6, 1.9, 1.4] : mixc([0.75, 2.4, 0.7], [0.25, 0.9, 0.35], Math.random() * 0.75);
         b.put(x, hill + gauss() * 0.12, z, glow, 2);
       }
     }
     const scene = b.done();
-    // машина на дороге светится, как фары в ночи
-    for (let i = 0; i < carEnd * 3; i++) scene.col[i] = Math.min(scene.col[i] * 1.9 + 0.25, 2.4);
+    for (let i = 0; i < carEnd * 3; i++) scene.col[i] = Math.min(scene.col[i] * 1.6 + 0.15, 2.4);
     return scene;
   }
 
@@ -376,35 +392,57 @@
   const VS = `
   attribute vec3 aFrom, aTo, aCF, aCT; attribute vec3 aMeta;
   uniform mat4 uProj, uView; uniform float uMix, uTime, uSize, uAspect, uPush, uRoad, uSpin, uSway;
-  uniform vec3 uCar, uEye; uniform vec2 uMouse; uniform float uCarPush;
+  uniform vec3 uCar, uEye, uBody; uniform vec2 uMouse; uniform float uCarPush, uWheel, uSteer;
   varying vec3 vCol; varying float vAlpha;
   vec3 rotY(vec3 p, float a){ float c=cos(a), s=sin(a); return vec3(p.x*c+p.z*s, p.y, -p.x*s+p.z*c); }
+  vec3 body(vec3 p){
+    vec3 q = p - vec3(0.0, 0.55, 0.0);
+    float cp = cos(uBody.x), sp = sin(uBody.x);
+    q = vec3(q.x, q.y*cp - q.z*sp, q.y*sp + q.z*cp);
+    float cr = cos(uBody.y), sr = sin(uBody.y);
+    q = vec3(q.x*cr - q.y*sr, q.x*sr + q.y*cr, q.z);
+    return q + vec3(0.0, 0.55 + uBody.z, 0.0);
+  }
+  vec3 wheel(vec3 p, bool front){
+    vec3 c = vec3(sign(p.x) * 0.9, 0.36, front ? -1.6 : 1.53);
+    vec3 q = p - c;
+    float ca = cos(uWheel), sa = sin(uWheel);
+    q = vec3(q.x, q.y*ca - q.z*sa, q.y*sa + q.z*ca);
+    if (front) q = rotY(q, uSteer);
+    return c + q;
+  }
+  vec3 car(vec3 p){ p = rotY(p, uCar.z); p.x += uCar.x; p.z += uCar.y; return p; }
   vec3 place(vec3 p, float f){
-    if (f > 0.5 && f < 1.5) { p = rotY(p, uCar.z); p.x += uCar.x; p.z += uCar.y; }
-    else if (f > 1.5 && f < 2.5) { p.z = mod(p.z + 70.0 + uRoad, 80.0) - 70.0; }
+    if (f > 0.5 && f < 1.5) return car(body(p));
+    if (f > 5.5 && f < 6.5) return car(wheel(p, true));
+    if (f > 6.5 && f < 7.5) return car(wheel(p, false));
+    if (f > 1.5 && f < 2.5) { p.z = mod(p.z + 70.0 + uRoad, 80.0) - 70.0; }
     else if (f > 2.5 && f < 3.5) { p = rotY(p, uSpin); }
     else if (f > 3.5 && f < 4.5) { p.y += sin(p.x*0.42 + uTime*0.9)*0.6 + cos(p.z*0.45 + uTime*0.6)*0.5; }
-    else if (f > 4.5) { p = rotY(p, uSway); }
+    else if (f > 4.5 && f < 5.5) { p = rotY(p, uSway); }
     return p;
   }
   void main(){
     float seed = aMeta.x;
     float k = clamp(uMix*1.7 - seed*0.7, 0.0, 1.0); k = k*k*(3.0-2.0*k);
-    vec3 p = mix(place(aFrom, aMeta.y), place(aTo, aMeta.z), k);
+    vec3 pa = place(aFrom, aMeta.y), pb = place(aTo, aMeta.z);
+    vec3 p = mix(pa, pb, k);
     // Машина: «сплошной» кузов. Нормаль — по эллипсоиду вокруг центра кузова; точки,
     // смотрящие от камеры, почти гаснут, поэтому задняя стенка не просвечивает сквозь переднюю.
-    float carTo = (aMeta.z > 0.5 && aMeta.z < 1.5) ? 1.0 : 0.0;
-    float carFrom = (aMeta.y > 0.5 && aMeta.y < 1.5) ? 1.0 : 0.0;
+    float carTo = ((aMeta.z > 0.5 && aMeta.z < 1.5) || (aMeta.z > 5.5 && aMeta.z < 7.5)) ? 1.0 : 0.0;
+    float carFrom = ((aMeta.y > 0.5 && aMeta.y < 1.5) || (aMeta.y > 5.5 && aMeta.y < 7.5)) ? 1.0 : 0.0;
     float carW = mix(carFrom, carTo, k);
     float vis = 1.0;
     if (carW > 0.0) {
       vec3 src = carTo > 0.5 ? aTo : aFrom;
-      vec3 n = rotY(normalize(vec3(src.x / 0.95, (src.y - 0.8) / 0.62, src.z / 2.75)), uCar.z);
+      float fl = carTo > 0.5 ? aMeta.z : aMeta.y;
+      vec3 n = fl > 5.5 ? vec3(sign(src.x), 0.0, 0.0) : normalize(vec3(src.x / 0.95, (src.y - 0.8) / 0.62, src.z / 2.75));
+      n = rotY(n, uCar.z);
       float facing = dot(n, normalize(uEye - p));
       vis = mix(1.0, 0.06 + 0.94 * smoothstep(-0.2, 0.2, facing), carW);
     }
-    float arc = sin(k*3.14159);
-    p += vec3(sin(seed*91.0), cos(seed*57.0)*0.6+0.5, sin(seed*33.0)) * arc * 1.8;
+    float arc = sin(k*3.14159) * min(length(pb - pa) * 0.14, 1.6);
+    p += vec3(sin(seed*91.0), cos(seed*57.0)*0.6+0.5, sin(seed*33.0)) * arc;
     p += vec3(sin(uTime*1.3+seed*80.0), cos(uTime*1.1+seed*60.0), sin(uTime*0.9+seed*40.0)) * 0.022 * (1.0 - carW);
     vec4 v = uView * vec4(p, 1.0);
     vec4 c = uProj * v;
@@ -463,6 +501,7 @@
     current: null, mix: 1, time: 0, road: 0, spin: 0, sway: 0,
     mouse: [0, 0], mouseT: [0, 0], push: 0, pushT: 0,
     car: [0, 0, 0], carV: [0, 0], carT: [0, 0], carActive: 0, turn: 0.6,
+    body: [0, 0, 0], wheel: 0, steer: 0, speed: 14, boost: 0, boostT: 0, boostEnd: 0, nextBoost: 6, rev: 0, exhaust: 0,
     cam: { eye: [0, 0.6, 15], at: [0, 0.2, 0], fov: 50 }, scroll: 0,
   };
   let dirty = true;
@@ -470,11 +509,26 @@
   // Повторяем расчёт шейдера на CPU, чтобы смена сцены посреди перехода не давала рывка.
   function placeCPU(x, y, z, f) {
     const rot = a => { const c = Math.cos(a), s = Math.sin(a); const nx = x * c + z * s; z = -x * s + z * c; x = nx; };
-    if (f > 0.5 && f < 1.5) { rot(state.car[2]); x += state.car[0]; z += state.car[1]; }
+    const toCar = () => { rot(state.car[2]); x += state.car[0]; z += state.car[1]; };
+    if (f > 0.5 && f < 1.5) {
+      let qy = y - 0.55, qz = z;
+      const cp = Math.cos(state.body[0]), sp = Math.sin(state.body[0]);
+      [qy, qz] = [qy * cp - qz * sp, qy * sp + qz * cp];
+      const cr = Math.cos(state.body[1]), sr = Math.sin(state.body[1]);
+      [x, qy] = [x * cr - qy * sr, x * sr + qy * cr];
+      y = qy + 0.55 + state.body[2]; z = qz; toCar();
+    } else if (f > 5.5 && f < 7.5) {
+      const front = f < 6.5, cx = Math.sign(x) * 0.9, cy = 0.36, cz = front ? -1.6 : 1.53;
+      let qx = x - cx, qy = y - cy, qz = z - cz;
+      const ca = Math.cos(state.wheel), sa = Math.sin(state.wheel);
+      [qy, qz] = [qy * ca - qz * sa, qy * sa + qz * ca];
+      if (front) { const c = Math.cos(state.steer), s = Math.sin(state.steer); [qx, qz] = [qx * c + qz * s, -qx * s + qz * c]; }
+      x = cx + qx; y = cy + qy; z = cz + qz; toCar();
+    }
     else if (f > 1.5 && f < 2.5) z = ((z + 70 + state.road) % 80 + 80) % 80 - 70;
     else if (f > 2.5 && f < 3.5) rot(state.spin);
     else if (f > 3.5 && f < 4.5) y += Math.sin(x * 0.42 + state.time * 0.9) * 0.6 + Math.cos(z * 0.45 + state.time * 0.6) * 0.5;
-    else if (f > 4.5) rot(state.sway);
+    else if (f > 4.5 && f < 5.5) rot(state.sway);
     return [x, y, z];
   }
   function snapshot() {
@@ -484,7 +538,7 @@
       let k = Math.min(Math.max(m * 1.7 - seed * 0.7, 0), 1); k = k * k * (3 - 2 * k);
       const a = placeCPU(from.pos[i * 3], from.pos[i * 3 + 1], from.pos[i * 3 + 2], meta[i * 3 + 1]);
       const b = to ? placeCPU(to.pos[i * 3], to.pos[i * 3 + 1], to.pos[i * 3 + 2], meta[i * 3 + 2]) : a;
-      const arc = Math.sin(k * Math.PI) * 1.8;
+      const arc = Math.sin(k * Math.PI) * Math.min(Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) * 0.14, 1.6);
       from.pos[i * 3] = a[0] + (b[0] - a[0]) * k + Math.sin(seed * 91) * arc;
       from.pos[i * 3 + 1] = a[1] + (b[1] - a[1]) * k + (Math.cos(seed * 57) * 0.6 + 0.5) * arc;
       from.pos[i * 3 + 2] = a[2] + (b[2] - a[2]) * k + Math.sin(seed * 33) * arc;
@@ -545,7 +599,8 @@
   document.documentElement.addEventListener("pointerleave", () => { state.pushT = 0; });
   addEventListener("pointerdown", e => {
     if (e.target.closest("a, button, input, summary, label, [role=tab], .panel")) return;
-    burst(small ? 160 : 420);
+    gas();
+    burst(small ? 60 : 140);
   });
 
   // ---------- искры ----------
@@ -568,6 +623,25 @@
       sprayMax[i] = sprayLife[i] = rnd(0.9, 2.2);
       sprayBase.set(pick([C.copper, C.copper, C.red, C.white, C.ice, C.wine]), i * 3);
     }
+  }
+  // выхлоп из трубы справа сзади: короткий горячий хвост, быстро гаснет
+  function exhaust(count, power = 1) {
+    const a = state.car[2], c = Math.cos(a), s = Math.sin(a);
+    for (let n = 0; n < count; n++) {
+      const i = sprayHead; sprayHead = (sprayHead + 1) % SPRAY;
+      sprayPos.set(carWorld(0.5 + gauss() * 0.03, 0.32 + gauss() * 0.02, 2.8), i * 3);
+      const back = rnd(3, 7) * power, spread = gauss() * 0.6;
+      let vz = -spread * s + back * c;
+      if (state.current === "road") vz += state.speed * 0.6;
+      sprayVel[i * 3] = spread * c + back * s; sprayVel[i * 3 + 1] = rnd(0.2, 1.2); sprayVel[i * 3 + 2] = vz;
+      sprayMax[i] = sprayLife[i] = rnd(0.25, 0.6);
+      sprayBase.set(pick([[2.2, 1.2, 0.45], [2.4, 1.7, 0.8], [1.8, 0.6, 0.3], C.white]), i * 3);
+    }
+  }
+  function gas() {
+    if (reduced || state.carActive < 0.5) return;
+    if (state.current === "road") { state.boostT = 1; state.boostEnd = state.time + 1.9; state.nextBoost = state.time + rnd(8, 12); }
+    else { state.rev = 1; exhaust(small ? 40 : 90, 1.6); }
   }
   function burst(count) {
     if (reduced || state.carActive < 0.5) return;
@@ -629,7 +703,7 @@
     dirty = false;
     if (!reduced) {
       state.time += dt; state.spin = (state.spin + dt * 0.12) % TAU; state.sway = Math.sin(state.time * 0.35) * 0.2;
-      state.road = (state.road + dt * 14) % 80;
+      state.road = (state.road + dt * state.speed) % 80;
       state.mix = Math.min(state.mix + dt / 2.1, 1);
     }
     const ease = reduced ? 1 : 1 - Math.exp(-dt * 6);
@@ -640,32 +714,56 @@
     const target = cameras[state.current] || cameras.mark;
     const ce = reduced ? 1 : 1 - Math.exp(-dt * 2.2);
     for (let j = 0; j < 3; j++) { state.cam.eye[j] = lerp(state.cam.eye[j], target.eye[j], ce); state.cam.at[j] = lerp(state.cam.at[j], target.at[j], ce); }
-    state.cam.fov = lerp(state.cam.fov, target.fov, ce);
+    state.cam.fov = lerp(state.cam.fov, target.fov + (state.current === "road" ? state.boost * 9 : 0), ce);
     const dolly = (state.scroll - 0.5) * 1.6;
-    const eye = [state.cam.eye[0] + state.mouse[0] * 0.8, state.cam.eye[1] + state.mouse[1] * 0.5 - dolly * 0.3, state.cam.eye[2] - dolly];
+    const shake = state.current === "road" ? state.boost * 0.025 : 0;
+    const eye = [state.cam.eye[0] + state.mouse[0] * 0.8 + Math.sin(state.time * 41) * shake, state.cam.eye[1] + state.mouse[1] * 0.5 - dolly * 0.3 + Math.sin(state.time * 37) * shake, state.cam.eye[2] - dolly];
     const basis = lookAt(eye, state.cam.at);
 
     const carScene = state.current === "car" || state.current === "road";
     state.carActive = lerp(state.carActive, carScene && state.mix > 0.6 ? 1 : 0, ease);
-    if (carScene) {
-      const prevX = state.car[0];
+    if (carScene && !reduced) {
+      const prevX = state.car[0], prevBoost = state.boost;
+      const k6 = 1 - Math.exp(-dt * 6);
       if (state.current === "road") {
-        // дорога: машина перестраивается за курсором влево-вправо и слегка подруливает
+        // газ: периодические ускорения и по клику; дорога разгоняется, нос приподнимается, из трубы бьёт выхлоп
+        if (state.time > state.nextBoost) { state.boostT = 1; state.boostEnd = state.time + 1.9; state.nextBoost = state.time + rnd(7, 11); }
+        if (state.time > state.boostEnd) state.boostT = 0;
+        state.boost = lerp(state.boost, state.boostT, 1 - Math.exp(-dt * (state.boostT ? 2.4 : 1.1)));
+        state.speed = 14 + 26 * state.boost;
         state.carT[0] = Math.max(-4.4, Math.min(4.4, state.mouse[0] * 6));
-        const ck = reduced ? 1 : 1 - Math.exp(-dt * 2.2);
-        state.car[0] = lerp(state.car[0], state.carT[0], ck); state.car[1] = 2.2;
+        state.car[0] = lerp(state.car[0], state.carT[0], 1 - Math.exp(-dt * 2.2)); state.car[1] = 2.2;
         const vx = (state.car[0] - prevX) / Math.max(dt, 1e-3);
         state.carV[0] = vx; state.carV[1] = 0;
-        state.car[2] = lerp(state.car[2], Math.max(-0.4, Math.min(0.4, -vx * 0.12)), 1 - Math.exp(-dt * 6));
-        if (!reduced && state.carActive > 0.5) emit(Math.floor((22 + Math.abs(vx) * 30) * dt + Math.random()));
+        state.car[2] = lerp(state.car[2], Math.max(-0.35, Math.min(0.35, -vx * 0.1)), k6);
+        state.steer = lerp(state.steer, Math.max(-0.45, Math.min(0.45, -vx * 0.09)), k6);
+        state.wheel = (state.wheel - state.speed / WR * dt) % TAU;
+        const accel = (state.boost - prevBoost) / Math.max(dt, 1e-3);
+        const pitchT = Math.max(-0.04, Math.min(0.06, accel * 0.05));
+        const rollT = Math.max(-0.05, Math.min(0.05, vx * 0.012));
+        state.body[0] = lerp(state.body[0], pitchT, 1 - Math.exp(-dt * 5));
+        state.body[1] = lerp(state.body[1], rollT, 1 - Math.exp(-dt * 4));
+        state.body[2] = Math.sin(state.time * 31) * 0.004 * (0.4 + state.boost);
+        if (state.carActive > 0.5) {
+          emit(Math.floor((10 + Math.abs(vx) * 20) * dt + Math.random()));
+          exhaust(Math.floor((6 + state.boost * 140) * dt + Math.random()), 1 + state.boost);
+        }
       } else {
-        // шоурум: машина стоит на подиуме, медленно вращается, курсор доворачивает её
+        // шоурум: подиум вращается, курсор крутит руль; клик — «перегазовка»: кузов покачивается, из трубы хлопок
         state.turn = (state.turn + dt * 0.18) % TAU;
         const yawT = state.turn + state.mouse[0] * 1.1;
         const dy = ((yawT - state.car[2] + Math.PI) % TAU + TAU) % TAU - Math.PI;
-        state.car[2] += dy * (reduced ? 1 : 1 - Math.exp(-dt * 3));
+        state.car[2] += dy * (1 - Math.exp(-dt * 3));
         state.car[0] = lerp(state.car[0], 0, 1 - Math.exp(-dt * 3)); state.car[1] = 0;
         state.carV[0] = 0; state.carV[1] = 0;
+        state.steer = lerp(state.steer, state.mouse[0] * 0.5, 1 - Math.exp(-dt * 4));
+        state.rev *= Math.exp(-dt * 1.6);
+        state.body[0] = Math.sin(state.time * 17) * 0.014 * state.rev + state.rev * 0.012;
+        state.body[1] = Math.sin(state.time * 13 + 1) * 0.008 * state.rev;
+        state.body[2] = Math.sin(state.time * 29) * 0.003 * (0.35 + state.rev);   // работа мотора на холостых
+        state.wheel = lerp(state.wheel, 0, 1 - Math.exp(-dt * 2));
+        state.speed = 14;
+        if (state.rev > 0.08) exhaust(Math.floor(state.rev * 90 * dt + Math.random()), 0.7 + state.rev);
       }
     }
     if (!reduced) stepSpray(dt);
@@ -680,7 +778,7 @@
     gl.uniform1f(P.u.uMix, state.mix); gl.uniform1f(P.u.uTime, state.time); gl.uniform1f(P.u.uSize, size);
     gl.uniform1f(P.u.uAspect, W / H); gl.uniform1f(P.u.uPush, reduced ? 0 : state.push);
     gl.uniform1f(P.u.uRoad, state.road); gl.uniform1f(P.u.uSpin, state.spin); gl.uniform1f(P.u.uSway, state.sway);
-    gl.uniform3f(P.u.uCar, state.car[0], state.car[1], state.car[2]); gl.uniform3f(P.u.uEye, eye[0], eye[1], eye[2]); gl.uniform1f(P.u.uCarPush, 1.0); gl.uniform2f(P.u.uMouse, state.mouse[0], state.mouse[1]);
+    gl.uniform3f(P.u.uCar, state.car[0], state.car[1], state.car[2]); gl.uniform3f(P.u.uEye, eye[0], eye[1], eye[2]); gl.uniform3f(P.u.uBody, state.body[0], state.body[1], state.body[2]); gl.uniform1f(P.u.uWheel, state.wheel); gl.uniform1f(P.u.uSteer, state.steer); gl.uniform1f(P.u.uCarPush, 1.0); gl.uniform2f(P.u.uMouse, state.mouse[0], state.mouse[1]);
     attr(P.a.aFrom, B.from, 3); attr(P.a.aTo, B.to, 3); attr(P.a.aCF, B.cf, 3); attr(P.a.aCT, B.ct, 3); attr(P.a.aMeta, B.meta, 3);
     gl.drawArrays(gl.POINTS, 0, N);
     for (const k of ["aFrom", "aTo", "aCF", "aCT", "aMeta"]) gl.disableVertexAttribArray(P.a[k]);
@@ -699,5 +797,5 @@
   pickSection();
   if (!state.current) go("mark");
   requestAnimationFrame(frame);
-  window.devlarionField = { go, burst, state };
+  window.devlarionField = { go, burst, gas, state };
 })();

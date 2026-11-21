@@ -234,7 +234,7 @@ function page(lang, A) {
 </section>
 
 <section class="section" id="work" data-tint="wine">
-  <div class="stage tall" data-scene="car">${head("02", t.nav[1], t.work, `<p class="drive-hint label"><span class="pulse" aria-hidden="true"></span>${l("Mercedes E-класса W124 на подиуме поворачивается за курсором. Клик по фону — сноп искр.", "The Mercedes W124 turns with your cursor. Click the background for sparks.")}</p>`)}</div>
+  <div class="stage tall" data-scene="car">${head("02", t.nav[1], t.work, `<p class="drive-hint label"><span class="pulse" aria-hidden="true"></span>${l("Mercedes E-класса W124 на подиуме: курсор крутит руль и поворачивает машину, клик — газ.", "Mercedes W124 on the turntable: your cursor steers and turns it, click to rev.")}</p>`)}</div>
   <div class="cases" data-scene="screens">${work}</div>
 </section>
 
