@@ -199,26 +199,33 @@
     if (menuLink) menuLink.closest(".menu").open = false;
   });
 
-  // ---------- эмодзи: если анимация не загрузилась, показываем обычный символ ----------
-  for (const img of $$("img.emoji")) {
-    const fallback = () => {
-      const span = document.createElement("span");
-      span.className = img.className; span.textContent = img.dataset.emoji || img.alt;
-      span.setAttribute("role", "img"); span.setAttribute("aria-label", img.alt);
-      img.replaceWith(span);
-    };
-    if (img.complete && img.src && !img.naturalWidth) fallback(); else img.addEventListener("error", fallback, { once: true });
-  }
-
-  // ---------- логотип в разделе «Студия» периодически проигрывает анимацию, пока виден ----------
-  const loopLogo = document.querySelector("devlarion-logo[data-loop]");
-  if (loopLogo && !reduced && "IntersectionObserver" in window) {
-    let loop = null;
-    const play = () => loopLogo.play?.();
-    new IntersectionObserver(([en]) => {
-      clearInterval(loop);
-      if (en.isIntersecting) { customElements.whenDefined("devlarion-logo").then(() => setTimeout(play, 500)); loop = setInterval(play, 5200); }
-    }, { threshold: 0.5 }).observe(loopLogo);
-    loopLogo.closest(".logo-show")?.addEventListener("pointerenter", play);
+  // ---------- знак Devlarion ----------
+  // play — полное появление (контур → заливка → вырез L → блик), shine — только мягкий блик.
+  const restart = (el, cls) => { el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); };
+  if (!reduced) {
+    const headerMark = document.querySelector(".brand .dl-mark");
+    if (headerMark) setTimeout(() => restart(headerMark, "play"), 300);
+    const show = document.querySelector("[data-logo-show]");
+    const big = show?.querySelector(".dl-mark");
+    if (big && "IntersectionObserver" in window) {
+      let loop = null, played = false;
+      new IntersectionObserver(([en]) => {
+        clearInterval(loop);
+        if (!en.isIntersecting) return;
+        if (!played) { played = true; restart(big, "play"); }
+        loop = setInterval(() => restart(big, "shine"), 6000);
+      }, { threshold: 0.45 }).observe(big);
+      // знак плавно следует наклоном за курсором
+      if (fine) {
+        const tilt = show.querySelector(".logo-tilt");
+        show.addEventListener("pointermove", e => {
+          const b = show.getBoundingClientRect();
+          tilt.style.setProperty("--ly", (((e.clientX - b.left) / b.width - 0.5) * 18).toFixed(1) + "deg");
+          tilt.style.setProperty("--lx", ((0.5 - (e.clientY - b.top) / b.height) * 14).toFixed(1) + "deg");
+        });
+        show.addEventListener("pointerleave", () => { tilt.style.setProperty("--ly", "0deg"); tilt.style.setProperty("--lx", "0deg"); });
+        show.addEventListener("pointerenter", () => restart(big, "shine"));
+      }
+    }
   }
 })();

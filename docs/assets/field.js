@@ -11,7 +11,7 @@
   if (!gl) { document.documentElement.classList.add("no-webgl"); return; }
 
   const small = matchMedia("(max-width: 760px), (pointer: coarse)").matches;
-  const N = small ? 11000 : 26000;
+  const N = small ? 18000 : 56000;
   const SPRAY = small ? 900 : 2600;
   const TAU = Math.PI * 2;
 
@@ -293,22 +293,27 @@
 
   function sceneRoad() {
     const b = builder(N);
-    putCar(b, N * 0.3, 1);
+    putCar(b, N * 0.26, 1);
+    const carEnd = b.count();
     const Z0 = -70, L = 80;
     while (b.count() < N * 0.97) {
       const z = Z0 + Math.random() * L;
       const k = Math.random();
-      if (k < 0.33) b.put(rnd(-6, 6), 0, z, mixc(C.dim, C.blue, Math.random() * 0.3), 2);
-      else if (k < 0.47) {
-        if (((z - Z0) % 6) < 3) b.put(pick([-2, 2]) + gauss() * 0.06, 0.01, z, [1.6, 1.6, 1.7], 2);
-      } else if (k < 0.65) {
-        const red = Math.floor((z - Z0) / 1.6) % 2 === 0;
-        b.put(pick([-6.3, 6.3]) + rnd(-0.35, 0.35), 0.02, z, red ? [1.8, 0.35, 0.4] : [1.6, 1.6, 1.6], 2);
-      } else {
-        b.put(pick([-1, 1]) * rnd(7, 22), gauss() * 0.15, z, Math.random() < 0.12 ? C.copper : mixc(C.sage, C.dim, Math.random() * 0.6), 2);
+      if (k < 0.22) b.put(rnd(-6, 6), 0, z, mixc(C.dim, C.ice, Math.random() * 0.35), 2); // асфальт
+      else if (k < 0.42) { // бордюр: плотные красно-белые сегменты с подсветкой
+        const red = Math.floor((z - Z0) / 0.9) % 2 === 0;
+        b.put(pick([-6.3, 6.3]) + rnd(-0.45, 0.45), 0.03 + Math.random() * 0.08, z, red ? [2.8, 0.4, 0.45] : [2.5, 2.5, 2.6], 2);
+      } else { // зелёные холмы по краям дороги
+        const side = pick([-1, 1]), dx = Math.pow(Math.random(), 1.7) * 26;
+        const x = side * (7 + dx), hill = Math.pow(dx / 26, 1.6) * 5 + Math.sin(z * 0.08 + side) * 0.4 * (dx / 26);
+        const glow = Math.random() < 0.06 ? [1.6, 1.9, 1.4] : mixc([0.75, 2.4, 0.7], [0.25, 0.9, 0.35], Math.random() * 0.75);
+        b.put(x, hill + gauss() * 0.12, z, glow, 2);
       }
     }
-    return b.done();
+    const scene = b.done();
+    // машина на дороге светится, как фары в ночи
+    for (let i = 0; i < carEnd * 3; i++) scene.col[i] = Math.min(scene.col[i] * 1.9 + 0.25, 2.4);
+    return scene;
   }
 
   const builders = { mark: sceneMark, kit: sceneKit, car: sceneCar, screens: sceneScreens, sphere: sceneSphere, galaxy: sceneGalaxy, wave: sceneWave, road: sceneRoad };
@@ -357,13 +362,13 @@
     c.xy = ndc * c.w;
     gl_Position = c;
     float tw = 0.7 + 0.3*sin(uTime*2.1 + seed*120.0);
-    gl_PointSize = max(uSize * tw * (0.55 + seed*0.9) / max(-v.z, 0.5), 1.0);
+    gl_PointSize = max(uSize * 0.34 * tw * (0.55 + seed*0.9) / pow(max(-v.z, 0.5), 0.6), 1.4);
     vCol = mix(aCF, aCT, k) * (1.0 + push*9.0);
-    vAlpha = clamp(1.0 - (-v.z - 8.0)/60.0, 0.06, 1.0);
+    vAlpha = clamp(1.0 - (-v.z - 14.0)/80.0, 0.15, 1.0);
   }`;
   const FS = `
   precision mediump float; varying vec3 vCol; varying float vAlpha;
-  void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.05, length(q)) * vAlpha; gl_FragColor = vec4(vCol * a * 0.62, a); }`;
+  void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.05, length(q)) * vAlpha; gl_FragColor = vec4(vCol * a * 0.5, a * 0.85); }`;
   const VS2 = `
   attribute vec3 aPos; attribute vec4 aCol; uniform mat4 uProj, uView; uniform float uSize;
   varying vec4 vCol;
