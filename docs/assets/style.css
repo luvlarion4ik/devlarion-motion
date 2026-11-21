@@ -376,7 +376,7 @@ main { position: relative; z-index: 2; }
 
 /* ---------- студия ---------- */
 .story { position: relative; height: 260vh; margin-bottom: 8vh; }
-.story-pin { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: minmax(260px, 420px) 1fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
+.story-pin { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-columns: minmax(260px, 420px) 1fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
 .story-mark { position: relative; display: grid; place-items: center; aspect-ratio: 1; cursor: pointer; perspective: 900px; }
 .story-mark::before { content: ""; position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(closest-side, var(--tint-glow), transparent 70%); opacity: calc(.15 + var(--p, 1) * .85); transform: scale(calc(.6 + var(--p, 1) * .5)); transition: background .6s; }
 .story-mark::after { content: ""; position: absolute; inset: 18%; border-radius: 50%; border: 1.5px solid var(--tint); opacity: 0; pointer-events: none; }

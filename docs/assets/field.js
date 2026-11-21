@@ -455,18 +455,18 @@
     gl_Position = c;
     float tw = mix(0.78 + 0.22*sin(uTime*2.1 + seed*120.0), 1.0, carW);
     float ps = uSize * 0.34 * tw * (0.55 + seed*0.9) / pow(max(-v.z, 0.5), 0.6);
-    float minPs = 1.6 * uDpr;
+    float minPs = 2.6 * uDpr;
     gl_PointSize = max(ps, minPs);
-    vFade = clamp(ps / minPs, 0.3, 1.0);
+    vFade = clamp(ps / minPs, 0.22, 1.0);
     vCol = mix(aCF, aCT, k) * (1.0 + push*9.0);
     vAlpha = clamp(1.0 - (-v.z - 14.0)/80.0, 0.15, 1.0) * vis * vFade;
     vCol *= mix(1.0, 1.25, carW);
   }`;
   const FS = `
   precision mediump float; varying vec3 vCol; varying float vAlpha;
-  void main(){ float d = length(gl_PointCoord - 0.5) * 2.0; if (d > 1.0) discard;
-    float core = 1.0 - smoothstep(0.3, 0.62, d); float halo = 1.0 - d; float a = (core * 0.8 + halo * halo * 0.35) * vAlpha;
-    gl_FragColor = vec4(vCol * a * 0.55, a * 0.85); }`;
+  void main(){ vec2 q = gl_PointCoord * 2.0 - 1.0; float d2 = dot(q, q); if (d2 > 1.0) discard;
+    float a = (exp(-d2 * 4.5) - 0.011) * vAlpha;
+    gl_FragColor = vec4(vCol * a * 0.62, a * 0.9); }`;
   const VS2 = `
   attribute vec3 aPos; attribute vec4 aCol; uniform mat4 uProj, uView; uniform float uSize;
   varying vec4 vCol;
@@ -507,7 +507,7 @@
     mouse: [0, 0], mouseT: [0, 0], push: 0, pushT: 0,
     car: [0, 0, 0], carV: [0, 0], carT: [0, 0], carActive: 0, turn: 0.6,
     body: [0, 0, 0], wheel: 0, steer: 0, speed: 14, boost: 0, boostT: 0, boostEnd: 0, nextBoost: 6, rev: 0, exhaust: 0,
-    cam: { eye: [0, 0.6, 15], at: [0, 0.2, 0], fov: 50 }, scroll: 0,
+    cam: { eye: [0, 0.6, 15], at: [0, 0.2, 0], fov: 50 }, scroll: 0, scrollS: 0,
   };
   let dirty = true;
 
@@ -586,10 +586,13 @@
     return { m: new Float32Array([x[0], y[0], z[0], 0, x[1], y[1], z[1], 0, x[2], y[2], z[2], 0, -dot(x, eye), -dot(y, eye), -dot(z, eye), 1]), x, y, z };
   }
 
-  let W = 1, H = 1, dpr = 1;
-  function resize() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
-    W = canvas.clientWidth || innerWidth; H = canvas.clientHeight || innerHeight;
+  let W = 1, H = 1, dpr = 1, dprCap = 2;
+  function resize(force) {
+    const nd = Math.min(devicePixelRatio || 1, dprCap);
+    const nw = canvas.clientWidth || innerWidth, nh = canvas.clientHeight || innerHeight;
+    // на телефоне адресная строка меняет высоту окна при прокрутке — холст при этом не пересоздаём
+    if (force !== true && nd === dpr && nw === W && (nh === H || (small && Math.abs(nh - H) < 160))) return;
+    dpr = nd; W = nw; H = nh;
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     gl.viewport(0, 0, canvas.width, canvas.height);
     dirty = true;
@@ -698,12 +701,19 @@
 
   // ---------- цикл ----------
   let last = performance.now();
+  const perf = { sum: 0, n: 0 };
   const lerp = (a, b, k) => a + (b - a) * k;
   const attr = (loc, b, size) => { gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0); };
   function frame(now) {
     requestAnimationFrame(frame);
     if (document.hidden) { last = now; return; }
-    const dt = Math.min((now - last) / 1000, 0.05); last = now;
+    const raw = (now - last) / 1000;
+    const dt = Math.min(raw, 0.05); last = now;
+    if (raw < 0.25) { perf.sum += raw; perf.n++; }
+    if (perf.n >= 90) {
+      if (perf.sum / perf.n > 0.025 && dprCap > 1) { dprCap = Math.max(1, dprCap - 0.25); resize(true); }
+      perf.sum = 0; perf.n = 0;
+    }
     if (reduced && !dirty) return;
     dirty = false;
     if (!reduced) {
@@ -720,7 +730,8 @@
     const ce = reduced ? 1 : 1 - Math.exp(-dt * 2.2);
     for (let j = 0; j < 3; j++) { state.cam.eye[j] = lerp(state.cam.eye[j], target.eye[j], ce); state.cam.at[j] = lerp(state.cam.at[j], target.at[j], ce); }
     state.cam.fov = lerp(state.cam.fov, target.fov + (state.current === "road" ? state.boost * 9 : 0), ce);
-    const dolly = (state.scroll - 0.5) * 1.6;
+    state.scrollS += (state.scroll - state.scrollS) * (reduced ? 1 : 1 - Math.exp(-dt * 5));
+    const dolly = Math.sin(state.scrollS * Math.PI) * 0.8;
     const shake = state.current === "road" ? state.boost * 0.025 : 0;
     const eye = [state.cam.eye[0] + state.mouse[0] * 0.8 + Math.sin(state.time * 41) * shake, state.cam.eye[1] + state.mouse[1] * 0.5 - dolly * 0.3 + Math.sin(state.time * 37) * shake, state.cam.eye[2] - dolly];
     const basis = lookAt(eye, state.cam.at);
