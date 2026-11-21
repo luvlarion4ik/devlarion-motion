@@ -11,7 +11,7 @@
   if (!gl) { document.documentElement.classList.add("no-webgl"); return; }
 
   const small = matchMedia("(max-width: 760px), (pointer: coarse)").matches;
-  const N = small ? 18000 : 56000;
+  const N = small ? 26000 : 64000;
   const SPRAY = small ? 900 : 2600;
   const TAU = Math.PI * 2;
 
@@ -392,8 +392,8 @@
   const VS = `
   attribute vec3 aFrom, aTo, aCF, aCT; attribute vec3 aMeta;
   uniform mat4 uProj, uView; uniform float uMix, uTime, uSize, uAspect, uPush, uRoad, uSpin, uSway;
-  uniform vec3 uCar, uEye, uBody; uniform vec2 uMouse; uniform float uCarPush, uWheel, uSteer;
-  varying vec3 vCol; varying float vAlpha;
+  uniform vec3 uCar, uEye, uBody; uniform vec2 uMouse; uniform float uCarPush, uWheel, uSteer, uDpr;
+  varying vec3 vCol; varying float vAlpha; float vFade;
   vec3 rotY(vec3 p, float a){ float c=cos(a), s=sin(a); return vec3(p.x*c+p.z*s, p.y, -p.x*s+p.z*c); }
   vec3 body(vec3 p){
     vec3 q = p - vec3(0.0, 0.55, 0.0);
@@ -454,21 +454,26 @@
     c.xy = ndc * c.w;
     gl_Position = c;
     float tw = mix(0.78 + 0.22*sin(uTime*2.1 + seed*120.0), 1.0, carW);
-    gl_PointSize = max(uSize * 0.34 * tw * (0.55 + seed*0.9) / pow(max(-v.z, 0.5), 0.6), 1.4);
+    float ps = uSize * 0.34 * tw * (0.55 + seed*0.9) / pow(max(-v.z, 0.5), 0.6);
+    float minPs = 1.6 * uDpr;
+    gl_PointSize = max(ps, minPs);
+    vFade = clamp(ps / minPs, 0.3, 1.0);
     vCol = mix(aCF, aCT, k) * (1.0 + push*9.0);
-    vAlpha = clamp(1.0 - (-v.z - 14.0)/80.0, 0.15, 1.0) * vis;
+    vAlpha = clamp(1.0 - (-v.z - 14.0)/80.0, 0.15, 1.0) * vis * vFade;
     vCol *= mix(1.0, 1.25, carW);
   }`;
   const FS = `
   precision mediump float; varying vec3 vCol; varying float vAlpha;
-  void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.05, length(q)) * vAlpha; gl_FragColor = vec4(vCol * a * 0.5, a * 0.85); }`;
+  void main(){ float d = length(gl_PointCoord - 0.5) * 2.0; if (d > 1.0) discard;
+    float core = 1.0 - smoothstep(0.3, 0.62, d); float halo = 1.0 - d; float a = (core * 0.8 + halo * halo * 0.35) * vAlpha;
+    gl_FragColor = vec4(vCol * a * 0.55, a * 0.85); }`;
   const VS2 = `
   attribute vec3 aPos; attribute vec4 aCol; uniform mat4 uProj, uView; uniform float uSize;
   varying vec4 vCol;
   void main(){ vec4 v = uView * vec4(aPos, 1.0); gl_Position = uProj * v; gl_PointSize = max(uSize * (0.4 + aCol.a) / max(-v.z, 0.5), 1.0); vCol = aCol; }`;
   const FS2 = `
   precision mediump float; varying vec4 vCol;
-  void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.32, length(q)) * vCol.a; gl_FragColor = vec4(vCol.rgb * a, a); }`;
+  void main(){ float d = length(gl_PointCoord - 0.5) * 2.0; if (d > 1.0) discard; float a = (1.0 - smoothstep(0.45, 1.0, d)) * vCol.a; gl_FragColor = vec4(vCol.rgb * a, a); }`;
 
   function program(vs, fs) {
     const make = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
@@ -583,7 +588,7 @@
 
   let W = 1, H = 1, dpr = 1;
   function resize() {
-    dpr = Math.min(devicePixelRatio || 1, small ? 1.5 : 1.75);
+    dpr = Math.min(devicePixelRatio || 1, 2);
     W = canvas.clientWidth || innerWidth; H = canvas.clientHeight || innerHeight;
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -775,7 +780,7 @@
 
     gl.useProgram(P.p);
     gl.uniformMatrix4fv(P.u.uProj, false, proj); gl.uniformMatrix4fv(P.u.uView, false, basis.m);
-    gl.uniform1f(P.u.uMix, state.mix); gl.uniform1f(P.u.uTime, state.time); gl.uniform1f(P.u.uSize, size);
+    gl.uniform1f(P.u.uMix, state.mix); gl.uniform1f(P.u.uTime, state.time); gl.uniform1f(P.u.uSize, size); gl.uniform1f(P.u.uDpr, dpr);
     gl.uniform1f(P.u.uAspect, W / H); gl.uniform1f(P.u.uPush, reduced ? 0 : state.push);
     gl.uniform1f(P.u.uRoad, state.road); gl.uniform1f(P.u.uSpin, state.spin); gl.uniform1f(P.u.uSway, state.sway);
     gl.uniform3f(P.u.uCar, state.car[0], state.car[1], state.car[2]); gl.uniform3f(P.u.uEye, eye[0], eye[1], eye[2]); gl.uniform3f(P.u.uBody, state.body[0], state.body[1], state.body[2]); gl.uniform1f(P.u.uWheel, state.wheel); gl.uniform1f(P.u.uSteer, state.steer); gl.uniform1f(P.u.uCarPush, 1.0); gl.uniform2f(P.u.uMouse, state.mouse[0], state.mouse[1]);

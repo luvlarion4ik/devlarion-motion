@@ -81,8 +81,11 @@ code { font-family: var(--code); }
 .lang a[aria-current="true"] { background: rgba(255, 255, 255, .12); color: var(--ink); }
 .lang a:not([aria-current]):hover { color: var(--ink); }
 
+html { overflow-x: clip; }
+
 /* валюта */
 .currency { position: relative; }
+.currency details:not([open]) > .currency-panel { display: none; }
 .currency summary { list-style: none; display: inline-flex; gap: 6px; align-items: center; height: 36px; padding: 0 11px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255, 255, 255, .05); cursor: pointer; font: 500 12px/1 var(--code); letter-spacing: .06em; }
 .currency summary::-webkit-details-marker { display: none; }
 .currency summary:hover { background: rgba(255, 255, 255, .1); }
@@ -536,6 +539,11 @@ progress[data-progress]::-moz-progress-bar { background: var(--tint); }
 @keyframes dl-unfold { from { transform: rotateY(-88deg); opacity: .2; } 30% { opacity: 1; } to { transform: rotateY(0deg); } }
 @media (max-width: 1520px) { .hint { display: none; } }
 
+@media (max-width: 360px) {
+  .top { gap: 10px; }
+  .brandword { display: none; }
+  .tools { gap: 6px; }
+}
 @media (max-width: 720px) {
   .currency-panel { position: fixed; left: 12px; right: 12px; top: 66px; width: auto; }
   .story-lines { padding-left: 16px; }
