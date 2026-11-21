@@ -19,8 +19,8 @@ for (const f of ["style.css", "field.js", "currency.js", "quiz.js", "app.js"]) {
   ver[f] = createHash("sha256").update(await readFile(new URL("docs/assets/" + f, root))).digest("hex").slice(0, 10);
 }
 const esc = v => String(v).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-const service3d = { agents: "robot", "private-ai": "desktop", web: "globe", platform: "chart", mini: "bags", mobile: "phone", automation: "gear", design: "palette", custom: "gem" };
-const package3d = { web: "globe", automation: "speech", mini: "bags" };
+const serviceIcon = { agents: "ai", "private-ai": "server", web: "web", platform: "layers", mini: "mini", mobile: "mobile", automation: "bot", design: "design", custom: "spark" };
+const packageIcon = { web: "web", automation: "bot", mini: "mini" };
 // Знак Devlarion: D с вырезом L. Слои: заливка, контур, вырез и блик — их анимирует CSS.
 const MARK_D = "M8 6h20c18 0 30 10 30 26S46 58 28 58H8V6Z", MARK_L = "M20 16h9v23h13v9H20V16Z";
 let markId = 0;
@@ -42,7 +42,6 @@ function page(lang, A) {
   const other = ru ? "en/" : "../";
   const old = ru ? classic + "ru/" : classic;
   const tg = (text = "") => id.telegram + (text ? "?text=" + encodeURIComponent(text) : "");
-  const d3 = (name, cls = "") => `<img class="e3d ${cls}" src="${A}3d/${name}.png" width="256" height="256" alt="" loading="lazy" decoding="async">`;
   const head = (num, label, title, extra = "") => `<div class="sec-head" data-reveal><p class="label">${num} · ${esc(label)}</p><h2 class="glow">${esc(title)}</h2>${extra}</div>`;
   const rub = (v, prefix = "") => v == null ? l("по ТЗ", "quoted") : `<span data-rub="${v}" data-prefix="${prefix}">${prefix ? prefix + " " : ""}${ru ? v.toLocaleString("ru-RU") + " ₽" : "RUB " + v.toLocaleString("en-US")}</span>`;
 
@@ -108,12 +107,12 @@ function page(lang, A) {
   const tabs = `<div class="tabs" role="tablist" aria-label="${esc(t.services)}">${services.map((s, i) =>
     `<button type="button" role="tab" id="tab-${s.id}" aria-controls="tp-${s.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${esc(s.title)}</button>`).join("")}</div>
     ${services.map((s, i) => `<div class="tabpanel" role="tabpanel" id="tp-${s.id}" aria-labelledby="tab-${s.id}" ${i ? "hidden" : ""}>
-      <div class="tp-copy">${d3(service3d[s.id], "tp-3d")}<p class="label">${String(i + 1).padStart(2, "0")} / ${String(services.length).padStart(2, "0")}</p><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p>
+      <div class="tp-copy"><span class="tp-icon" aria-hidden="true">${icons[serviceIcon[s.id]]}</span><p class="label">${String(i + 1).padStart(2, "0")} / ${String(services.length).padStart(2, "0")}</p><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p>
         <div class="row"><a class="btn primary" href="${tg(l("Здравствуйте! Интересует направление: ", "Hello! I'm interested in: ") + s.title)}">${l("Обсудить задачу", "Discuss your project")}</a><a class="btn ghost" href="#quiz">${esc(t.estimate)}</a></div></div>
       ${brief(s)}
     </div>`).join("")}`;
   const packs = starterPackages(lang).map(p => `<article class="pack" data-reveal>
-    ${d3(package3d[p.id], "pack-3d")}
+    <span class="pack-icon" aria-hidden="true">${icons[packageIcon[p.id]]}</span>
     <h3>${esc(p.title)}</h3><p>${esc(p.description)}</p>
     <strong class="price" data-rub="${p.rub}" data-prefix="${l("от", "from")}">${esc(p.price)}</strong>
     <a class="link" href="#quiz" data-estimate-services="${p.estimateId}" data-estimate-tier="small">${l("Рассчитать с опциями", "Estimate with options")}</a>
@@ -132,7 +131,7 @@ function page(lang, A) {
     <a class="case-stage" href="${esc(c.href)}" target="_blank" rel="noopener" data-reveal aria-label="${esc(c.name)} — ${l("открыть сайт в новой вкладке", "open the site in a new tab")}">
       <div class="browser"><div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">${esc(host)}</span></div>
         <div class="screen"><img src="${A + c.image}" width="${c.size[0]}" height="${c.size[1]}" alt="${esc(c.alt)}" loading="lazy" decoding="async"></div></div>
-      <div class="phone"><div class="screen"><img src="${A + c.mobile}" width="390" height="844" alt="" loading="lazy" decoding="async"></div></div>
+      <div class="phone"><div class="screen"><div class="statusbar" aria-hidden="true"><span>9:41</span><i class="island"></i><span class="sb"><i></i><i></i><i></i><b></b></span></div><img src="${A + c.mobile}" width="390" height="844" alt="" loading="lazy" decoding="async"></div></div>
       <span class="stage-cta">${l("Открыть сайт", "Open the site")}</span>
     </a>
     <div class="case-story" data-reveal>
@@ -140,7 +139,7 @@ function page(lang, A) {
       <section><h4><span>02</span>${l("Решение", "Build")}</h4><p>${esc(c.solution)}</p></section>
       <section class="accent"><h4><span>03</span>${l("Результат", "Outcome")}</h4><p>${esc(c.result)}</p></section>
     </div>
-    ${c.flow ? `<ol class="flow" data-reveal aria-label="${l("Как устроен процесс", "How the workflow runs")}">${c.flow.map((f, k) => `<li><b>${k + 1}</b><span>${esc(f)}</span></li>`).join("")}</ol>` : ""}
+    ${c.flow ? `<div class="flow-card" data-reveal><p class="label">${l("Путь заявки", "How a request flows")}</p><ol class="flow" style="--n:${c.flow.length}">${c.flow.map((f, k) => `<li><b>${String(k + 1).padStart(2, "0")}</b><span>${esc(f)}</span></li>`).join("")}</ol></div>` : ""}
     <footer class="case-foot" data-reveal>
       <p class="chips">${stack.map(tag => `<span>${esc(tag)}</span>`).join("")}</p>
       ${c.demoNote ? `<p class="note">${esc(c.demoNote)}</p>` : ""}
@@ -151,17 +150,18 @@ function page(lang, A) {
 
   // ---------- продукты ----------
   const watchIntro = l("Ассистент для iPhone и Apple Watch в закрытом бета-тестировании. В режиме «Тихий суфлёр» подсказка появляется на затемнённом экране часов.", "An assistant for iPhone and Apple Watch, currently in closed beta. Silent Prompter displays a suggestion on the dimmed watch face.");
-  const lab = products[lang].map(p => {
-    const img = productImage[p.preview];
-    const media = img ? `<img src="${A}products/${img}.webp" width="768" height="512" alt="" loading="lazy" decoding="async">`
-      : `<div class="keyrow" aria-hidden="true">${["⌘", "⌥", "⇧"].map((k, n) => `<kbd style="--k:${n}">${k}</kbd>`).join("")}<kbd class="hot" style="--k:3">K</kbd></div><div class="keyrow" aria-hidden="true">${["Esc", "↵"].map((k, n) => `<kbd style="--k:${n + 4}">${k}</kbd>`).join("")}</div>`;
-    return `<article class="product" data-reveal>
-    <div class="product-media${img ? "" : " keys-art"}">${media}<span class="status-chip">${esc(p.status)}</span></div>
+  const preview = {
+    city: `<div class="pv pv-systems" aria-hidden="true"><div class="node">${icons.layers}<span>${l("Госплатформа", "Public platform")}</span></div><div class="wire"><i></i><i></i><i></i></div><div class="node">${icons.server}<span>${l("Коммерческий сервис", "Commercial service")}</span></div></div>`,
+    cognivue: `<div class="pv pv-audience" aria-hidden="true"><div class="creative"><i class="hero"></i><i class="line"></i><i class="line short"></i><i class="cta"></i><span class="heat h1"></span><span class="heat h2"></span><span class="heat h3"></span></div><p class="ask">${l("Что первым привлекло внимание?", "What caught your eye first?")}</p></div>`,
+    axenta: `<div class="pv pv-tutor" aria-hidden="true"><div class="eq">2<i>x</i> + 4 = 10</div><div class="step s1"><span>${l("Вычтем 4 из обеих частей", "Subtract 4 from both sides")}</span><b>2<i>x</i> = 6</b></div><div class="step s2"><span>${l("Разделим на 2", "Divide by 2")}</span><b><i>x</i> = 3</b></div></div>`,
+  };
+  const keysArt = `<div class="pv pv-keys" aria-hidden="true"><div class="keyrow">${["⌘", "⌥", "⇧"].map((k, n) => `<kbd style="--k:${n}">${k}</kbd>`).join("")}<kbd class="hot" style="--k:3">K</kbd></div><div class="keyrow">${["Esc", "↵"].map((k, n) => `<kbd style="--k:${n + 4}">${k}</kbd>`).join("")}</div></div>`;
+  const lab = products[lang].map(p => `<article class="product" data-reveal>
+    <div class="product-media">${preview[p.preview] || keysArt}<span class="status-chip">${esc(p.status)}</span></div>
     <div class="product-body"><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p>
     ${p.details ? `<details><summary>${esc(p.details.title)}</summary><p>${esc(p.details.description)}</p>${p.details.roles ? `<ul class="roles">${p.details.roles.map(([r, d]) => `<li><b>${esc(r)}</b><span>${esc(d)}</span></li>`).join("")}</ul>` : ""}</details>` : ""}
     ${p.links.length ? `<p class="row">${p.links.map(k => `<a class="link" href="${esc(k.href)}" target="_blank" rel="noopener">${esc(k.label)}</a>`).join("")}</p>` : ""}</div>
-  </article>`;
-  }).join("");
+  </article>`).join("");
 
   const steps = t.steps.map(([h, p], i) => `<li data-reveal><span class="num">${String(i + 1).padStart(2, "0")}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join("");
   const faq = t.faqs.map(([q, a]) => `<details class="qa"><summary>${esc(q)}<span aria-hidden="true">+</span></summary><p>${esc(a)}</p></details>`).join("");
@@ -215,7 +215,7 @@ function page(lang, A) {
 <section class="hero" id="top" data-scene="mark" data-tint="copper">
   <h1 class="mega"><span class="sr">Devlarion — ${esc(t.title)}</span><span class="mega-word" data-text="DEVLARION" aria-hidden="true">DEVLARION</span></h1>
   <div class="hero-copy">
-    <p class="label eyebrow">${esc(t.eyebrow)} · ${esc(id.founder[lang])}</p>
+    <p class="label eyebrow">${esc(t.eyebrow)} <span class="nowrap">· ${esc(id.founder[lang])}</span></p>
     <p class="glow headline">${esc(t.title)}</p>
     <p class="lead">${esc(t.intro)}</p>
     ${command}
@@ -242,8 +242,7 @@ function page(lang, A) {
   ${sticker(l("ПРОДУКТЫ DEVLARION · В РАЗРАБОТКЕ · ", "DEVLARION PRODUCTS · IN THE LAB · "), "LAB", "s3")}
   <div class="stage">${head("03", l("Продукты", "Products"), t.products, `<p class="lead center-text">${l("Над чем студия работает помимо клиентских проектов.", "What the studio builds alongside client work.")}</p>`)}</div>
   <article class="aura" data-reveal>
-    <div class="aura-media"><img src="${A}brand/watch.webp" width="1050" height="700" alt="${l("Apple Watch на руке", "Apple Watch on a wrist")}" loading="lazy" decoding="async">
-      <div class="aura-screen" role="img" aria-label="${l("Подсказка AuraWatch на экране часов", "AuraWatch suggestion on the watch face")}"><small>AuraWatch</small><b data-type="${esc(l("Какие следующие шаги?|Уточните сроки и бюджет.|Предложите созвон в четверг.", "What are the next steps?|Confirm timeline and budget.|Suggest a call on Thursday."))}">${l("Какие следующие шаги?", "What are the next steps?")}</b></div></div>
+    <div class="aura-visual"><div class="watch" role="img" aria-label="${l("Подсказка AuraWatch на экране часов", "AuraWatch suggestion on the watch face")}"><span class="crown" aria-hidden="true"></span><div class="face"><small>AuraWatch · ${l("Тихий суфлёр", "Silent Prompter")}</small><b data-type="${esc(l("Какие следующие шаги?|Уточните сроки и бюджет.|Предложите созвон в четверг.", "What are the next steps?|Confirm timeline and budget.|Suggest a call on Thursday."))}">${l("Какие следующие шаги?", "What are the next steps?")}</b><i class="meter"></i></div></div></div>
     <div class="aura-copy"><p class="label status-line"><i aria-hidden="true"></i>${l("Закрытая бета · iPhone + Apple Watch", "Closed beta · iPhone + Apple Watch")}</p><h3>AuraWatch</h3><p>${esc(watchIntro)}</p>
       <div class="row"><a class="btn primary" href="${tg(l("Хочу участвовать в закрытой бете AuraWatch.", "I'd like to join the AuraWatch closed beta."))}">${l("Хочу в закрытую бету", "Join the closed beta")}</a><a class="btn ghost" href="${old}aurawatch/">${l("Подробнее", "Learn more")}</a></div></div>
   </article>
@@ -256,16 +255,22 @@ function page(lang, A) {
 </section>
 
 <section class="section" id="about" data-scene="wave" data-tint="ice">
-  <div class="stage short"></div>
-  <div class="about panel" data-reveal>
-    <div class="logo-show" data-logo-show aria-hidden="true"><div class="logo-tilt">${mark("big")}</div><span class="logo-floor"></span></div>
-    <div class="about-copy">
-      <p class="label">05 · ${l("Студия", "Studio")}</p>
-      <h2 class="glow">${l("О студии", "About the studio")}</h2>
-      <p class="lead">${l("Devlarion разрабатывает сайты, ботов, мобильные приложения и ИИ-сервисы для бизнеса. Ведём проект от аналитики и дизайна до запуска и поддержки. Работаем по договору с ИП. Состав, смету и этапы согласуем до начала работ.", "Devlarion builds websites, bots, mobile apps and AI services for businesses. We cover discovery, design, delivery and support, with the scope, budget and milestones agreed before work begins.")}</p>
-      <div class="founder">${mark("small")}<div><b>${esc(id.founder[lang])}</b><small>${l("Основатель · архитектор и разработчик", "Founder · architect and developer")}</small></div></div>
-      <p class="chips">${stack.map(s => `<span>${s}</span>`).join("")}</p>
-      <div class="row"><a class="btn" href="${id.threads}" target="_blank" rel="noopener">${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost" href="${id.github}" target="_blank" rel="noopener">GitHub</a></div>
+  <div class="story" data-story>
+    <div class="story-pin">
+      <div class="story-mark" data-logo-hover>${mark("big story-svg")}<span class="logo-floor"></span></div>
+      <div class="story-copy">
+        <p class="label">05 · ${l("Студия", "Studio")}</p>
+        <h2 class="glow">${l("О студии", "About the studio")}</h2>
+        <ol class="story-lines">${l(
+          ["Devlarion разрабатывает сайты, ботов, мобильные приложения и ИИ-сервисы для бизнеса.", "Ведём проект от аналитики и дизайна до запуска и поддержки.", "Работаем по договору с ИП.", "Состав, смету и этапы согласуем до начала работ."],
+          ["Devlarion builds websites, bots, mobile apps and AI services for businesses.", "We cover discovery, design, delivery and support.", "We work under a formal agreement.", "Scope, budget and milestones are agreed before work begins."]
+        ).map((line, k) => `<li style="--k:${k}"><span class="num">${String(k + 1).padStart(2, "0")}</span>${esc(line)}</li>`).join("")}</ol>
+        <div class="story-end">
+          <div class="founder">${mark("small")}<div><b>${esc(id.founder[lang])}</b><small>${l("Основатель · архитектор и разработчик", "Founder · architect and developer")}</small></div></div>
+          <p class="chips">${stack.map(x => `<span>${x}</span>`).join("")}</p>
+          <div class="row"><a class="btn" href="${id.threads}" target="_blank" rel="noopener">${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost" href="${id.github}" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="panel faq-panel" data-reveal><h2 class="glow">${esc(t.faq)}</h2><div class="faq">${faq}</div></div>
@@ -289,7 +294,7 @@ function page(lang, A) {
       <div class="social">${socials.map(([label, href, icon]) => `<a href="${esc(href)}" aria-label="${esc(label)}" title="${esc(label)}" target="_blank" rel="noopener">${icons[icon]}</a>`).join("")}</div></div>
     <div class="foot-links">
       <p class="fine">© 2026 Devlarion · ${esc(id.founder[lang])}</p>
-      <p class="fine"><a href="${old}">${l("Классическая версия сайта", "Classic site")}</a> · <a href="${old}privacy/">${l("Конфиденциальность", "Privacy")}</a> · <a href="${A}licenses/fluent-emoji.txt">${l("Лицензии", "Licences")}</a> · <button type="button" class="linkish" data-share-page>${l("Поделиться", "Share")}</button> · <a href="${other}" hreflang="${ru ? "en" : "ru"}">${ru ? "English" : "Русский"}</a></p>
+      <p class="fine"><a href="${old}">${l("Классическая версия сайта", "Classic site")}</a> · <a href="${old}privacy/">${l("Конфиденциальность", "Privacy")}</a> · <a href="${A}licenses/animateicons.txt">${l("Лицензии", "Licences")}</a> · <button type="button" class="linkish" data-share-page>${l("Поделиться", "Share")}</button> · <a href="${other}" hreflang="${ru ? "en" : "ru"}">${ru ? "English" : "Русский"}</a></p>
     </div>
   </footer>
 </section>

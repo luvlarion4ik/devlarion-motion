@@ -17,7 +17,7 @@
   let ticking = false;
   function onScroll() {
     ticking = false;
-    root.classList.toggle("scrolled", scrollY > innerHeight * 0.35);
+    root.classList.toggle("scrolled", scrollY > 12);
     const mid = innerHeight * 0.5;
     let current = sections[0];
     for (const s of sections) if (s.getBoundingClientRect().top <= mid) current = s;
@@ -205,27 +205,42 @@
   if (!reduced) {
     const headerMark = document.querySelector(".brand .dl-mark");
     if (headerMark) setTimeout(() => restart(headerMark, "play"), 300);
-    const show = document.querySelector("[data-logo-show]");
-    const big = show?.querySelector(".dl-mark");
-    if (big && "IntersectionObserver" in window) {
-      let loop = null, played = false;
-      new IntersectionObserver(([en]) => {
-        clearInterval(loop);
-        if (!en.isIntersecting) return;
-        if (!played) { played = true; restart(big, "play"); }
-        loop = setInterval(() => restart(big, "shine"), 6000);
-      }, { threshold: 0.45 }).observe(big);
-      // знак плавно следует наклоном за курсором
-      if (fine) {
-        const tilt = show.querySelector(".logo-tilt");
-        show.addEventListener("pointermove", e => {
-          const b = show.getBoundingClientRect();
-          tilt.style.setProperty("--ly", (((e.clientX - b.left) / b.width - 0.5) * 18).toFixed(1) + "deg");
-          tilt.style.setProperty("--lx", ((0.5 - (e.clientY - b.top) / b.height) * 14).toFixed(1) + "deg");
-        });
-        show.addEventListener("pointerleave", () => { tilt.style.setProperty("--ly", "0deg"); tilt.style.setProperty("--lx", "0deg"); });
-        show.addEventListener("pointerenter", () => restart(big, "shine"));
-      }
+    // наведение (или касание) на логотип в шапке и подвале — полное проигрывание знака
+    for (const host of $$(".brand, .foot-brand, .founder")) {
+      const m = host.querySelector(".dl-mark");
+      if (!m) continue;
+      host.addEventListener("pointerenter", () => restart(m, "play"));
+      host.addEventListener("focusin", () => restart(m, "play"));
     }
+  }
+
+  // ---------- «О студии»: знак собирается по мере прокрутки, текст раскрывается по строчкам ----------
+  // 0–30% — прорисовывается контур, 30–55% — заливка, 55–75% — вырез L, дальше — финальный блик и карточка основателя.
+  const story = document.querySelector("[data-story]");
+  if (story) {
+    const svg = story.querySelector(".story-svg");
+    const lines = $$(".story-lines li", story);
+    const end = story.querySelector(".story-end");
+    const clamp = v => Math.min(Math.max(v, 0), 1);
+    let shone = false;
+    const update = () => {
+      const r = story.getBoundingClientRect();
+      const p = reduced ? 1 : clamp(-r.top / Math.max(r.height - innerHeight, 1));
+      svg.style.setProperty("--p1", clamp(p / 0.3).toFixed(3));
+      svg.style.setProperty("--p2", clamp((p - 0.3) / 0.25).toFixed(3));
+      svg.style.setProperty("--p3", clamp((p - 0.55) / 0.2).toFixed(3));
+      svg.style.setProperty("--p4", clamp((p - 0.78) / 0.1).toFixed(3));
+      lines.forEach((li, k) => li.classList.toggle("on", p >= [0.02, 0.3, 0.55, 0.75][k]));
+      end.classList.toggle("on", p >= 0.82);
+      if (p >= 0.82 && !shone && !reduced) { shone = true; restart(svg, "shine"); }
+      if (p < 0.6) shone = false;
+    };
+    addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    addEventListener("resize", update);
+    update();
+    // наведение или касание собранного знака — полное проигрывание анимации
+    const mark = story.querySelector("[data-logo-hover]");
+    mark?.addEventListener("pointerenter", () => restart(svg, "play"));
+    mark?.addEventListener("click", () => restart(svg, "play"));
   }
 })();
