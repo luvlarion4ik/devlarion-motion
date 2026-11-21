@@ -541,3 +541,13 @@ progress[data-progress]::-moz-progress-bar { background: var(--tint); }
   .story-lines { padding-left: 16px; }
 }
 .section.finale { padding-bottom: 0; }
+
+.version-switch { display: flex; align-items: center; gap: .45rem; padding: .25rem .5rem; border: 1px solid var(--line); border-radius: 10px; font-size: .8rem; white-space: nowrap; }
+.version-switch [aria-current] { border-inline-start: 1px solid var(--line); padding-inline-start: .45rem; font-weight: 700; }
+.menu .version-switch { flex-wrap: wrap; }
+.menu .version-switch a { padding: .5rem; }
+.classic-links { display: flex; flex-wrap: wrap; justify-content: center; gap: .55rem; margin: 1.5rem auto; }
+.classic-links .btn { font-size: .9rem; padding: .5rem .75rem; }
+@media (max-width: 720px) {
+  .tools > .version-switch { display: none; }
+}
