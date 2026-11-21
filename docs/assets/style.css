@@ -23,7 +23,7 @@ html[data-tint="red"] { --tint: #ff7a7f; --tint-deep: #5a1220; --tint-glow: rgba
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; background: var(--bg); -webkit-text-size-adjust: 100%; }
 body { margin: 0; color: var(--ink); font: 400 17px/1.55 var(--sans); font-kerning: normal; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  background: radial-gradient(1200px 800px at 70% 20%, #0c1736 0%, transparent 60%), radial-gradient(900px 700px at 10% 90%, #160b22 0%, transparent 60%), var(--bg); background-attachment: fixed; overflow-x: hidden; }
+  background: radial-gradient(1200px 800px at 70% 20%, #0c1736 0%, transparent 60%), radial-gradient(900px 700px at 10% 90%, #160b22 0%, transparent 60%), var(--bg); background-attachment: fixed; overflow-x: clip; }
 a { color: inherit; }
 img, svg { max-width: 100%; }
 img { display: block; height: auto; }
@@ -81,6 +81,7 @@ code { font-family: var(--code); }
 .lang a[aria-current="true"] { background: rgba(255, 255, 255, .12); color: var(--ink); }
 .lang a:not([aria-current]):hover { color: var(--ink); }
 
+/* clip (а не hidden) на html и body: лишняя ширина обрезается, но body не становится контейнером прокрутки и sticky-секции работают */
 html { overflow-x: clip; }
 
 /* валюта */
@@ -375,7 +376,7 @@ main { position: relative; z-index: 2; }
 .steps p { color: var(--muted); font-size: 15.5px; }
 
 /* ---------- студия ---------- */
-.story { position: relative; height: 260vh; margin-bottom: 8vh; }
+.story { position: relative; height: 180vh; margin-bottom: 8vh; }
 .story-pin { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-columns: minmax(260px, 420px) 1fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
 .story-mark { position: relative; display: grid; place-items: center; aspect-ratio: 1; cursor: pointer; perspective: 900px; }
 .story-mark::before { content: ""; position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(closest-side, var(--tint-glow), transparent 70%); opacity: calc(.15 + var(--p, 1) * .85); transform: scale(calc(.6 + var(--p, 1) * .5)); transition: background .6s; }
@@ -492,7 +493,7 @@ progress[data-progress]::-moz-progress-bar { background: var(--tint); }
 @media (max-width: 1240px) { .keys { display: none; } .tools { margin-left: auto; } }
 @media (max-width: 980px) {
   .split, .aura { grid-template-columns: 1fr; }
-  .story { height: 230vh; }
+  .story { height: 160vh; }
   .story-pin { grid-template-columns: 1fr; align-content: center; gap: 8px; padding-top: 64px; }
   .story-mark { width: min(34vw, 150px); margin: 0 auto; }
   .story-lines { gap: 8px; } .story-lines li { font-size: 15.5px; grid-template-columns: 28px 1fr; }
