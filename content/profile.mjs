@@ -33,3 +33,14 @@ export const copy = {
   faqs:[["How do I price a small project?","The services section lists starting prices and what each package covers. For integrations or multiple workflows, we’ll discuss scope and any applicable discount on a call, then send a final quote."],["Can we arrange a meeting?","We can start with a video call. For an in-person meeting, send your city and the topics you’d like to cover so we can agree on the format in advance."],["Can you deploy on our infrastructure?","Yes. We review your compute capacity, data requirements and access restrictions before selecting the deployment architecture."],["Can we work under NDA?","We agree on confidentiality terms before you share restricted materials."],["How do revisions and source ownership work?","The agreement sets out the revision scope, source delivery and rights before development begins."],["What happens after two months?","Further work is quoted separately. A support subscription is available for ongoing needs."]]
  }
 };
+
+export const classicLinks = [
+  ['self-employed/', 'Самозанятым и ИП', 'Self-employed and sole traders'],
+  ['business/', 'Малому и среднему бизнесу', 'Small and medium businesses'],
+  ['enterprise/', 'Крупным компаниям', 'Enterprise'],
+  ['why-website/', 'Зачем бизнесу сайт', 'Why businesses need a website'],
+  ['seo/', 'SEO', 'SEO'],
+  ['geo/', 'GEO (ИИ-поиск)', 'GEO (AI search)'],
+  ['support/', 'Сопровождение', 'Support'],
+  ['bundle/', 'Пакетом выгоднее', 'Why a bundle is better'],
+];

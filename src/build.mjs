@@ -1,14 +1,15 @@
 // Сборка Devlarion Motion: читает данные из content/ и пишет docs/index.html (RU), docs/en/index.html (EN) и docs/404.html.
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { identity as id, copy } from "../content/profile.mjs";
+import { identity as id, copy, classicLinks, siteBase } from "../content/profile.mjs";
 import { cases, products, contacts } from "../content/work.mjs";
 import { starterPackages, serviceCards, renderQuiz, estimator } from "../content/pricing.mjs";
 
 const root = new URL("../", import.meta.url);
 const SITE = process.env.DEVLARION_MOTION_URL || "https://luvlarion4ik.github.io/devlarion-motion/";
 const BASE = new URL(SITE).pathname; // /devlarion-motion/
-const classic = id.portfolio;
+const classic = siteBase();
+const studio = process.env.DEVLARION_STUDIO_URL ? siteBase(process.env.DEVLARION_STUDIO_URL) : "";
 const icons = {};
 for (const f of await readdir(new URL("docs/assets/icons/", root))) {
   icons[f.slice(0, -4)] = (await readFile(new URL("docs/assets/icons/" + f, root), "utf8")).trim().replace(/^<svg /, '<svg class="ai-icon" ');
@@ -41,6 +42,15 @@ function page(lang, A) {
   const self = ru ? SITE : SITE + "en/";
   const other = ru ? "en/" : "../";
   const old = ru ? classic + "ru/" : classic;
+  const classicHome = old + '?classic';
+  const versionLabel = l('Версия сайта', 'Site version');
+  const versionSwitch = `<div class="version-switch" role="group" aria-label="${versionLabel}">
+    <a href="${classicHome}">${l('Классическая', 'Classic')}</a>
+    <span aria-current="page">${l('С анимацией', 'Animated')}</span>
+  </div>`;
+  const classicNavigation = `<nav class="classic-links" aria-label="${l('Услуги на классическом сайте', 'Services on the classic site')}">
+    ${classicLinks.map(([route, ruLabel, enLabel]) => `<a class="btn ghost" href="${old}${route}">${esc(l(ruLabel, enLabel))} <span aria-hidden="true">↗</span></a>`).join('')}
+  </nav>`;
   const tg = (text = "") => id.telegram + (text ? "?text=" + encodeURIComponent(text) : "");
   const head = (num, label, title, extra = "") => `<div class="sec-head" data-reveal><p class="label">${num} · ${esc(label)}</p><h2 class="glow">${esc(title)}</h2>${extra}</div>`;
   const rub = (v, prefix = "") => v == null ? l("по ТЗ", "quoted") : `<span data-rub="${v}" data-prefix="${prefix}">${prefix ? prefix + " " : ""}${ru ? v.toLocaleString("ru-RU") + " ₽" : "RUB " + v.toLocaleString("en-US")}</span>`;
@@ -204,11 +214,12 @@ function page(lang, A) {
   <nav class="keys" aria-label="${l("Разделы", "Sections")}">${keys}</nav>
   <div class="tools">
     ${currency}
+    ${versionSwitch}
     ${langSwitch}
     <a class="icon-btn" href="${id.threads}" target="_blank" rel="noopener" aria-label="Threads" title="Threads">${icons.threads}</a>
     <a class="btn primary small" href="${tg()}" data-key="t">Telegram</a>
     <details class="menu"><summary aria-label="${l("Меню", "Menu")}"><span></span><span></span></summary>
-      <nav aria-label="${l("Меню", "Menu")}">${nav.map(([, href, label]) => `<a href="#${href}">${label}</a>`).join("")}<a href="${id.threads}" target="_blank" rel="noopener">Threads</a><a href="${old}">${l("Классическая версия", "Classic site")}</a></nav></details>
+      <nav aria-label="${l("Меню", "Menu")}">${nav.map(([, href, label]) => `<a href="#${href}">${label}</a>`).join("")}<a href="${id.threads}" target="_blank" rel="noopener">Threads</a>${versionSwitch}</nav></details>
   </div>
 </header>
 <main id="main">
@@ -228,6 +239,7 @@ function page(lang, A) {
   ${sticker(l("САЙТЫ · БОТЫ · ИИ · МИНИ-ПРИЛОЖЕНИЯ · ", "WEBSITES · BOTS · AI · MINI APPS · "), "D/L", "s1")}
   <div class="stage">${head("01", t.nav[0], t.services, `<p class="lead center-text">${l("Девять направлений — от сайта для заявок до ИИ в вашем контуре.", "Nine capabilities, from an enquiry website to AI on your own infrastructure.")}</p>`)}</div>
   <div class="panel tabbed" data-reveal>${tabs}</div>
+  ${classicNavigation}
   <div class="packs-head" data-reveal><h2 class="glow">${esc(t.fees)}</h2><p>${l("Стартовые пакеты для небольшого бизнеса. Для компаний любого масштаба подберём условия и обсудим скидку — итоговую стоимость пришлём после созвона.", "Starter packages for small businesses. For companies of any size we tailor the terms and discuss any discount; the final quote follows our call.")}</p></div>
   <div class="packs">${packs}</div>
   <p class="rate-note muted" data-rate-note data-reveal></p>
@@ -268,7 +280,7 @@ function page(lang, A) {
         <div class="story-end">
           <div class="founder">${mark("small")}<div><b>${esc(id.founder[lang])}</b><small>${l("Основатель · архитектор и разработчик", "Founder · architect and developer")}</small></div></div>
           <p class="chips">${stack.map(x => `<span>${x}</span>`).join("")}</p>
-          <div class="row"><a class="btn" href="${id.threads}" target="_blank" rel="noopener">${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost" href="${id.github}" target="_blank" rel="noopener">GitHub</a></div>
+          <div class="row"><a class="btn btn-anim" href="${id.threads}" target="_blank" rel="noopener"><span class="btn-ico" data-ico="threads">${icons.threads}</span>${l("Читать в Threads", "Follow on Threads")}</a><a class="btn ghost btn-anim" href="${id.github}" target="_blank" rel="noopener"><span class="btn-ico" data-ico="github">${icons.github}</span>GitHub</a></div>
         </div>
       </div>
     </div>
@@ -294,7 +306,7 @@ function page(lang, A) {
       <div class="social">${socials.map(([label, href, icon]) => `<a href="${esc(href)}" aria-label="${esc(label)}" title="${esc(label)}" target="_blank" rel="noopener">${icons[icon]}</a>`).join("")}</div></div>
     <div class="foot-links">
       <p class="fine">© 2026 Devlarion · ${esc(id.founder[lang])}</p>
-      <p class="fine"><a href="${old}">${l("Классическая версия сайта", "Classic site")}</a> · <a href="${old}privacy/">${l("Конфиденциальность", "Privacy")}</a> · <a href="${A}licenses/animateicons.txt">${l("Лицензии", "Licences")}</a> · <button type="button" class="linkish" data-share-page>${l("Поделиться", "Share")}</button> · <a href="${other}" hreflang="${ru ? "en" : "ru"}">${ru ? "English" : "Русский"}</a></p>
+      <p class="fine"><a href="${classicHome}">${l("Классическая версия сайта", "Classic site")}</a> · ${studio ? `<a href="${studio}">${l("Конструктор «Сборка»", "Sborka site builder")}</a> · ` : ""}<a href="${old}privacy/">${l("Конфиденциальность", "Privacy")}</a> · <a href="${A}licenses/animateicons.txt">${l("Лицензии", "Licences")}</a> · <button type="button" class="linkish" data-share-page>${l("Поделиться", "Share")}</button> · <a href="${other}" hreflang="${ru ? "en" : "ru"}">${ru ? "English" : "Русский"}</a></p>
     </div>
   </footer>
 </section>
