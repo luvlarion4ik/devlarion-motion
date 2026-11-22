@@ -1,14 +1,14 @@
 // Сборка Devlarion Motion: читает данные из content/ и пишет docs/index.html (RU), docs/en/index.html (EN) и docs/404.html.
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { identity as id, copy, classicLinks } from "../content/profile.mjs";
+import { identity as id, copy, classicLinks, siteBase } from "../content/profile.mjs";
 import { cases, products, contacts } from "../content/work.mjs";
 import { starterPackages, serviceCards, renderQuiz, estimator } from "../content/pricing.mjs";
 
 const root = new URL("../", import.meta.url);
 const SITE = process.env.DEVLARION_MOTION_URL || "https://luvlarion4ik.github.io/devlarion-motion/";
 const BASE = new URL(SITE).pathname; // /devlarion-motion/
-const classic = id.portfolio;
+const classic = siteBase();
 const icons = {};
 for (const f of await readdir(new URL("docs/assets/icons/", root))) {
   icons[f.slice(0, -4)] = (await readFile(new URL("docs/assets/icons/" + f, root), "utf8")).trim().replace(/^<svg /, '<svg class="ai-icon" ');
