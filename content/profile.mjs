@@ -42,4 +42,5 @@ export const classicLinks = [
   ['seo/', 'SEO', 'SEO'],
   ['geo/', 'GEO (ИИ-поиск)', 'GEO (AI search)'],
   ['support/', 'Сопровождение', 'Support'],
+  ['bundle/', 'Пакетом выгоднее', 'Why a bundle is better'],
 ];
